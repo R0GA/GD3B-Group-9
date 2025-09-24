@@ -1,0 +1,107 @@
+using System.Collections;
+using UnityEngine;
+using UnityEngine.InputSystem;
+
+public class PlayerMovement : MonoBehaviour
+{
+    [Header("Movement Settings")]
+    public float moveSpeed = 8f;
+    public float lookSpeed;
+    public float gravity = -9.81f;
+
+    private Vector2 _moveInput;
+    private Vector2 _lookInput;
+    private Vector2 _velocity;
+    private CharacterController _characterController;
+
+    public Rigidbody rb;
+
+    public bool canDodge = true;
+    public bool isPaused = false;
+
+    private void OnEnable()
+    {
+        var playerInput = new Controls();
+
+        playerInput.Player.Enable();
+
+        playerInput.Player.Move.performed += ctx => _moveInput = ctx.ReadValue<Vector2>();
+        playerInput.Player.Move.canceled += ctx => _moveInput = Vector2.zero;
+
+        playerInput.Player.Look.performed += ctx => _lookInput = ctx.ReadValue<Vector2>();
+        playerInput.Player.Look.canceled += ctx => _lookInput = Vector2.zero;
+
+        playerInput.Player.Sprint.performed += ctx => Sprint(); //Dodge
+    }
+
+    private void Awake()
+    {
+        _characterController = GetComponent<CharacterController>();
+    }
+
+    public void Update()
+    {
+        Movement();
+        Looking();
+        ApplyGravity();
+    }
+
+    public void Movement()
+    {
+        if (isPaused == false)
+        {
+            // Create a movement vector based on the input
+            Vector3 move = new Vector3(-_moveInput.x, 0, -_moveInput.y);
+
+            // Transform direction from local to world space
+            move = transform.TransformDirection(move);
+
+            
+
+            // Move the character controller based on the movement vector and speed
+            _characterController.Move(move * moveSpeed *  Time.deltaTime);
+        }
+    }
+
+    public void Looking()
+    {
+        if (isPaused == false)
+        {
+            // Only use horizontal input (left/right)
+            float lookX = _lookInput.x * lookSpeed;
+
+            // Rotate the player left/right around the Y-axis
+            transform.Rotate(0f, lookX, 0f);
+        }
+    }
+
+    public void ApplyGravity()
+    {
+        if (_characterController.isGrounded && _velocity.y < 0)
+        {
+            _velocity.y = -0.5f; // Small value to keep the player grounded
+        }
+
+        _velocity.y += gravity * Time.deltaTime; // Apply gravity to the velocity
+        _characterController.Move(_velocity * Time.deltaTime); // Apply the velocity to the character
+    }
+
+    public void Sprint()
+    {
+        if(canDodge == true)
+        {
+            StartCoroutine(TheDodge());
+        }
+    }
+
+    private IEnumerator TheDodge()
+    {
+        yield return new WaitForSeconds(0f);
+        canDodge = false;
+        moveSpeed = moveSpeed + 8f;
+        yield return new WaitForSeconds(0.3f);
+        moveSpeed = moveSpeed - 8f;
+        yield return new WaitForSeconds(2f);
+        canDodge = true;
+    }
+}

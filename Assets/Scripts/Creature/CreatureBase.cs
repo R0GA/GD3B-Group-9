@@ -54,7 +54,6 @@ public class CreatureBase : MonoBehaviour
         }
     }
 
-
     public void TakeDamage(float damage, ElementType attackerType)
     {
         float multiplier = 1.0f;

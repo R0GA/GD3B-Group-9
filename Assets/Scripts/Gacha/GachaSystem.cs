@@ -16,9 +16,10 @@ public class GachaSystem : MonoBehaviour
     {
         if (Random.value < creatureChance && creaturePool.Count > 0)
         {
-            // Give a random creature
+            // Give a random creature as data, not as an instance
             var randomCreature = creaturePool[Random.Range(0, creaturePool.Count)];
-            playerInventory.AddCreature(Instantiate(randomCreature));
+            var creatureData = new CreatureData(randomCreature);
+            playerInventory.AddCreatureData(creatureData);
         }
         else if (itemPool.Count > 0)
         {

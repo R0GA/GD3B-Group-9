@@ -11,6 +11,7 @@ public class PlayerMovement : MonoBehaviour
 
     [Header("Health Settings")]
     [SerializeField] private float maxHealth;
+    public GameObject gameOverScreen;
 
     private float currentHealth;
     public HealthManager healthManager;
@@ -57,6 +58,11 @@ public class PlayerMovement : MonoBehaviour
         Movement();
         Looking();
         ApplyGravity();
+
+        if(currentHealth <= 0)
+        {
+            gameOverScreen.SetActive(true);
+        }
 
     }
 

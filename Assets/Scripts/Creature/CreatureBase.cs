@@ -5,15 +5,15 @@ using System.Collections.Generic;
 public class CreatureBase : MonoBehaviour
 {
     [Header("Creature Stats")]
-    [SerializeField] private float health;
-    [SerializeField] private float maxHealth;
-    [SerializeField] private float speed;
-    [SerializeField] private bool isPlayerCreature;
-    [SerializeField] private float playerCreatureModifier;
-    [SerializeField] private float attackSpeed;
-    [SerializeField] private float attackDamage;
-    //[SerializeField] private int captureChallenge;
-    [SerializeField] private ElementType elementType; // For single type
+    [SerializeField] public float health;
+    [SerializeField] public float maxHealth;
+    [SerializeField] public float speed;
+    [SerializeField] public bool isPlayerCreature;
+    [SerializeField] public float playerCreatureModifier;
+    [SerializeField] public float attackSpeed;
+    [SerializeField] public float attackDamage;
+    //[SerializeField] public int captureChallenge;
+    [SerializeField] public ElementType elementType; // For single type
    
 
     // Example: effectiveness[attacker][defender] = multiplier

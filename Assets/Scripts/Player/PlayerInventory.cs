@@ -101,19 +101,13 @@ public class PlayerInventory : MonoBehaviour
 
     private void SetCreatureFromData(CreatureBase creature, CreatureData data)
     {
-        SetPrivateField(creature, "health", data.health);
-        SetPrivateField(creature, "maxHealth", data.maxHealth);
-        SetPrivateField(creature, "speed", data.speed);
-        SetPrivateField(creature, "attackSpeed", data.attackSpeed);
-        SetPrivateField(creature, "attackDamage", data.attackDamage);
-        SetPrivateField(creature, "elementType", data.elementType);
+        creature.health = data.health;
+        creature.maxHealth = data.maxHealth;
+        creature.speed = data.speed;
+        creature.attackSpeed = data.attackSpeed;
+        creature.attackDamage = data.attackDamage;
+        creature.elementType = data.elementType;
         // Equip items as needed
-    }
-
-    private void SetPrivateField<T>(CreatureBase creature, string fieldName, T value)
-    {
-        var field = typeof(CreatureBase).GetField(fieldName, System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
-        field.SetValue(creature, value);
     }
 
     public bool EquipItemToCreature(int creatureIndex, ItemBase item)

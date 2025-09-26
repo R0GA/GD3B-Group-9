@@ -16,7 +16,7 @@ public class EnemyController : MonoBehaviour
     private float waitCounter;
 
     [Header("Components")]
-    [SerializeField] Animator animator;
+    //[SerializeField] Animator animator;
     NavMeshAgent agent; 
 
     [Header("AI States")]
@@ -125,7 +125,7 @@ public class EnemyController : MonoBehaviour
 
                 if (timeToAttack <= 0)
                 {
-                    animator.SetTrigger("attack");
+                    //animator.SetTrigger("attack");
                     timeToAttack = attackTime;
                     Debug.Log("Attacking");
                 }

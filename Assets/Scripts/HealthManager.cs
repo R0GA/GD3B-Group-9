@@ -3,40 +3,16 @@ using UnityEngine.UI;
 
 public class HealthManager : MonoBehaviour
 {
-    public float maxHealth = 100f;
-    public float currentHealth;
-    public Image healthBar;
-    public GameObject gameOverScreen;
+    public Slider healthSlider;
 
-    public void Start()
+    public void SetSlider(float amount)
     {
-        currentHealth = maxHealth;
-        updateHealthBar();
+        healthSlider.value = amount;
     }
 
-    public void Update()
+    public void SetSliderMax(float amount)
     {
-        if(currentHealth <= 0)
-        {
-            gameOverScreen.SetActive(true);
-        }
-    }
-
-    public void updateHealth(float amount)
-    {
-        currentHealth += amount;
-        updateHealthBar();
-    }
-
-    public void updateHealthBar()
-    {
-        float targetFillAmount = currentHealth / maxHealth;
-        healthBar.fillAmount = targetFillAmount;
-    }
-
-    public void PlayerHit()
-    {
-        currentHealth = currentHealth = 10f;
-        updateHealthBar();
+        healthSlider.maxValue = amount;
+        SetSlider(amount);
     }
 }

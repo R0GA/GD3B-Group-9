@@ -9,6 +9,12 @@ public class PlayerMovement : MonoBehaviour
     public float lookSpeed;
     public float gravity = -9.81f;
 
+    [Header("Health Settings")]
+    [SerializeField] private float maxHealth;
+
+    private float currentHealth;
+    public HealthManager healthManager;
+
     private Vector2 _moveInput;
     private Vector2 _lookInput;
     private Vector2 _velocity;
@@ -19,6 +25,12 @@ public class PlayerMovement : MonoBehaviour
     public bool canDodge = true;
     public bool isPaused = false;
 
+    public void Start()
+    {
+        currentHealth = maxHealth;
+
+        healthManager.SetSlider(maxHealth);
+    }
     private void OnEnable()
     {
         var playerInput = new Controls();
@@ -31,7 +43,7 @@ public class PlayerMovement : MonoBehaviour
         playerInput.Player.Look.performed += ctx => _lookInput = ctx.ReadValue<Vector2>();
         playerInput.Player.Look.canceled += ctx => _lookInput = Vector2.zero;
 
-        playerInput.Player.Sprint.performed += ctx => Sprint(); //Dodge
+        playerInput.Player.Dash.performed += ctx => Dash(); //Dodge
     }
 
     private void Awake()
@@ -41,9 +53,11 @@ public class PlayerMovement : MonoBehaviour
 
     public void Update()
     {
+        
         Movement();
         Looking();
         ApplyGravity();
+
     }
 
     public void Movement()
@@ -86,7 +100,7 @@ public class PlayerMovement : MonoBehaviour
         _characterController.Move(_velocity * Time.deltaTime); // Apply the velocity to the character
     }
 
-    public void Sprint()
+    public void Dash()
     {
         if(canDodge == true)
         {
@@ -103,5 +117,11 @@ public class PlayerMovement : MonoBehaviour
         moveSpeed = moveSpeed - 8f;
         yield return new WaitForSeconds(2f);
         canDodge = true;
+    }
+
+    public void TakeDamage(float amount)
+    {
+        currentHealth -= amount;
+        healthManager.SetSlider(currentHealth);
     }
 }

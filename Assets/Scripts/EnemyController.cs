@@ -137,7 +137,7 @@ public class EnemyController : MonoBehaviour
                         var projectile = Instantiate(Projectile, spawnPoint.position, spawnPoint.rotation);
 
                         var rb = projectile.GetComponent<Rigidbody>();
-                        rb.velocity = spawnPoint.forward * projectileSpeed;
+                        rb.linearVelocity = spawnPoint.forward * projectileSpeed;
 
                         Destroy(projectile, 2f);
                     

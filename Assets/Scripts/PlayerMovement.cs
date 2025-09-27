@@ -8,6 +8,7 @@ public class PlayerMovement : MonoBehaviour
     public float moveSpeed = 8f;
     public float lookSpeed;
     public float gravity = -9.81f;
+    public float jumpHeight = 1.0f;
 
     [Header("Health Settings")]
     [SerializeField] private float maxHealth;
@@ -43,6 +44,8 @@ public class PlayerMovement : MonoBehaviour
 
         playerInput.Player.Look.performed += ctx => _lookInput = ctx.ReadValue<Vector2>();
         playerInput.Player.Look.canceled += ctx => _lookInput = Vector2.zero;
+
+        playerInput.Player.Jump.performed += ctx => Jump();
 
         playerInput.Player.Dash.performed += ctx => Dash(); //Dodge
     }
@@ -104,6 +107,14 @@ public class PlayerMovement : MonoBehaviour
 
         _velocity.y += gravity * Time.deltaTime; // Apply gravity to the velocity
         _characterController.Move(_velocity * Time.deltaTime); // Apply the velocity to the character
+    }
+
+    public void Jump()
+    {
+        if (_characterController.isGrounded && isPaused == false) { }
+        {
+            _velocity.y = Mathf.Sqrt(jumpHeight * -2f * gravity);
+        }
     }
 
     public void Dash()

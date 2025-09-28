@@ -11,6 +11,8 @@ public class CreatureData
     public float speed;
     public float attackSpeed;
     public float attackDamage;
+    public int level;
+    public Sprite icon; 
     public ElementType elementType;
     public List<string> equippedItemNames = new List<string>();
 
@@ -23,6 +25,8 @@ public class CreatureData
         attackSpeed = creature.attackSpeed;
         attackDamage = creature.attackDamage;
         elementType = creature.elementType;
+        level = creature.level;
+        icon = creature.icon;
         // Populate equippedItemNames as needed
     }
 }

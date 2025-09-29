@@ -1,4 +1,5 @@
 using System.Collections;
+using UnityEditor.Search;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -13,6 +14,13 @@ public class PlayerMovement : MonoBehaviour
     [Header("Health Settings")]
     [SerializeField] private float maxHealth;
     public GameObject gameOverScreen;
+
+    [Header("Weapon Settings")]
+    [SerializeField] private float weaponHitRadius;
+    [SerializeField] private Transform weaponHitPoint;
+    [SerializeField] private int damage = 2;
+    [SerializeField] private LayerMask targetLayer;
+    [SerializeField] private Animator animator;
 
     private float currentHealth;
     public HealthManager healthManager;
@@ -48,6 +56,8 @@ public class PlayerMovement : MonoBehaviour
         playerInput.Player.Jump.performed += ctx => Jump();
 
         playerInput.Player.Dash.performed += ctx => Dash(); //Dodge
+
+        playerInput.Player.Attack.performed += ctx => Attack();
     }
 
     private void Awake()
@@ -60,12 +70,15 @@ public class PlayerMovement : MonoBehaviour
         
         Movement();
         Looking();
+        
         ApplyGravity();
 
         if(currentHealth <= 0)
         {
             gameOverScreen.SetActive(true);
         }
+
+        
 
     }
 
@@ -122,6 +135,19 @@ public class PlayerMovement : MonoBehaviour
         if(canDodge == true)
         {
             StartCoroutine(TheDodge());
+        }
+    }
+
+    public void Attack()
+    {
+        animator.SetTrigger("attack");
+
+        Collider[] hit = Physics.OverlapSphere(weaponHitPoint.position, weaponHitRadius, targetLayer);
+        if (hit.Length > 0)
+        {
+            hit[0].GetComponent<EnemyHealth>().TakeDamage(damage);
+            Debug.Log("Enemy Damaged");
+
         }
     }
 

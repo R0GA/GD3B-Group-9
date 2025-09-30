@@ -12,20 +12,53 @@ public class GachaSystem : MonoBehaviour
     [Range(0f, 1f)]
     [SerializeField] private float creatureChance = 0.5f;
 
+    // Method for direct opening (existing functionality)
     public void OpenPack(PlayerInventory playerInventory)
     {
         if (Random.value < creatureChance && creaturePool.Count > 0)
         {
-            // Give a random creature as data, not as an instance
             var randomCreature = creaturePool[Random.Range(0, creaturePool.Count)];
             var creatureData = new CreatureData(randomCreature);
             playerInventory.AddCreatureData(creatureData);
         }
         else if (itemPool.Count > 0)
         {
-            // Give a random item
             var randomItem = itemPool[Random.Range(0, itemPool.Count)];
             playerInventory.AddItem(randomItem);
         }
+    }
+
+    // New method for UI animation - returns the result without adding to inventory
+    public object GetGachaResult()
+    {
+        if (Random.value < creatureChance && creaturePool.Count > 0)
+        {
+            var randomCreature = creaturePool[Random.Range(0, creaturePool.Count)];
+            return new CreatureData(randomCreature);
+        }
+        else if (itemPool.Count > 0)
+        {
+            var randomItem = itemPool[Random.Range(0, itemPool.Count)];
+            return randomItem;
+        }
+        return null;
+    }
+
+    // Get all possible results for the rolling animation
+    public List<object> GetAllPossibleResults()
+    {
+        List<object> allResults = new List<object>();
+
+        foreach (var creature in creaturePool)
+        {
+            allResults.Add(new CreatureData(creature));
+        }
+
+        foreach (var item in itemPool)
+        {
+            allResults.Add(item);
+        }
+
+        return allResults;
     }
 }

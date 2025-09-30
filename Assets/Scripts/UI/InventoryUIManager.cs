@@ -44,6 +44,9 @@ public class InventoryUIManager : MonoBehaviour
     {
         playerInventory = FindObjectOfType<PlayerInventory>();
         RefreshAllDisplays();
+
+        if (gameObject.active)
+            gameObject.SetActive(false);
     }
 
     public void RefreshAllDisplays()

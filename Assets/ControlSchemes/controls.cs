@@ -664,6 +664,15 @@ public partial class @Controls: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""OpenGacha"",
+                    ""type"": ""Button"",
+                    ""id"": ""4f61d08d-1a02-4955-82e1-44f8fc01e892"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -1095,6 +1104,17 @@ public partial class @Controls: IInputActionCollection2, IDisposable
                     ""action"": ""OpenInventory"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""8d3e3a5d-6e5a-4463-953a-9ad116965d57"",
+                    ""path"": ""<Keyboard>/g"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""OpenGacha"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -1186,6 +1206,7 @@ public partial class @Controls: IInputActionCollection2, IDisposable
         m_UI_TrackedDevicePosition = m_UI.FindAction("TrackedDevicePosition", throwIfNotFound: true);
         m_UI_TrackedDeviceOrientation = m_UI.FindAction("TrackedDeviceOrientation", throwIfNotFound: true);
         m_UI_OpenInventory = m_UI.FindAction("OpenInventory", throwIfNotFound: true);
+        m_UI_OpenGacha = m_UI.FindAction("OpenGacha", throwIfNotFound: true);
     }
 
     ~@Controls()
@@ -1462,6 +1483,7 @@ public partial class @Controls: IInputActionCollection2, IDisposable
     private readonly InputAction m_UI_TrackedDevicePosition;
     private readonly InputAction m_UI_TrackedDeviceOrientation;
     private readonly InputAction m_UI_OpenInventory;
+    private readonly InputAction m_UI_OpenGacha;
     /// <summary>
     /// Provides access to input actions defined in input action map "UI".
     /// </summary>
@@ -1517,6 +1539,10 @@ public partial class @Controls: IInputActionCollection2, IDisposable
         /// Provides access to the underlying input action "UI/OpenInventory".
         /// </summary>
         public InputAction @OpenInventory => m_Wrapper.m_UI_OpenInventory;
+        /// <summary>
+        /// Provides access to the underlying input action "UI/OpenGacha".
+        /// </summary>
+        public InputAction @OpenGacha => m_Wrapper.m_UI_OpenGacha;
         /// <summary>
         /// Provides access to the underlying input action map instance.
         /// </summary>
@@ -1576,6 +1602,9 @@ public partial class @Controls: IInputActionCollection2, IDisposable
             @OpenInventory.started += instance.OnOpenInventory;
             @OpenInventory.performed += instance.OnOpenInventory;
             @OpenInventory.canceled += instance.OnOpenInventory;
+            @OpenGacha.started += instance.OnOpenGacha;
+            @OpenGacha.performed += instance.OnOpenGacha;
+            @OpenGacha.canceled += instance.OnOpenGacha;
         }
 
         /// <summary>
@@ -1620,6 +1649,9 @@ public partial class @Controls: IInputActionCollection2, IDisposable
             @OpenInventory.started -= instance.OnOpenInventory;
             @OpenInventory.performed -= instance.OnOpenInventory;
             @OpenInventory.canceled -= instance.OnOpenInventory;
+            @OpenGacha.started -= instance.OnOpenGacha;
+            @OpenGacha.performed -= instance.OnOpenGacha;
+            @OpenGacha.canceled -= instance.OnOpenGacha;
         }
 
         /// <summary>
@@ -1873,5 +1905,12 @@ public partial class @Controls: IInputActionCollection2, IDisposable
         /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
         void OnOpenInventory(InputAction.CallbackContext context);
+        /// <summary>
+        /// Method invoked when associated input action "OpenGacha" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnOpenGacha(InputAction.CallbackContext context);
     }
 }

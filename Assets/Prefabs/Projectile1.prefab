@@ -125,7 +125,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6514262b82aecd34b941f17ca83dbcdb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Projectile
-  damage: 10
+  damage: 5
 --- !u!54 &-1376001563434194781
 Rigidbody:
   m_ObjectHideFlags: 0

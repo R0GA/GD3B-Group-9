@@ -124,7 +124,7 @@ public class PlayerMovement : MonoBehaviour
 
     public void Jump()
     {
-        if (_characterController.isGrounded && isPaused == false) { }
+        if (_characterController.isGrounded && isPaused == false)
         {
             _velocity.y = Mathf.Sqrt(jumpHeight * -2f * gravity);
         }

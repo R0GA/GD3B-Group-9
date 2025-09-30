@@ -1,4 +1,5 @@
 using System.Collections;
+using UnityEditor.Search;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -8,6 +9,21 @@ public class PlayerMovement : MonoBehaviour
     public float moveSpeed = 8f;
     public float lookSpeed;
     public float gravity = -9.81f;
+    public float jumpHeight = 1.0f;
+
+    [Header("Health Settings")]
+    [SerializeField] private float maxHealth;
+    public GameObject gameOverScreen;
+
+    [Header("Weapon Settings")]
+    [SerializeField] private float weaponHitRadius;
+    [SerializeField] private Transform weaponHitPoint;
+    [SerializeField] private int damage = 2;
+    [SerializeField] private LayerMask targetLayer;
+    [SerializeField] private Animator animator;
+
+    private float currentHealth;
+    public HealthManager healthManager;
 
     private Vector2 _moveInput;
     private Vector2 _lookInput;
@@ -19,6 +35,12 @@ public class PlayerMovement : MonoBehaviour
     public bool canDodge = true;
     public bool isPaused = false;
 
+    public void Start()
+    {
+        currentHealth = maxHealth;
+
+        healthManager.SetSlider(maxHealth);
+    }
     private void OnEnable()
     {
         var playerInput = new Controls();
@@ -31,7 +53,11 @@ public class PlayerMovement : MonoBehaviour
         playerInput.Player.Look.performed += ctx => _lookInput = ctx.ReadValue<Vector2>();
         playerInput.Player.Look.canceled += ctx => _lookInput = Vector2.zero;
 
-        playerInput.Player.Sprint.performed += ctx => Sprint(); //Dodge
+        playerInput.Player.Jump.performed += ctx => Jump();
+
+        playerInput.Player.Dash.performed += ctx => Dash(); //Dodge
+
+        playerInput.Player.Attack.performed += ctx => Attack();
     }
 
     private void Awake()
@@ -41,9 +67,19 @@ public class PlayerMovement : MonoBehaviour
 
     public void Update()
     {
+        
         Movement();
         Looking();
+        
         ApplyGravity();
+
+        if(currentHealth <= 0)
+        {
+            gameOverScreen.SetActive(true);
+        }
+
+        
+
     }
 
     public void Movement()
@@ -86,11 +122,32 @@ public class PlayerMovement : MonoBehaviour
         _characterController.Move(_velocity * Time.deltaTime); // Apply the velocity to the character
     }
 
-    public void Sprint()
+    public void Jump()
+    {
+        if (_characterController.isGrounded && isPaused == false)
+        {
+            _velocity.y = Mathf.Sqrt(jumpHeight * -2f * gravity);
+        }
+    }
+
+    public void Dash()
     {
         if(canDodge == true)
         {
             StartCoroutine(TheDodge());
+        }
+    }
+
+    public void Attack()
+    {
+        animator.SetTrigger("attack");
+
+        Collider[] hit = Physics.OverlapSphere(weaponHitPoint.position, weaponHitRadius, targetLayer);
+        if (hit.Length > 0)
+        {
+            hit[0].GetComponent<EnemyHealth>().TakeDamage(damage);
+            Debug.Log("Enemy Damaged");
+
         }
     }
 
@@ -103,5 +160,11 @@ public class PlayerMovement : MonoBehaviour
         moveSpeed = moveSpeed - 8f;
         yield return new WaitForSeconds(2f);
         canDodge = true;
+    }
+
+    public void TakeDamage(float amount)
+    {
+        currentHealth -= amount;
+        healthManager.SetSlider(currentHealth);
     }
 }

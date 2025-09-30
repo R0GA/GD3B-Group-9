@@ -16,7 +16,7 @@ public class EnemyController : MonoBehaviour
     private float waitCounter;
 
     [Header("Components")]
-    [SerializeField] Animator animator;
+    //[SerializeField] Animator animator;
     NavMeshAgent agent; 
 
     [Header("AI States")]
@@ -32,6 +32,10 @@ public class EnemyController : MonoBehaviour
     [Header("Attack")]
     [SerializeField] private float attackRange = 1f;
     [SerializeField] private float attackTime = 2f;
+    public GameObject Projectile;
+    public Transform spawnPoint;
+    public float shootTime;
+    public float projectileSpeed;
     private float timeToAttack;
     private GameObject player;
 
@@ -125,7 +129,18 @@ public class EnemyController : MonoBehaviour
 
                 if (timeToAttack <= 0)
                 {
-                    animator.SetTrigger("attack");
+                    shootTime += Time.deltaTime;
+
+                    
+                    
+                        shootTime = 0;
+                        var projectile = Instantiate(Projectile, spawnPoint.position, spawnPoint.rotation);
+
+                        var rb = projectile.GetComponent<Rigidbody>();
+                        rb.linearVelocity = spawnPoint.forward * projectileSpeed;
+
+                        Destroy(projectile, 2f);
+                    
                     timeToAttack = attackTime;
                     Debug.Log("Attacking");
                 }

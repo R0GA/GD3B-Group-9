@@ -21,6 +21,7 @@ public class InventoryUIManager : MonoBehaviour
     [SerializeField] private TextMeshProUGUI activeCreatureName;
     [SerializeField] private Image activeCreatureIcon;
     [SerializeField] private Slider activeCreatureHealth;
+    [SerializeField] private TextMeshProUGUI partyCountText;
 
     private PlayerInventory playerInventory;
     private List<GameObject> currentInventorySlots = new List<GameObject>();
@@ -51,6 +52,7 @@ public class InventoryUIManager : MonoBehaviour
         RefreshInventoryDisplay();
         RefreshItemsDisplay();
         RefreshActiveCreatureDisplay();
+        UpdatePartyCount();
     }
 
     private void RefreshPartyDisplay()
@@ -69,6 +71,15 @@ public class InventoryUIManager : MonoBehaviour
             var slotObj = Instantiate(creatureSlotPrefab, partySlotsContainer);
             var slotUI = slotObj.GetComponent<CreatureSlotUI>();
             slotUI.Initialize(creatureData, true, i);
+            currentPartySlots.Add(slotObj);
+        }
+
+        // Add empty party slots if needed
+        for (int i = playerInventory.PartyCreatureInventory.Count; i < 3; i++)
+        {
+            var slotObj = Instantiate(creatureSlotPrefab, partySlotsContainer);
+            var slotUI = slotObj.GetComponent<CreatureSlotUI>();
+            slotUI.InitializeAsEmptyPartySlot(i);
             currentPartySlots.Add(slotObj);
         }
     }
@@ -130,6 +141,14 @@ public class InventoryUIManager : MonoBehaviour
         }
     }
 
+    private void UpdatePartyCount()
+    {
+        if (partyCountText != null)
+        {
+            partyCountText.text = $"{playerInventory.PartyCreatureInventory.Count}/3";
+        }
+    }
+
     // Public methods called by UI buttons
     public void AddCreatureToParty(int inventoryIndex)
     {
@@ -141,6 +160,7 @@ public class InventoryUIManager : MonoBehaviour
         {
             // Show error message (party full)
             Debug.LogWarning("Party is full! Remove a creature first.");
+            // You could add a UI notification here
         }
     }
 

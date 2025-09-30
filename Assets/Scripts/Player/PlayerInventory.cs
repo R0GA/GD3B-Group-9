@@ -46,28 +46,71 @@ public class PlayerInventory : MonoBehaviour
         }
     }
 
-    // Party management
+    // Party management - MOVES creature from main to party
     public bool AddCreatureToParty(int mainInventoryIndex)
     {
         if (mainInventoryIndex < 0 || mainInventoryIndex >= mainCreatureInventory.Count)
             return false;
         if (partyCreatureInventory.Count >= 3)
             return false;
-        if (partyCreatureInventory.Contains(mainCreatureInventory[mainInventoryIndex]))
-            return false;
 
-        partyCreatureInventory.Add(mainCreatureInventory[mainInventoryIndex]);
+        // Get the creature data from main inventory
+        CreatureData creatureToMove = mainCreatureInventory[mainInventoryIndex];
+
+        // Remove from main inventory
+        mainCreatureInventory.RemoveAt(mainInventoryIndex);
+
+        // Add to party
+        partyCreatureInventory.Add(creatureToMove);
         return true;
     }
 
+    // Remove creature from party - MOVES it back to main inventory
     public bool RemoveCreatureFromParty(int partyIndex)
     {
         if (partyIndex < 0 || partyIndex >= partyCreatureInventory.Count)
             return false;
+
+        // Get the creature data from party
+        CreatureData creatureToMove = partyCreatureInventory[partyIndex];
+
+        // Remove from party
         partyCreatureInventory.RemoveAt(partyIndex);
+
+        // Add back to main inventory
+        mainCreatureInventory.Add(creatureToMove);
+
         // Adjust activePartyIndex if needed
         if (activePartyIndex >= partyCreatureInventory.Count)
             activePartyIndex = Mathf.Clamp(partyCreatureInventory.Count - 1, 0, 2);
+
+        // If we removed the active creature, destroy its instance
+        if (activeCreatureInstance != null && partyIndex == activePartyIndex)
+        {
+            Destroy(activeCreatureInstance.gameObject);
+            activeCreatureInstance = null;
+        }
+
+        return true;
+    }
+
+    // Direct swap between party slots (optional but useful)
+    public bool SwapPartyCreatures(int indexA, int indexB)
+    {
+        if (indexA < 0 || indexA >= partyCreatureInventory.Count ||
+            indexB < 0 || indexB >= partyCreatureInventory.Count)
+            return false;
+
+        var temp = partyCreatureInventory[indexA];
+        partyCreatureInventory[indexA] = partyCreatureInventory[indexB];
+        partyCreatureInventory[indexB] = temp;
+
+        // Update active index if swapped with active creature
+        if (indexA == activePartyIndex)
+            activePartyIndex = indexB;
+        else if (indexB == activePartyIndex)
+            activePartyIndex = indexA;
+
         return true;
     }
 
@@ -120,11 +163,20 @@ public class PlayerInventory : MonoBehaviour
         creature.attackDamage = data.attackDamage;
         creature.elementType = data.elementType;
         creature.level = data.level;
-        creature.icon = data.icon;  
-        // Equip items as needed
+        creature.icon = data.icon;
+
+        // Re-equip any items that were equipped to this creature
+        foreach (var itemName in data.equippedItemNames)
+        {
+            var item = items.Find(i => i.ItemName == itemName);
+            if (item != null)
+            {
+                creature.EquipItem(item);
+            }
+        }
     }
 
-    // Item management remains unchanged
+    // Item management remains mostly the same
     public void AddItem(ItemBase item)
     {
         if (item != null)
@@ -169,6 +221,11 @@ public class PlayerInventory : MonoBehaviour
         {
             equippedItems.Remove(item);
             partyCreatureInventory[partyIndex].equippedItemNames.Remove(item.ItemName);
+
+            if (activeCreatureInstance != null && activePartyIndex == partyIndex)
+            {
+                activeCreatureInstance.DequipItem(item);
+            }
             return true;
         }
         return false;

@@ -12,6 +12,7 @@ public class CreatureSlotUI : MonoBehaviour
     [SerializeField] private Image elementIcon;
     [SerializeField] private Button actionButton;
     [SerializeField] private Button setActiveButton;
+    [SerializeField] private GameObject emptySlotPanel;
 
     [Header("Sprites")]
     [SerializeField] private Sprite fireIcon;
@@ -21,12 +22,25 @@ public class CreatureSlotUI : MonoBehaviour
     private CreatureData creatureData;
     private bool isInParty;
     private int slotIndex;
+    private bool isEmptySlot;
 
     public void Initialize(CreatureData data, bool inParty, int index)
     {
         creatureData = data;
         isInParty = inParty;
         slotIndex = index;
+        isEmptySlot = false;
+
+        UpdateDisplay();
+        SetupButtons();
+    }
+
+    public void InitializeAsEmptyPartySlot(int index)
+    {
+        creatureData = null;
+        isInParty = true;
+        slotIndex = index;
+        isEmptySlot = true;
 
         UpdateDisplay();
         SetupButtons();
@@ -34,7 +48,31 @@ public class CreatureSlotUI : MonoBehaviour
 
     private void UpdateDisplay()
     {
+        if (isEmptySlot)
+        {
+            // Show empty slot
+            creatureIcon.gameObject.SetActive(false);
+            nameText.gameObject.SetActive(false);
+            levelText.gameObject.SetActive(false);
+            healthBar.gameObject.SetActive(false);
+            elementIcon.gameObject.SetActive(false);
+
+            if (emptySlotPanel != null)
+                emptySlotPanel.SetActive(true);
+
+            return;
+        }
+
+        if (emptySlotPanel != null)
+            emptySlotPanel.SetActive(false);
+
         if (creatureData == null) return;
+
+        creatureIcon.gameObject.SetActive(true);
+        nameText.gameObject.SetActive(true);
+        levelText.gameObject.SetActive(true);
+        healthBar.gameObject.SetActive(true);
+        elementIcon.gameObject.SetActive(true);
 
         creatureIcon.sprite = creatureData.icon;
         nameText.text = creatureData.prefabName.Replace("Creatures/", "");
@@ -65,6 +103,15 @@ public class CreatureSlotUI : MonoBehaviour
         actionButton.onClick.RemoveAllListeners();
         setActiveButton?.onClick.RemoveAllListeners();
 
+        if (isEmptySlot)
+        {
+            actionButton.gameObject.SetActive(false);
+            setActiveButton?.gameObject.SetActive(false);
+            return;
+        }
+
+        actionButton.gameObject.SetActive(true);
+
         if (isInParty)
         {
             actionButton.GetComponentInChildren<TextMeshProUGUI>().text = "Remove";
@@ -72,6 +119,7 @@ public class CreatureSlotUI : MonoBehaviour
 
             if (setActiveButton != null)
             {
+                setActiveButton.gameObject.SetActive(true);
                 setActiveButton.onClick.AddListener(SetAsActive);
             }
         }

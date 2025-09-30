@@ -16,3 +16,4 @@ MonoBehaviour:
   healthModifier: 10
   damageModifier: 10
   elementType: 2
+  icon: {fileID: 21300000, guid: 7064e418efd1e9a4aba59c93ed56903e, type: 3}

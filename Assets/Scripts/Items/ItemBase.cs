@@ -7,6 +7,7 @@ public class ItemBase : ScriptableObject
     [SerializeField] private int healthModifier;
     [SerializeField] private int damageModifier;
     [SerializeField] private ElementType elementType;
+    public Sprite icon;
 
     public string ItemName => itemName;
     public int HealthModifier => healthModifier;

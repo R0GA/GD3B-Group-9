@@ -5,34 +5,178 @@ using System.Linq;
 public class PlayerInventory : MonoBehaviour
 {
     [Header("Player's Creatures")]
-    [SerializeField] private List<CreatureData> creatureDatas = new List<CreatureData>();
+    [SerializeField] private List<CreatureData> mainCreatureInventory = new List<CreatureData>();
+    [Header("Player's Party (Max 3)")]
+    [SerializeField] private List<CreatureData> partyCreatureInventory = new List<CreatureData>(3);
     [Header("Player's Items")]
     [SerializeField] private List<ItemBase> items = new List<ItemBase>();
 
     private CreatureBase activeCreatureInstance;
-    private int activeCreatureIndex = 0;
+    private int activePartyIndex = 0;
 
     private Dictionary<ItemBase, int> equippedItems = new Dictionary<ItemBase, int>();
 
-    public IReadOnlyList<CreatureData> CreatureDatas => creatureDatas;
+    public IReadOnlyList<CreatureData> MainCreatureInventory => mainCreatureInventory;
+    public IReadOnlyList<CreatureData> PartyCreatureInventory => partyCreatureInventory;
     public IReadOnlyList<ItemBase> Items => items;
 
+    // Add creature to main inventory (from gacha)
     public void AddCreature(CreatureBase creature)
     {
         if (creature != null)
         {
-            creatureDatas.Add(new CreatureData(creature));
+            mainCreatureInventory.Add(new CreatureData(creature));
         }
     }
 
-    public void RemoveCreature(int index)
+    public void AddCreatureData(CreatureData data)
     {
-        if (index >= 0 && index < creatureDatas.Count)
+        if (data != null)
         {
-            creatureDatas.RemoveAt(index);
+            mainCreatureInventory.Add(data);
         }
     }
 
+    // Remove creature from main inventory
+    public void RemoveCreatureFromMain(int index)
+    {
+        if (index >= 0 && index < mainCreatureInventory.Count)
+        {
+            mainCreatureInventory.RemoveAt(index);
+        }
+    }
+
+    // Party management - MOVES creature from main to party
+    public bool AddCreatureToParty(int mainInventoryIndex)
+    {
+        if (mainInventoryIndex < 0 || mainInventoryIndex >= mainCreatureInventory.Count)
+            return false;
+        if (partyCreatureInventory.Count >= 3)
+            return false;
+
+        // Get the creature data from main inventory
+        CreatureData creatureToMove = mainCreatureInventory[mainInventoryIndex];
+
+        // Remove from main inventory
+        mainCreatureInventory.RemoveAt(mainInventoryIndex);
+
+        // Add to party
+        partyCreatureInventory.Add(creatureToMove);
+        return true;
+    }
+
+    // Remove creature from party - MOVES it back to main inventory
+    public bool RemoveCreatureFromParty(int partyIndex)
+    {
+        if (partyIndex < 0 || partyIndex >= partyCreatureInventory.Count)
+            return false;
+
+        // Get the creature data from party
+        CreatureData creatureToMove = partyCreatureInventory[partyIndex];
+
+        // Remove from party
+        partyCreatureInventory.RemoveAt(partyIndex);
+
+        // Add back to main inventory
+        mainCreatureInventory.Add(creatureToMove);
+
+        // Adjust activePartyIndex if needed
+        if (activePartyIndex >= partyCreatureInventory.Count)
+            activePartyIndex = Mathf.Clamp(partyCreatureInventory.Count - 1, 0, 2);
+
+        // If we removed the active creature, destroy its instance
+        if (activeCreatureInstance != null && partyIndex == activePartyIndex)
+        {
+            Destroy(activeCreatureInstance.gameObject);
+            activeCreatureInstance = null;
+        }
+
+        return true;
+    }
+
+    // Direct swap between party slots (optional but useful)
+    public bool SwapPartyCreatures(int indexA, int indexB)
+    {
+        if (indexA < 0 || indexA >= partyCreatureInventory.Count ||
+            indexB < 0 || indexB >= partyCreatureInventory.Count)
+            return false;
+
+        var temp = partyCreatureInventory[indexA];
+        partyCreatureInventory[indexA] = partyCreatureInventory[indexB];
+        partyCreatureInventory[indexB] = temp;
+
+        // Update active index if swapped with active creature
+        if (indexA == activePartyIndex)
+            activePartyIndex = indexB;
+        else if (indexB == activePartyIndex)
+            activePartyIndex = indexA;
+
+        return true;
+    }
+
+    // Instantiate the active creature from party
+    public CreatureBase GetActiveCreature()
+    {
+        if (activeCreatureInstance != null)
+            return activeCreatureInstance;
+
+        if (partyCreatureInventory.Count == 0)
+            return null;
+
+        var data = partyCreatureInventory[activePartyIndex];
+        var prefab = Resources.Load<CreatureBase>(data.prefabName);
+        if (prefab == null)
+        {
+            Debug.LogError($"Creature prefab '{data.prefabName}' not found in Resources.");
+            return null;
+        }
+        activeCreatureInstance = Instantiate(prefab);
+        SetCreatureFromData(activeCreatureInstance, data);
+        return activeCreatureInstance;
+    }
+
+    public void SaveActiveCreature()
+    {
+        if (activeCreatureInstance == null) return;
+        partyCreatureInventory[activePartyIndex] = new CreatureData(activeCreatureInstance);
+        Destroy(activeCreatureInstance.gameObject);
+        activeCreatureInstance = null;
+    }
+
+    // Switch active creature in party
+    public void SwitchActiveCreature(int newPartyIndex)
+    {
+        if (newPartyIndex < 0 || newPartyIndex >= partyCreatureInventory.Count || newPartyIndex == activePartyIndex)
+            return;
+
+        SaveActiveCreature();
+        activePartyIndex = newPartyIndex;
+        GetActiveCreature();
+    }
+
+    private void SetCreatureFromData(CreatureBase creature, CreatureData data)
+    {
+        creature.health = data.health;
+        creature.maxHealth = data.maxHealth;
+        creature.speed = data.speed;
+        creature.attackSpeed = data.attackSpeed;
+        creature.attackDamage = data.attackDamage;
+        creature.elementType = data.elementType;
+        creature.level = data.level;
+        creature.icon = data.icon;
+
+        // Re-equip any items that were equipped to this creature
+        foreach (var itemName in data.equippedItemNames)
+        {
+            var item = items.Find(i => i.ItemName == itemName);
+            if (item != null)
+            {
+                creature.EquipItem(item);
+            }
+        }
+    }
+
+    // Item management remains mostly the same
     public void AddItem(ItemBase item)
     {
         if (item != null)
@@ -49,104 +193,44 @@ public class PlayerInventory : MonoBehaviour
         }
     }
 
-    public void AddCreatureData(CreatureData data)
+    public bool EquipItemToCreature(int partyIndex, ItemBase item)
     {
-        if (data != null)
-        {
-            creatureDatas.Add(data);
-        }
-    }
-
-    // Instantiate the active creature from data
-    public CreatureBase GetActiveCreature()
-    {
-        if (activeCreatureInstance != null)
-            return activeCreatureInstance;
-
-        if (creatureDatas.Count == 0)
-            return null;
-
-        var data = creatureDatas[activeCreatureIndex];
-        var prefab = Resources.Load<CreatureBase>(data.prefabName);
-        if (prefab == null)
-        {
-            Debug.LogError($"Creature prefab '{data.prefabName}' not found in Resources.");
-            return null;
-        }
-        activeCreatureInstance = Instantiate(prefab);
-        // Set stats from data
-        SetCreatureFromData(activeCreatureInstance, data);
-        return activeCreatureInstance;
-    }
-
-    // Save the current active creature's state back to data
-    public void SaveActiveCreature()
-    {
-        if (activeCreatureInstance == null) return;
-        creatureDatas[activeCreatureIndex] = new CreatureData(activeCreatureInstance);
-        Destroy(activeCreatureInstance.gameObject);
-        activeCreatureInstance = null;
-    }
-
-    // Switch active creature
-    public void SwitchActiveCreature(int newIndex)
-    {
-        if (newIndex < 0 || newIndex >= creatureDatas.Count || newIndex == activeCreatureIndex)
-            return;
-
-        SaveActiveCreature();
-        activeCreatureIndex = newIndex;
-        GetActiveCreature();
-    }
-
-    private void SetCreatureFromData(CreatureBase creature, CreatureData data)
-    {
-        creature.health = data.health;
-        creature.maxHealth = data.maxHealth;
-        creature.speed = data.speed;
-        creature.attackSpeed = data.attackSpeed;
-        creature.attackDamage = data.attackDamage;
-        creature.elementType = data.elementType;
-        // Equip items as needed
-    }
-
-    public bool EquipItemToCreature(int creatureIndex, ItemBase item)
-    {
-        if (item == null || creatureIndex < 0 || creatureIndex >= creatureDatas.Count)
+        if (item == null || partyIndex < 0 || partyIndex >= partyCreatureInventory.Count)
             return false;
 
         if (equippedItems.ContainsKey(item))
             return false; // Already equipped elsewhere
 
-        equippedItems[item] = creatureIndex;
-        // Optionally, update CreatureData to track equipped items
-        creatureDatas[creatureIndex].equippedItemNames.Add(item.ItemName);
-        
-        
-        if (activeCreatureInstance != null)
+        equippedItems[item] = partyIndex;
+        partyCreatureInventory[partyIndex].equippedItemNames.Add(item.ItemName);
+
+        if (activeCreatureInstance != null && activePartyIndex == partyIndex)
         {
-            // Only now call EquipItem on the instantiated CreatureBase
             activeCreatureInstance.EquipItem(item);
         }
-        
+
         return true;
     }
 
-    public bool DequipItemFromCreature(int creatureIndex, ItemBase item)
+    public bool DequipItemFromCreature(int partyIndex, ItemBase item)
     {
-        if (item == null || creatureIndex < 0 || creatureIndex >= creatureDatas.Count)
+        if (item == null || partyIndex < 0 || partyIndex >= partyCreatureInventory.Count)
             return false;
 
-        if (equippedItems.TryGetValue(item, out int equippedIndex) && equippedIndex == creatureIndex)
+        if (equippedItems.TryGetValue(item, out int equippedIndex) && equippedIndex == partyIndex)
         {
             equippedItems.Remove(item);
-            creatureDatas[creatureIndex].equippedItemNames.Remove(item.ItemName);
+            partyCreatureInventory[partyIndex].equippedItemNames.Remove(item.ItemName);
+
+            if (activeCreatureInstance != null && activePartyIndex == partyIndex)
+            {
+                activeCreatureInstance.DequipItem(item);
+            }
             return true;
         }
         return false;
     }
 
-    // Helper to check if an item is equipped
     public bool IsItemEquipped(ItemBase item)
     {
         return equippedItems.ContainsKey(item);
@@ -155,5 +239,15 @@ public class PlayerInventory : MonoBehaviour
     public IEnumerable<ItemBase> GetAvailableItems()
     {
         return items.Where(item => !IsItemEquipped(item));
+    }
+
+    public CreatureData ActivePartyCreatureData
+    {
+        get
+        {
+            if (partyCreatureInventory.Count == 0 || activePartyIndex < 0 || activePartyIndex >= partyCreatureInventory.Count)
+                return null;
+            return partyCreatureInventory[activePartyIndex];
+        }
     }
 }

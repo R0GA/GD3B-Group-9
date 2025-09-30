@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.Rendering;
 using System.Collections.Generic;
+using UnityEngine.UI;
 
 public class CreatureBase : MonoBehaviour
 {
@@ -14,7 +15,8 @@ public class CreatureBase : MonoBehaviour
     [SerializeField] public float attackDamage;
     //[SerializeField] public int captureChallenge;
     [SerializeField] public ElementType elementType; // For single type
-   
+    public Sprite icon;
+    public int level;
 
     // Example: effectiveness[attacker][defender] = multiplier
     private static readonly Dictionary<ElementType, Dictionary<ElementType, float>> effectiveness =

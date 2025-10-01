@@ -133,7 +133,6 @@ GameObject:
   - component: {fileID: 71755211}
   - component: {fileID: 71755210}
   - component: {fileID: 71755209}
-  - component: {fileID: 71755215}
   m_Layer: 6
   m_Name: EnemyB
   m_TagString: Untagged
@@ -153,6 +152,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5a24dc0f12e206441af61e6bc03a502d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EnemyController
+  health: 100
   wayPoints: {fileID: 792908382}
   waitAtPoint: 2
   currentState: 1
@@ -282,19 +282,6 @@ Transform:
   - {fileID: 1354974848}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &71755215
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 71755208}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1cf592699fadcfc4e935c25f940730a4, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::EnemyHealth
-  health: 100
 --- !u!1 &135127148
 GameObject:
   m_ObjectHideFlags: 0
@@ -812,7 +799,6 @@ GameObject:
   - component: {fileID: 438113454}
   - component: {fileID: 438113453}
   - component: {fileID: 438113452}
-  - component: {fileID: 438113458}
   m_Layer: 6
   m_Name: EnemyD
   m_TagString: Untagged
@@ -832,6 +818,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5a24dc0f12e206441af61e6bc03a502d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EnemyController
+  health: 100
   wayPoints: {fileID: 417898565}
   waitAtPoint: 2
   currentState: 1
@@ -961,19 +948,6 @@ Transform:
   - {fileID: 451543051}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &438113458
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 438113451}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1cf592699fadcfc4e935c25f940730a4, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::EnemyHealth
-  health: 100
 --- !u!1 &451543050
 GameObject:
   m_ObjectHideFlags: 0
@@ -1547,7 +1521,6 @@ GameObject:
   - component: {fileID: 1031218374}
   - component: {fileID: 1031218373}
   - component: {fileID: 1031218372}
-  - component: {fileID: 1031218378}
   m_Layer: 6
   m_Name: EnemyA
   m_TagString: Untagged
@@ -1567,6 +1540,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5a24dc0f12e206441af61e6bc03a502d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EnemyController
+  health: 100
   wayPoints: {fileID: 1623252909}
   waitAtPoint: 2
   currentState: 1
@@ -1696,19 +1670,6 @@ Transform:
   - {fileID: 1348458435}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1031218378
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1031218371}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1cf592699fadcfc4e935c25f940730a4, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::EnemyHealth
-  health: 100
 --- !u!1 &1040992632
 GameObject:
   m_ObjectHideFlags: 0
@@ -2089,11 +2050,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 9006695931063586153, guid: eafd697b2e7717e498bb839c14700536, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -0.00002861023
+      value: 0.00025106146
       objectReference: {fileID: 0}
     - target: {fileID: 9137942577188822551, guid: eafd697b2e7717e498bb839c14700536, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -0.00002861023
+      value: 0.00025106146
       objectReference: {fileID: 0}
     - target: {fileID: 9203345113628428980, guid: eafd697b2e7717e498bb839c14700536, type: 3}
       propertyPath: m_AnchorMax.y
@@ -3123,7 +3084,6 @@ GameObject:
   - component: {fileID: 1812400864}
   - component: {fileID: 1812400863}
   - component: {fileID: 1812400862}
-  - component: {fileID: 1812400868}
   m_Layer: 6
   m_Name: EnemyC
   m_TagString: Untagged
@@ -3143,6 +3103,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5a24dc0f12e206441af61e6bc03a502d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EnemyController
+  health: 100
   wayPoints: {fileID: 643294976}
   waitAtPoint: 2
   currentState: 1
@@ -3272,19 +3233,6 @@ Transform:
   - {fileID: 508421051}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1812400868
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1812400861}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1cf592699fadcfc4e935c25f940730a4, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::EnemyHealth
-  health: 100
 --- !u!1 &1846379326
 GameObject:
   m_ObjectHideFlags: 0

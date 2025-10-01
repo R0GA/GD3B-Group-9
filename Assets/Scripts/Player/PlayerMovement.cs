@@ -144,7 +144,7 @@ public class PlayerMovement : MonoBehaviour
         Collider[] hit = Physics.OverlapSphere(weaponHitPoint.position, weaponHitRadius, targetLayer);
         if (hit.Length > 0)
         {
-            hit[0].GetComponent<EnemyHealth>().TakeDamage(damage);
+            hit[0].GetComponent<EnemyController>().TakeDamage(damage);
             Debug.Log("Enemy Damaged");
 
         }

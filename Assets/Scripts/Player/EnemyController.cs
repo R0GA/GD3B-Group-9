@@ -8,6 +8,8 @@ public class EnemyController : MonoBehaviour
         Idle, Patrolling, Chasing, Attacking
     }
 
+    [Header("Health")]
+    [SerializeField] private int health;
 
     [Header("Patrol")]
     [SerializeField] private Transform wayPoints;
@@ -49,6 +51,17 @@ public class EnemyController : MonoBehaviour
         timeToAttack = attackTime;
     }
 
+    public void TakeDamage(int damage)
+    {
+        health -= damage;
+
+        if (health <= 0)
+        {
+            Destroy(this.gameObject);
+            
+
+        }
+    }
     private void Update()
     {
         float distanceToPlayer = Vector3.Distance(transform.position, player.transform.position);

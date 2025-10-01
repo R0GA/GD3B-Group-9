@@ -3,7 +3,7 @@ using UnityEngine;
 public class EnemyHealth : MonoBehaviour
 {
     [SerializeField] private int health;
-    public GameObject creatureCard;
+    //public GameObject creatureCard;
 
     public void TakeDamage(int damage)
     {
@@ -12,7 +12,7 @@ public class EnemyHealth : MonoBehaviour
         if(health <= 0)
         {
             Destroy(this.gameObject);
-            creatureCard.SetActive(true);
+            //creatureCard.SetActive(true);
 
         }
     }

@@ -155,9 +155,9 @@ public class PlayerMovement : MonoBehaviour
     {
         yield return new WaitForSeconds(0f);
         canDodge = false;
-        moveSpeed = moveSpeed + 8f;
-        yield return new WaitForSeconds(0.3f);
-        moveSpeed = moveSpeed - 8f;
+        moveSpeed = moveSpeed + 7f;
+        yield return new WaitForSeconds(1.2f);
+        moveSpeed = moveSpeed - 7f;
         yield return new WaitForSeconds(2f);
         canDodge = true;
     }

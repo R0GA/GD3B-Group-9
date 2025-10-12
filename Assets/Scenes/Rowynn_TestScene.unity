@@ -246,7 +246,23 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1464758879129722001, guid: f956534d79b06be4a8b5a7955185c886, type: 3}
       propertyPath: isMelee
-      value: 1
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5905624612446705029, guid: f956534d79b06be4a8b5a7955185c886, type: 3}
+      propertyPath: speed
+      value: 60
+      objectReference: {fileID: 0}
+    - target: {fileID: 5905624612446705029, guid: f956534d79b06be4a8b5a7955185c886, type: 3}
+      propertyPath: baseSpeed
+      value: 70
+      objectReference: {fileID: 0}
+    - target: {fileID: 5905624612446705029, guid: f956534d79b06be4a8b5a7955185c886, type: 3}
+      propertyPath: baseAttackSpeed
+      value: 15
+      objectReference: {fileID: 0}
+    - target: {fileID: 5905624612446705029, guid: f956534d79b06be4a8b5a7955185c886, type: 3}
+      propertyPath: baseAttackDamage
+      value: 15
       objectReference: {fileID: 0}
     - target: {fileID: 6530285380363451477, guid: f956534d79b06be4a8b5a7955185c886, type: 3}
       propertyPath: m_LocalPosition.x
@@ -305,17 +321,85 @@ PrefabInstance:
       propertyPath: m_Name
       value: Bulbasaur
       objectReference: {fileID: 0}
+    - target: {fileID: 756014147820283563, guid: f956534d79b06be4a8b5a7955185c886, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 1464758879129722001, guid: f956534d79b06be4a8b5a7955185c886, type: 3}
       propertyPath: isMelee
-      value: 1
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1464758879129722001, guid: f956534d79b06be4a8b5a7955185c886, type: 3}
+      propertyPath: attackRange
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 5905624612446705029, guid: f956534d79b06be4a8b5a7955185c886, type: 3}
+      propertyPath: level
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 5905624612446705029, guid: f956534d79b06be4a8b5a7955185c886, type: 3}
+      propertyPath: baseSpeed
+      value: 70
       objectReference: {fileID: 0}
     - target: {fileID: 5905624612446705029, guid: f956534d79b06be4a8b5a7955185c886, type: 3}
       propertyPath: maxHealth
-      value: 665.5
+      value: 100
+      objectReference: {fileID: 0}
+    - target: {fileID: 5905624612446705029, guid: f956534d79b06be4a8b5a7955185c886, type: 3}
+      propertyPath: attackSpeed
+      value: 15
+      objectReference: {fileID: 0}
+    - target: {fileID: 5905624612446705029, guid: f956534d79b06be4a8b5a7955185c886, type: 3}
+      propertyPath: baseMaxHealth
+      value: 100
+      objectReference: {fileID: 0}
+    - target: {fileID: 5905624612446705029, guid: f956534d79b06be4a8b5a7955185c886, type: 3}
+      propertyPath: baseAttackSpeed
+      value: 15
+      objectReference: {fileID: 0}
+    - target: {fileID: 5905624612446705029, guid: f956534d79b06be4a8b5a7955185c886, type: 3}
+      propertyPath: baseAttackDamage
+      value: 15
       objectReference: {fileID: 0}
     - target: {fileID: 5905624612446705029, guid: f956534d79b06be4a8b5a7955185c886, type: 3}
       propertyPath: isPlayerCreature
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5905624612446705029, guid: f956534d79b06be4a8b5a7955185c886, type: 3}
+      propertyPath: playerCreatureModifier
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5905624612446705029, guid: f956534d79b06be4a8b5a7955185c886, type: 3}
+      propertyPath: xpCurve.m_Curve.Array.data[1].time
+      value: 29.974995
+      objectReference: {fileID: 0}
+    - target: {fileID: 5905624612446705029, guid: f956534d79b06be4a8b5a7955185c886, type: 3}
+      propertyPath: xpCurve.m_Curve.Array.data[1].value
+      value: 1278.424
+      objectReference: {fileID: 0}
+    - target: {fileID: 5905624612446705029, guid: f956534d79b06be4a8b5a7955185c886, type: 3}
+      propertyPath: xpCurve.m_Curve.Array.data[0].inSlope
+      value: 5.6059837
+      objectReference: {fileID: 0}
+    - target: {fileID: 5905624612446705029, guid: f956534d79b06be4a8b5a7955185c886, type: 3}
+      propertyPath: xpCurve.m_Curve.Array.data[1].inSlope
+      value: 104.802124
+      objectReference: {fileID: 0}
+    - target: {fileID: 5905624612446705029, guid: f956534d79b06be4a8b5a7955185c886, type: 3}
+      propertyPath: xpCurve.m_Curve.Array.data[0].outSlope
+      value: 5.6059837
+      objectReference: {fileID: 0}
+    - target: {fileID: 5905624612446705029, guid: f956534d79b06be4a8b5a7955185c886, type: 3}
+      propertyPath: xpCurve.m_Curve.Array.data[1].inWeight
+      value: 0.124371335
+      objectReference: {fileID: 0}
+    - target: {fileID: 5905624612446705029, guid: f956534d79b06be4a8b5a7955185c886, type: 3}
+      propertyPath: xpCurve.m_Curve.Array.data[1].outSlope
+      value: 104.802124
+      objectReference: {fileID: 0}
+    - target: {fileID: 5905624612446705029, guid: f956534d79b06be4a8b5a7955185c886, type: 3}
+      propertyPath: xpCurve.m_Curve.Array.data[0].outWeight
+      value: 0.53998035
       objectReference: {fileID: 0}
     - target: {fileID: 6530285380363451477, guid: f956534d79b06be4a8b5a7955185c886, type: 3}
       propertyPath: m_LocalPosition.x
@@ -1318,11 +1402,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 9006695931063586153, guid: eafd697b2e7717e498bb839c14700536, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 0.0003561998
+      value: 0.39019898
       objectReference: {fileID: 0}
     - target: {fileID: 9137942577188822551, guid: eafd697b2e7717e498bb839c14700536, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 0.0003561998
+      value: 0.39019898
       objectReference: {fileID: 0}
     - target: {fileID: 9203345113628428980, guid: eafd697b2e7717e498bb839c14700536, type: 3}
       propertyPath: m_AnchorMax.y

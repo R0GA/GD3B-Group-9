@@ -117,6 +117,13 @@ public class PlayerInventory : MonoBehaviour
     // Instantiate the active creature from party
     public CreatureBase GetActiveCreature()
     {
+        // Don't spawn if active creature is dead
+        if (ActivePartyCreatureData != null && ActivePartyCreatureData.health <= 0)
+        {
+            Debug.Log("Active creature is fainted and cannot be spawned!");
+            return null;
+        }
+
         if (activeCreatureInstance != null)
             return activeCreatureInstance;
 
@@ -163,6 +170,8 @@ public class PlayerInventory : MonoBehaviour
         creature.attackDamage = data.attackDamage;
         creature.elementType = data.elementType;
         creature.level = data.level;
+        creature.currentXP = data.currentXP;
+        creature.xpToNextLevel = data.xpToNextLevel;
         creature.icon = data.icon;
 
         // Re-equip any items that were equipped to this creature
@@ -172,6 +181,31 @@ public class PlayerInventory : MonoBehaviour
             if (item != null)
             {
                 creature.EquipItem(item);
+            }
+        }
+    }
+
+    public void HandleCreatureDeath(CreatureBase deadCreature)
+    {
+        if (deadCreature.isPlayerCreature)
+        {
+            // Save the dead creature state back to party
+            if (activeCreatureInstance == deadCreature)
+            {
+                SaveActiveCreature();
+
+                // Clear the active creature instance since it's dead
+                activeCreatureInstance = null;
+            }
+
+            // Update the party data with 0 HP
+            for (int i = 0; i < partyCreatureInventory.Count; i++)
+            {
+                if (partyCreatureInventory[i].prefabName.Contains(deadCreature.gameObject.name.Replace("(Clone)", "").Trim()))
+                {
+                    partyCreatureInventory[i].health = 0;
+                    break;
+                }
             }
         }
     }

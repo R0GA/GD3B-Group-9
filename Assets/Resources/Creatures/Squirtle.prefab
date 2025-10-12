@@ -131,7 +131,7 @@ MonoBehaviour:
   health: 1
   maxHealth: 1
   speed: 1
-  isPlayerCreature: 0
+  isPlayerCreature: 1
   attackSpeed: 1
   attackDamage: 1
   elementType: 2

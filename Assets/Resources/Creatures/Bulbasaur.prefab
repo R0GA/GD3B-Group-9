@@ -131,7 +131,7 @@ MonoBehaviour:
   health: 1
   maxHealth: 1
   speed: 0
-  isPlayerCreature: 0
+  isPlayerCreature: 1
   attackSpeed: 0
   attackDamage: 0
   elementType: 3
@@ -143,22 +143,22 @@ MonoBehaviour:
     serializedVersion: 2
     m_Curve:
     - serializedVersion: 3
-      time: 1
-      value: 50
-      inSlope: 0.47836903
-      outSlope: 0.47836903
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
       tangentMode: 0
       weightedMode: 0
       inWeight: 0
-      outWeight: 0.33431605
+      outWeight: 0
     - serializedVersion: 3
-      time: 30
-      value: 800
-      inSlope: 55.17247
-      outSlope: 55.17247
+      time: 1
+      value: 1
+      inSlope: 0
+      outSlope: 0
       tangentMode: 0
       weightedMode: 0
-      inWeight: 0.062499933
+      inWeight: 0
       outWeight: 0
     m_PreInfinity: 2
     m_PostInfinity: 2

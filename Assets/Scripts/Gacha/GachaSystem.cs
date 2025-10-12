@@ -18,6 +18,7 @@ public class GachaSystem : MonoBehaviour
         if (Random.value < creatureChance && creaturePool.Count > 0)
         {
             var randomCreature = creaturePool[Random.Range(0, creaturePool.Count)];
+            randomCreature.isPlayerCreature = true; // Ensure it's flagged as a player creature
             var creatureData = new CreatureData(randomCreature);
             playerInventory.AddCreatureData(creatureData);
         }
@@ -34,6 +35,7 @@ public class GachaSystem : MonoBehaviour
         if (Random.value < creatureChance && creaturePool.Count > 0)
         {
             var randomCreature = creaturePool[Random.Range(0, creaturePool.Count)];
+            randomCreature.isPlayerCreature = true; // Ensure it's flagged as a player creature
             return new CreatureData(randomCreature);
         }
         else if (itemPool.Count > 0)
@@ -51,6 +53,7 @@ public class GachaSystem : MonoBehaviour
 
         foreach (var creature in creaturePool)
         {
+            creature.isPlayerCreature = true; // Ensure all are flagged as player creatures
             allResults.Add(new CreatureData(creature));
         }
 

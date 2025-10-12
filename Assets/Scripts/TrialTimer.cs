@@ -9,8 +9,8 @@ public class TrialTimer : MonoBehaviour
 
     public bool testingGUI = false;
 
-    public Text addTimeText;
     public Text timerText;
+    public Text addTimeText;
 
     private bool showGUI = false;
 

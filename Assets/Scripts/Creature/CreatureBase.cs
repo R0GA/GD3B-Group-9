@@ -6,12 +6,12 @@ using UnityEngine.UI;
 public class CreatureBase : MonoBehaviour
 {
     [Header("Creature Stats")]
-    [SerializeField] public float health;
-    [SerializeField] public float maxHealth;
-    [SerializeField] public float speed;
-    [SerializeField] public bool isPlayerCreature;
-    [SerializeField] public float attackSpeed;
-    [SerializeField] public float attackDamage;
+    public float health;
+    public float maxHealth;
+    public float speed;
+    public bool isPlayerCreature;
+    public float attackSpeed;
+    public float attackDamage;
     [SerializeField] public ElementType elementType;
     public Sprite icon;
 
@@ -45,6 +45,11 @@ public class CreatureBase : MonoBehaviour
     private void Awake()
     {
         // Scale stats based on level
+        ScaleStatsWithLevel();
+        health = maxHealth;
+    }
+    void Start()
+    {
         ScaleStatsWithLevel();
         health = maxHealth;
     }

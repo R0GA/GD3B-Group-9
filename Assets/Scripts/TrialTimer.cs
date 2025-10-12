@@ -49,7 +49,7 @@ public class TrialTimer : MonoBehaviour
             addTimeText.gameObject.SetActive(false);
     }
 
-    // Optional testing GUI for debugging
+    //Optional testing GUI for debugging
     void OnGUI()
     {
         if (testingGUI)
@@ -63,7 +63,7 @@ public class TrialTimer : MonoBehaviour
         }
     }
 
-    // Call this when you want to show the "+time" popup
+    //Calls this to show the "+time" popup
     public void AddTime()
     {
         timer += addTime;

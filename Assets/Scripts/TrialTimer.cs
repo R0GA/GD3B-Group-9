@@ -3,16 +3,20 @@ using UnityEngine.UI;
 
 public class TrialTimer : MonoBehaviour
 {
+    [Header("Timer Settings")]
     public float timer = 10.0f;
     public float addTime = 10.0f;
     public float timeDisplayFrame = 2.0f;
 
+    [Header("Debug")]
     public bool testingGUI = false;
+
+    private bool showGUI = false;
 
     public Text timerText;
     public Text addTimeText;
 
-    private bool showGUI = false;
+    public GameObject gameOverPanel;
 
     void Start()
     {
@@ -28,6 +32,11 @@ public class TrialTimer : MonoBehaviour
         timer -= Time.deltaTime;
         if (timer <= 0)
             timer = 0;
+        
+        if( timer <= 0)
+        {
+            gameOverPanel.SetActive(true);
+        }
 
         timerText.text = timer.ToString("00");
 

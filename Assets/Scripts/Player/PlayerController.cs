@@ -152,38 +152,20 @@ public class GenshinStyleCharacterController : MonoBehaviour
 
     private void HandleRotation()
     {
-        // Get mouse input for rotation
+        // Get mouse input for rotation - RESTORED FROM OLD CONTROLLER
         Vector2 lookInput = lookAction.ReadValue<Vector2>();
 
         if (Mathf.Abs(lookInput.x) > 0.1f)
         {
-            // Calculate rotation amount with speed limiting
-            float rotationAmount = lookInput.x * rotationSpeed;
+            // Calculate rotation with maximum limit - RESTORED FROM OLD CONTROLLER
+            float rotationAmount = lookInput.x * rotationSpeed * Time.deltaTime;
 
-            // Clamp rotation speed to prevent flipping
-            rotationAmount = Mathf.Clamp(rotationAmount, -maxRotationSpeed * Time.deltaTime, maxRotationSpeed * Time.deltaTime);
+            // Limit maximum rotation per frame to prevent flipping - RESTORED FROM OLD CONTROLLER
+            float maxRotationPerFrame = 10f; // degrees per frame
+            rotationAmount = Mathf.Clamp(rotationAmount, -maxRotationPerFrame, maxRotationPerFrame);
 
-            // Update target rotation
-            targetRotation += rotationAmount;
-
-            // Smoothly rotate towards target rotation
-            float smoothedRotation = Mathf.SmoothDampAngle(
-                transform.eulerAngles.y,
-                targetRotation,
-                ref currentRotationVelocity,
-                0.1f,
-                Mathf.Infinity,
-                Time.deltaTime
-            );
-
-            // Apply rotation
-            transform.rotation = Quaternion.Euler(0, smoothedRotation, 0);
-        }
-
-        // Update camera target position to follow player
-        if (cameraTarget != null)
-        {
-            cameraTarget.position = transform.position;
+            // Apply rotation - RESTORED FROM OLD CONTROLLER
+            transform.Rotate(0, rotationAmount, 0);
         }
     }
 
@@ -338,7 +320,7 @@ public class GenshinStyleCharacterController : MonoBehaviour
         // Clear the list of enemies hit for this attack
         enemiesHitThisAttack.Clear();
 
-        Debug.Log($"Starting attack {currentAttackCombo}, animation state: {attackAnimState}");
+       // Debug.Log($"Starting attack {currentAttackCombo}, animation state: {attackAnimState}");
     }
 
     // Called from animation event when attack hitbox should activate
@@ -425,6 +407,7 @@ public class GenshinStyleCharacterController : MonoBehaviour
     // Handle detecting when attack hits an enemy
     private void OnTriggerEnter(Collider other)
     {
+        Debug.Log($"Trigger entered by {other.gameObject.name}");
         // Only process hits when we're attacking and the hitbox is active
         if (!isAttacking || swordHitbox == null || !swordHitbox.enabled) return;
 
@@ -593,7 +576,7 @@ public class GenshinStyleCharacterController : MonoBehaviour
     {
         if (isGrounded && currentAnimState == 9)
         {
-            SetAnimationState(0); // Idle
+            //SetAnimationState(0); // Idle
             isInLandingState = false;
         }
     }

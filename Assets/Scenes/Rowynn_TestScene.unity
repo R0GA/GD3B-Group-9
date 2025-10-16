@@ -521,8 +521,8 @@ MonoBehaviour:
   Damping: {x: 0, y: 0}
   Lookahead:
     Enabled: 1
-    Time: 0
-    Smoothing: 0
+    Time: 0.2
+    Smoothing: 15
     IgnoreY: 0
 --- !u!1 &738107161
 GameObject:

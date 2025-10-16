@@ -3,7 +3,7 @@ using UnityEngine.InputSystem;
 using Unity.Cinemachine;
 using System.Collections;
 
-public class GenshinStyleCharacterController : MonoBehaviour
+public class PlayerController : MonoBehaviour
 {
     [Header("Movement Settings")]
     public float walkSpeed = 6f;
@@ -117,10 +117,17 @@ public class GenshinStyleCharacterController : MonoBehaviour
         // Get mouse input for rotation
         Vector2 lookInput = lookAction.ReadValue<Vector2>();
 
-        if (lookInput.magnitude > 0.1f)
+        if (Mathf.Abs(lookInput.x) > 0.1f)
         {
-            // Rotate character based on mouse movement
-            transform.Rotate(0, lookInput.x * rotationSpeed * Time.deltaTime, 0);
+            // Calculate rotation with maximum limit
+            float rotationAmount = lookInput.x * rotationSpeed * Time.deltaTime;
+
+            // Limit maximum rotation per frame to prevent flipping
+            float maxRotationPerFrame = 10f; // degrees per frame
+            rotationAmount = Mathf.Clamp(rotationAmount, -maxRotationPerFrame, maxRotationPerFrame);
+
+            // Apply rotation
+            transform.Rotate(0, rotationAmount, 0);
         }
 
         // Update camera target position to follow player

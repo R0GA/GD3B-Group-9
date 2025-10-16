@@ -2,13 +2,15 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using Unity.Cinemachine;
 using System.Collections;
+using System.Collections.Generic;
 
-public class PlayerController : MonoBehaviour
+public class GenshinStyleCharacterController : MonoBehaviour
 {
     [Header("Movement Settings")]
     public float walkSpeed = 6f;
     public float sprintSpeed = 10f;
-    public float rotationSpeed = 10f;
+    public float rotationSpeed = 5f;
+    public float maxRotationSpeed = 180f;
 
     [Header("Jump Settings")]
     public float jumpHeight = 2f;
@@ -17,9 +19,17 @@ public class PlayerController : MonoBehaviour
     public int maxJumps = 3;
     public float jumpStartToJumpDelay = 0.5f;
 
+    [Header("Attack Settings")]
+    public int attackDamage = 25;
+    public float attackComboTimeout = 1.5f;
+    public float attackMoveSpeed = 3f;
+    public float attackInputCooldown = 0.3f;
+    public LayerMask enemyLayerMask;
+
     [Header("References")]
     public Animator animator;
     public Transform cameraTarget;
+    public Collider swordHitbox;
 
     // Private variables
     private CharacterController characterController;
@@ -36,12 +46,26 @@ public class PlayerController : MonoBehaviour
     private InputAction lookAction;
     private InputAction jumpAction;
     private InputAction sprintAction;
+    private InputAction attackAction;
 
     // Animation state tracking
     private int currentAnimState = 0;
     private Coroutine jumpTransitionCoroutine;
     private bool isJumping = false;
     private bool isInLandingState = false;
+
+    // Rotation smoothing
+    private float targetRotation;
+    private float currentRotationVelocity;
+
+    // Attack system
+    private int currentAttackCombo = 0;
+    private float lastAttackTime = 0f;
+    private float lastAttackInputTime = 0f;
+    private bool isAttacking = false;
+    private bool attackInputQueued = false;
+    private bool canAcceptAttackInput = true;
+    private List<GameObject> enemiesHitThisAttack = new List<GameObject>();
 
     private void Awake()
     {
@@ -53,6 +77,14 @@ public class PlayerController : MonoBehaviour
         lookAction = playerInput.actions["Look"];
         jumpAction = playerInput.actions["Jump"];
         sprintAction = playerInput.actions["Dash"];
+        attackAction = playerInput.actions["Attack"];
+
+        // Initialize rotation
+        targetRotation = transform.eulerAngles.y;
+
+        // Disable sword hitbox initially
+        if (swordHitbox != null)
+            swordHitbox.enabled = false;
     }
 
     private void Start()
@@ -61,6 +93,7 @@ public class PlayerController : MonoBehaviour
         jumpAction.performed += OnJumpPerformed;
         sprintAction.performed += OnSprintPerformed;
         sprintAction.canceled += OnSprintCanceled;
+        attackAction.performed += OnAttackPerformed;
     }
 
     private void OnEnable()
@@ -70,6 +103,7 @@ public class PlayerController : MonoBehaviour
         lookAction?.Enable();
         jumpAction?.Enable();
         sprintAction?.Enable();
+        attackAction?.Enable();
     }
 
     private void OnDisable()
@@ -78,12 +112,14 @@ public class PlayerController : MonoBehaviour
         jumpAction.performed -= OnJumpPerformed;
         sprintAction.performed -= OnSprintPerformed;
         sprintAction.canceled -= OnSprintCanceled;
+        attackAction.performed -= OnAttackPerformed;
 
         // Disable the actions
         moveAction?.Disable();
         lookAction?.Disable();
         jumpAction?.Disable();
         sprintAction?.Disable();
+        attackAction?.Disable();
 
         // Stop any running coroutines
         if (jumpTransitionCoroutine != null)
@@ -98,6 +134,8 @@ public class PlayerController : MonoBehaviour
         HandleRotation();
         HandleMovement();
         HandleGravityAndJumping();
+        HandleAttackComboTimeout();
+        HandleAttackInputCooldown();
         UpdateAnimations();
     }
 
@@ -119,15 +157,27 @@ public class PlayerController : MonoBehaviour
 
         if (Mathf.Abs(lookInput.x) > 0.1f)
         {
-            // Calculate rotation with maximum limit
-            float rotationAmount = lookInput.x * rotationSpeed * Time.deltaTime;
+            // Calculate rotation amount with speed limiting
+            float rotationAmount = lookInput.x * rotationSpeed;
 
-            // Limit maximum rotation per frame to prevent flipping
-            float maxRotationPerFrame = 10f; // degrees per frame
-            rotationAmount = Mathf.Clamp(rotationAmount, -maxRotationPerFrame, maxRotationPerFrame);
+            // Clamp rotation speed to prevent flipping
+            rotationAmount = Mathf.Clamp(rotationAmount, -maxRotationSpeed * Time.deltaTime, maxRotationSpeed * Time.deltaTime);
+
+            // Update target rotation
+            targetRotation += rotationAmount;
+
+            // Smoothly rotate towards target rotation
+            float smoothedRotation = Mathf.SmoothDampAngle(
+                transform.eulerAngles.y,
+                targetRotation,
+                ref currentRotationVelocity,
+                0.1f,
+                Mathf.Infinity,
+                Time.deltaTime
+            );
 
             // Apply rotation
-            transform.Rotate(0, rotationAmount, 0);
+            transform.rotation = Quaternion.Euler(0, smoothedRotation, 0);
         }
 
         // Update camera target position to follow player
@@ -139,14 +189,15 @@ public class PlayerController : MonoBehaviour
 
     private void HandleMovement()
     {
+        // If attacking, limit movement speed
+        float currentSpeed = isAttacking ? attackMoveSpeed : (isSprinting ? sprintSpeed : walkSpeed);
+
         // Calculate movement direction relative to character's forward
         Vector3 movement = new Vector3(moveInput.x, 0, moveInput.y);
 
         // Convert to world space relative to character's rotation
         movement = transform.TransformDirection(movement);
 
-        // Apply movement speed
-        float currentSpeed = isSprinting ? sprintSpeed : walkSpeed;
         Vector3 horizontalMovement = movement * currentSpeed;
 
         // Apply horizontal movement while preserving vertical velocity
@@ -198,6 +249,9 @@ public class PlayerController : MonoBehaviour
 
     private void OnJumpPerformed(InputAction.CallbackContext context)
     {
+        // Can't jump while attacking
+        if (isAttacking) return;
+
         if (currentJumps < maxJumps && !isInLandingState)
         {
             // Calculate jump velocity based on height and gravity
@@ -208,6 +262,208 @@ public class PlayerController : MonoBehaviour
 
             // Trigger appropriate jump animation
             StartJumpAnimation();
+        }
+    }
+
+    // Attack input handler
+    private void OnAttackPerformed(InputAction.CallbackContext context)
+    {
+        // Can't attack while jumping/falling
+        if (!isGrounded || isJumping) return;
+
+        // Check if we can accept attack input (cooldown)
+        if (!canAcceptAttackInput) return;
+
+        // If we're already attacking, queue the next attack (unless we're on the final attack)
+        if (isAttacking)
+        {
+            // Don't allow queuing if we're on the 4th attack (final attack in combo)
+            if (currentAttackCombo >= 4)
+            {
+                // Ignore input during the final attack
+                return;
+            }
+
+            // Only allow one queued attack at a time
+            if (!attackInputQueued)
+            {
+                attackInputQueued = true;
+                // Start cooldown to prevent multiple queued inputs
+                StartCoroutine(AttackInputCooldown());
+            }
+            return;
+        }
+
+        // Start a new attack
+        StartAttack();
+    }
+
+    private IEnumerator AttackInputCooldown()
+    {
+        canAcceptAttackInput = false;
+        yield return new WaitForSeconds(attackInputCooldown);
+        canAcceptAttackInput = true;
+    }
+
+    private void HandleAttackInputCooldown()
+    {
+        // If we're not attacking and have a queued attack, execute it
+        if (!isAttacking && attackInputQueued && canAcceptAttackInput)
+        {
+            attackInputQueued = false;
+            StartAttack();
+        }
+    }
+
+    private void StartAttack()
+    {
+        // Reset combo if too much time has passed since last attack
+        if (Time.time - lastAttackTime > attackComboTimeout)
+        {
+            currentAttackCombo = 0;
+        }
+
+        // Increment combo counter
+        currentAttackCombo++;
+        if (currentAttackCombo > 4) currentAttackCombo = 1;
+
+        // Set attack state
+        isAttacking = true;
+        lastAttackTime = Time.time;
+
+        // Set the appropriate attack animation
+        int attackAnimState = 11 + currentAttackCombo; // 12, 13, 14, 15
+        SetAnimationState(attackAnimState);
+
+        // Clear the list of enemies hit for this attack
+        enemiesHitThisAttack.Clear();
+
+        Debug.Log($"Starting attack {currentAttackCombo}, animation state: {attackAnimState}");
+    }
+
+    // Called from animation event when attack hitbox should activate
+    public void EnableAttackHitbox()
+    {
+        if (swordHitbox != null)
+        {
+            swordHitbox.enabled = true;
+        }
+    }
+
+    // Called from animation event when attack hitbox should deactivate
+    public void DisableAttackHitbox()
+    {
+        if (swordHitbox != null)
+        {
+            swordHitbox.enabled = false;
+        }
+    }
+
+    // Called from animation event when attack is in a state where it can be chained
+    public void OnAttackChainPoint()
+    {
+        // Don't allow chaining from the 4th attack (final attack in combo)
+        if (currentAttackCombo >= 4) return;
+
+        // If there's a queued attack, start the next attack immediately
+        if (attackInputQueued && canAcceptAttackInput)
+        {
+            attackInputQueued = false;
+            StartNextAttack();
+        }
+    }
+
+    private void StartNextAttack()
+    {
+        // Don't start a new attack if we've reached max combo
+        if (currentAttackCombo >= 4) return;
+
+        // Increment combo counter
+        currentAttackCombo++;
+
+        // Set the appropriate attack animation
+        int attackAnimState = 11 + currentAttackCombo; // 12, 13, 14, 15
+        SetAnimationState(attackAnimState);
+
+        // Reset the attack timer
+        lastAttackTime = Time.time;
+
+        // Clear the list of enemies hit for this attack
+        enemiesHitThisAttack.Clear();
+
+        Debug.Log($"Chaining to attack {currentAttackCombo}, animation state: {attackAnimState}");
+    }
+
+    // Called from animation event when attack is complete
+    public void OnAttackComplete()
+    {
+        isAttacking = false;
+
+        // If we have a queued attack and we're still within combo timeout, execute it
+        // But don't execute if we just finished the 4th attack
+        if (attackInputQueued && Time.time - lastAttackTime < attackComboTimeout &&
+            canAcceptAttackInput && currentAttackCombo < 4)
+        {
+            attackInputQueued = false;
+            StartAttack();
+        }
+        else
+        {
+            // Return to idle or movement state
+            UpdateMovementAnimation();
+
+            // Reset combo after the final attack completes
+            if (currentAttackCombo >= 4)
+            {
+                currentAttackCombo = 0;
+            }
+        }
+
+        Debug.Log("Attack complete");
+    }
+
+    // Handle detecting when attack hits an enemy
+    private void OnTriggerEnter(Collider other)
+    {
+        // Only process hits when we're attacking and the hitbox is active
+        if (!isAttacking || swordHitbox == null || !swordHitbox.enabled) return;
+
+        // Check if the collider is on the enemy layer
+        if (((1 << other.gameObject.layer) & enemyLayerMask) != 0)
+        {
+            // Make sure we haven't already hit this enemy in this attack
+            if (!enemiesHitThisAttack.Contains(other.gameObject))
+            {
+                enemiesHitThisAttack.Add(other.gameObject);
+
+                // Apply damage to the enemy
+                ApplyDamageToEnemy(other.gameObject);
+            }
+        }
+    }
+
+    private void ApplyDamageToEnemy(GameObject enemy)
+    {
+        // Try to get the Enemy component and apply damage
+        CreatureBase enemyComponent = enemy.GetComponent<CreatureBase>();
+        if (enemyComponent != null)
+        {
+            if (enemyComponent.isPlayerCreature == false)
+            {
+                ElementType element = ElementType.None;
+                enemyComponent.TakeDamage(attackDamage, element);
+                Debug.Log($"Hit {enemy.name} for {attackDamage} damage!");
+            }
+        }
+    }
+
+    private void HandleAttackComboTimeout()
+    {
+        // Reset combo if too much time has passed
+        if (currentAttackCombo > 0 && Time.time - lastAttackTime > attackComboTimeout)
+        {
+            currentAttackCombo = 0;
+            attackInputQueued = false;
         }
     }
 
@@ -249,16 +505,20 @@ public class PlayerController : MonoBehaviour
 
     private void UpdateAnimations()
     {
-        // Don't update movement animations if we're jumping or landing
-        if (isJumping || isInLandingState)
+        // Don't update movement animations if we're attacking, jumping, or landing
+        if (isAttacking || isJumping || isInLandingState)
             return;
 
-        // Handle movement animations
+        UpdateMovementAnimation();
+    }
+
+    private void UpdateMovementAnimation()
+    {
         int newAnimState = 0; // Default to idle
 
         if (moveInput.magnitude > 0.1f)
         {
-            if (isSprinting && moveInput.y > 0.1f) // Only sprint when moving forward with significant input
+            if (isSprinting && moveInput.y > 0.1f)
             {
                 newAnimState = 10; // Sprint
             }
@@ -281,7 +541,7 @@ public class PlayerController : MonoBehaviour
                     else if (forwardAmount < -0.3f)
                         newAnimState = 2; // Backward
                     else
-                        newAnimState = 0; // Idle (no significant movement)
+                        newAnimState = 0; // Idle
                 }
                 else
                 {
@@ -291,7 +551,7 @@ public class PlayerController : MonoBehaviour
                     else if (rightAmount < -0.3f)
                         newAnimState = 3; // Left
                     else
-                        newAnimState = 0; // Idle (no significant movement)
+                        newAnimState = 0; // Idle
                 }
             }
         }
@@ -307,9 +567,6 @@ public class PlayerController : MonoBehaviour
     {
         currentAnimState = newState;
         animator.SetInteger("AnimState", currentAnimState);
-
-        // Debug log to see what animation state is being set
-        Debug.Log($"Setting animation state to: {newState}");
     }
 
     // Called when the character lands from a jump
@@ -328,7 +585,7 @@ public class PlayerController : MonoBehaviour
             SetAnimationState(9); // Land
 
             // Return to idle after landing animation
-            Invoke(nameof(ReturnToIdle), 0.35f);
+            Invoke(nameof(ReturnToIdle), 0.5f);
         }
     }
 
@@ -336,7 +593,7 @@ public class PlayerController : MonoBehaviour
     {
         if (isGrounded && currentAnimState == 9)
         {
-            //SetAnimationState(0); // Idle
+            SetAnimationState(0); // Idle
             isInLandingState = false;
         }
     }
@@ -345,4 +602,6 @@ public class PlayerController : MonoBehaviour
     public bool IsSprinting => isSprinting;
     public bool IsGrounded => isGrounded;
     public int CurrentJumps => currentJumps;
+    public bool IsAttacking => isAttacking;
+    public int CurrentAttackCombo => currentAttackCombo;
 }

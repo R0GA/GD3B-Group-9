@@ -9,7 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4694943808129671641}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: CharacterAndCamera
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -44,7 +44,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5642442994067232061}
   - component: {fileID: 1375963269057166444}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: CinemachineBrain
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -60,7 +60,7 @@ Transform:
   m_GameObject: {fileID: 1897107540183207223}
   serializedVersion: 2
   m_LocalRotation: {x: 0.13806592, y: -0.05922871, z: 0.008271632, w: 0.98861593}
-  m_LocalPosition: {x: -17.66867, y: 1.53312, z: 8.49785}
+  m_LocalPosition: {x: 0.28500003, y: 0.78, z: -2.36}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -112,7 +112,7 @@ GameObject:
   - component: {fileID: 6163692264324759334}
   - component: {fileID: 4243200546520880969}
   - component: {fileID: 9018322474343127887}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: CinemachineCamera
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -128,7 +128,7 @@ Transform:
   m_GameObject: {fileID: 3868432678742272435}
   serializedVersion: 2
   m_LocalRotation: {x: 0.13806592, y: -0.05922871, z: 0.008271632, w: 0.98861593}
-  m_LocalPosition: {x: 0.28500003, y: 0.68, z: -2.36}
+  m_LocalPosition: {x: 0.28500003, y: 0.78, z: -2.36}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -340,6 +340,7 @@ GameObject:
   - component: {fileID: 3501063972021386956}
   - component: {fileID: 406412949793089375}
   - component: {fileID: 3613234059041552237}
+  - component: {fileID: 7497204710987640866}
   m_Layer: 10
   m_Name: Character
   m_TagString: Player
@@ -356,7 +357,7 @@ Transform:
   m_GameObject: {fileID: 8612744404124047838}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 0.1, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -419,6 +420,9 @@ MonoBehaviour:
   animator: {fileID: 3613234059041552237}
   cameraTarget: {fileID: 0}
   swordHitbox: {fileID: 5476142577918156701}
+  health: 10000
+  maxHealth: 10000
+  isDead: 0
 --- !u!114 &406412949793089375
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -471,6 +475,33 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!54 &7497204710987640866
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8612744404124047838}
+  serializedVersion: 5
+  m_Mass: 1
+  m_LinearDamping: 0
+  m_AngularDamping: 0.05
+  m_CenterOfMass: {x: 0, y: 0, z: 0}
+  m_InertiaTensor: {x: 1, y: 1, z: 1}
+  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ImplicitCom: 1
+  m_ImplicitTensor: 1
+  m_UseGravity: 0
+  m_IsKinematic: 1
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0
 --- !u!1001 &5541827439952180474
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -745,7 +776,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7019920669011962644, guid: cc91c8ba8b9a34f4d99e70d721f60b64, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -0.911
+      value: -0.98
       objectReference: {fileID: 0}
     - target: {fileID: 7019920669011962644, guid: cc91c8ba8b9a34f4d99e70d721f60b64, type: 3}
       propertyPath: m_LocalPosition.z

@@ -31,6 +31,15 @@ public class PlayerController : MonoBehaviour
     public Transform cameraTarget;
     public Collider swordHitbox;
 
+    [Header("Player Health")]
+    public float health = 100f;
+    public float maxHealth = 100f;
+    public bool isDead = false;
+
+    // Events for player damage and death
+    public System.Action<float> OnDamageTaken;
+    public System.Action OnPlayerDeath;
+
     // Private variables
     private CharacterController characterController;
     private PlayerInput playerInput;
@@ -604,6 +613,66 @@ public class PlayerController : MonoBehaviour
             //SetAnimationState(0); // Idle
             isInLandingState = false;
         }
+    }
+
+    public void TakeDamage(float damage, ElementType elementType = ElementType.None)
+    {
+        if (isDead) return;
+
+        health -= damage;
+        health = Mathf.Clamp(health, 0, maxHealth);
+
+        // Trigger damage event
+        OnDamageTaken?.Invoke(damage);
+
+        Debug.Log($"Player took {damage} damage! Health: {health}");
+
+        // Check for death
+        if (health <= 0)
+        {
+            Die();
+        }
+    }
+
+    private void Die()
+    {
+        isDead = true;
+
+        // Disable movement and input
+        characterController.enabled = false;
+        playerInput.enabled = false;
+        gameObject.SetActive(false);
+
+        // Trigger death animation if available
+        if (animator != null)
+        {
+            animator.SetTrigger("Die");
+        }
+
+        Debug.Log("Player died!");
+
+        // Trigger death event
+        OnPlayerDeath?.Invoke();
+
+        // Optional: Restart level or show game over screen after delay
+        // Invoke(nameof(GameOver), 3f);
+    }
+
+    private void GameOver()
+    {
+        // Implement your game over logic here
+        Debug.Log("Game Over!");
+    }
+
+    public void Heal(float amount)
+    {
+        health = Mathf.Clamp(health + amount, 0, maxHealth);
+    }
+
+    public void FullHeal()
+    {
+        health = maxHealth;
+        isDead = false;
     }
 
     // Public methods for external access

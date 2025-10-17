@@ -33,9 +33,9 @@ public class CreatureBase : MonoBehaviour
     private static readonly Dictionary<ElementType, Dictionary<ElementType, float>> effectiveness =
         new Dictionary<ElementType, Dictionary<ElementType, float>>
         {
-            { ElementType.Fire, new Dictionary<ElementType, float> { { ElementType.Grass, 2.0f }, { ElementType.Water, 0.5f } } },
-            { ElementType.Water, new Dictionary<ElementType, float> { { ElementType.Fire, 2.0f }, { ElementType.Grass, 0.5f } } },
-            { ElementType.Grass, new Dictionary<ElementType, float> { { ElementType.Water, 2.0f }, { ElementType.Fire, 0.5f } } },
+            { ElementType.Fire, new Dictionary<ElementType, float> { { ElementType.Grass, 2.0f }, { ElementType.Water, 0.5f }, { ElementType.None, 1.0f }, { ElementType.Fire, 1.0f }, } },
+            { ElementType.Water, new Dictionary<ElementType, float> { { ElementType.Fire, 2.0f }, { ElementType.Grass, 0.5f }, { ElementType.None, 1.0f }, { ElementType.Water, 1.0f } } },
+            { ElementType.Grass, new Dictionary<ElementType, float> { { ElementType.Water, 2.0f }, { ElementType.Fire, 0.5f }, { ElementType.None, 1.0f }, { ElementType.Grass, 1.0f } } },
             { ElementType.None, new Dictionary<ElementType, float>{ { ElementType.Fire, 1.0f }, { ElementType.Water, 1.0f }, { ElementType.Grass, 1.0f }, { ElementType.None, 1.0f } } }
         };
 

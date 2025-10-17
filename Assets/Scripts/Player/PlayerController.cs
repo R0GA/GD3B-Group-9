@@ -4,7 +4,7 @@ using Unity.Cinemachine;
 using System.Collections;
 using System.Collections.Generic;
 
-public class GenshinStyleCharacterController : MonoBehaviour
+public class PlayerController : MonoBehaviour
 {
     [Header("Movement Settings")]
     public float walkSpeed = 6f;
@@ -61,7 +61,6 @@ public class GenshinStyleCharacterController : MonoBehaviour
     // Attack system
     private int currentAttackCombo = 0;
     private float lastAttackTime = 0f;
-    private float lastAttackInputTime = 0f;
     private bool isAttacking = false;
     private bool attackInputQueued = false;
     private bool canAcceptAttackInput = true;
@@ -250,11 +249,18 @@ public class GenshinStyleCharacterController : MonoBehaviour
     // Attack input handler
     private void OnAttackPerformed(InputAction.CallbackContext context)
     {
+
         // Can't attack while jumping/falling
-        if (!isGrounded || isJumping) return;
+        if (!isGrounded || isJumping)
+        {
+            return;
+        }
 
         // Check if we can accept attack input (cooldown)
-        if (!canAcceptAttackInput) return;
+        if (!canAcceptAttackInput)
+        {
+            return;
+        }
 
         // If we're already attacking, queue the next attack (unless we're on the final attack)
         if (isAttacking)
@@ -313,14 +319,31 @@ public class GenshinStyleCharacterController : MonoBehaviour
         isAttacking = true;
         lastAttackTime = Time.time;
 
+
+        // Force the animator to evaluate immediately
+        animator.Update(0f);
+
         // Set the appropriate attack animation
-        int attackAnimState = 11 + currentAttackCombo; // 12, 13, 14, 15
+        int attackAnimState = 11 + currentAttackCombo;
         SetAnimationState(attackAnimState);
+
+        // Force another update
+        animator.Update(0f);
 
         // Clear the list of enemies hit for this attack
         enemiesHitThisAttack.Clear();
+    }
 
-       // Debug.Log($"Starting attack {currentAttackCombo}, animation state: {attackAnimState}");
+    private string GetAttackAnimationName(int combo)
+    {
+        switch (combo)
+        {
+            case 1: return "Attack1"; // Replace with your actual animation names
+            case 2: return "Attack2";
+            case 3: return "Attack3";
+            case 4: return "Attack4";
+            default: return "Attack1";
+        }
     }
 
     // Called from animation event when attack hitbox should activate
@@ -372,8 +395,6 @@ public class GenshinStyleCharacterController : MonoBehaviour
 
         // Clear the list of enemies hit for this attack
         enemiesHitThisAttack.Clear();
-
-        Debug.Log($"Chaining to attack {currentAttackCombo}, animation state: {attackAnimState}");
     }
 
     // Called from animation event when attack is complete
@@ -401,7 +422,6 @@ public class GenshinStyleCharacterController : MonoBehaviour
             }
         }
 
-        Debug.Log("Attack complete");
     }
 
     // Handle detecting when attack hits an enemy
@@ -488,8 +508,13 @@ public class GenshinStyleCharacterController : MonoBehaviour
 
     private void UpdateAnimations()
     {
-        // Don't update movement animations if we're attacking, jumping, or landing
-        if (isAttacking || isJumping || isInLandingState)
+        // If we're attacking, don't update movement animations
+        // The attack animation is handled in StartAttack() and StartNextAttack()
+        if (isAttacking)
+            return;
+
+        // Don't update movement animations if we're jumping or landing
+        if (isJumping || isInLandingState)
             return;
 
         UpdateMovementAnimation();

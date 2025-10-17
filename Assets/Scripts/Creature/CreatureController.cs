@@ -35,11 +35,27 @@ public class CreatureController : MonoBehaviour
         {
             playerTransform = player.transform;
 
-            // If this is a player creature, set return position near player
+            // If this is a player creature, set up following
             if (creatureBase.isPlayerCreature)
             {
-                returnPosition = playerTransform.position;
+                // Set initial return position near player
+                Vector3 randomOffset = new Vector3(Random.Range(-2f, 2f), 0, Random.Range(-2f, 2f));
+                returnPosition = playerTransform.position + randomOffset;
+
+                // Ensure it's on NavMesh
+                NavMeshHit hit;
+                if (NavMesh.SamplePosition(returnPosition, out hit, 3f, NavMesh.AllAreas))
+                {
+                    returnPosition = hit.position;
+                }
+
                 hasReturnPosition = true;
+
+                // Configure NavMeshAgent for following
+                if (navMeshAgent != null)
+                {
+                    navMeshAgent.stoppingDistance = 2f; // Comfortable distance from player
+                }
             }
         }
 
@@ -61,6 +77,12 @@ public class CreatureController : MonoBehaviour
     {
         if (creatureBase.health <= 0) return;
 
+        // For player creatures, always check if we should return to player
+        if (creatureBase.isPlayerCreature && !isInCombat)
+        {
+            ReturnToPlayer();
+        }
+
         FindTarget();
         HandleCombatBehavior();
     }
@@ -71,7 +93,15 @@ public class CreatureController : MonoBehaviour
         if (currentTarget != null)
         {
             CreatureBase targetCreature = currentTarget.GetComponent<CreatureBase>();
-            if (targetCreature == null || targetCreature.health <= 0)
+            PlayerController targetPlayer = currentTarget.GetComponent<PlayerController>();
+
+            bool isDead = false;
+            if (targetCreature != null)
+                isDead = targetCreature.health <= 0;
+            else if (targetPlayer != null)
+                isDead = targetPlayer.health <= 0;
+
+            if (isDead)
             {
                 currentTarget = null;
                 isInCombat = false;
@@ -89,7 +119,15 @@ public class CreatureController : MonoBehaviour
             foreach (var hitCollider in hitColliders)
             {
                 CreatureBase potentialTarget = hitCollider.GetComponent<CreatureBase>();
-                if (potentialTarget != null && potentialTarget.health > 0 && IsValidTarget(potentialTarget))
+                PlayerController potentialPlayer = hitCollider.GetComponent<PlayerController>();
+
+                bool isValid = false;
+                if (potentialTarget != null)
+                    isValid = IsValidTarget(potentialTarget);
+                else if (potentialPlayer != null && !creatureBase.isPlayerCreature)
+                    isValid = potentialPlayer.health > 0;
+
+                if (isValid)
                 {
                     float distance = Vector3.Distance(transform.position, hitCollider.transform.position);
                     if (distance < closestDistance)
@@ -108,12 +146,32 @@ public class CreatureController : MonoBehaviour
             else
             {
                 isInCombat = false;
-                // If player creature with no targets, return to player
-                if (creatureBase.isPlayerCreature && hasReturnPosition)
-                {
-                    ReturnToPlayer();
-                }
+                // Don't call ReturnToPlayer here anymore - we call it in Update
             }
+        }
+    }
+
+    private void HandleCombatBehavior()
+    {
+        if (!isInCombat || currentTarget == null)
+        {
+            // Don't stop the agent if we're a player creature - let it continue following
+            if (!creatureBase.isPlayerCreature && navMeshAgent.isActiveAndEnabled)
+            {
+                navMeshAgent.isStopped = true;
+            }
+            return;
+        }
+
+        float distanceToTarget = Vector3.Distance(transform.position, currentTarget.position);
+
+        if (isMelee)
+        {
+            HandleMeleeCombat(distanceToTarget);
+        }
+        else
+        {
+            HandleRangedCombat(distanceToTarget);
         }
     }
 
@@ -140,35 +198,22 @@ public class CreatureController : MonoBehaviour
         }
         else
         {
-            return target.isPlayerCreature || target == GetPlayerActiveCreature();
+            // Enemy creatures can target both player creatures AND the player themselves
+            return target.isPlayerCreature || target == GetPlayerActiveCreature() || IsPlayerObject(target.gameObject);
         }
+    }
+
+    // Helper method to check if this is the main player object
+    private bool IsPlayerObject(GameObject obj)
+    {
+        PlayerController playerController = obj.GetComponent<PlayerController>();
+        return playerController != null;
     }
 
     private CreatureBase GetPlayerActiveCreature()
     {
         PlayerInventory playerInventory = FindObjectOfType<PlayerInventory>();
         return playerInventory != null ? playerInventory.GetActiveCreature() : null;
-    }
-
-    private void HandleCombatBehavior()
-    {
-        if (!isInCombat || currentTarget == null)
-        {
-            if (navMeshAgent.isActiveAndEnabled)
-                navMeshAgent.isStopped = true;
-            return;
-        }
-
-        float distanceToTarget = Vector3.Distance(transform.position, currentTarget.position);
-
-        if (isMelee)
-        {
-            HandleMeleeCombat(distanceToTarget);
-        }
-        else
-        {
-            HandleRangedCombat(distanceToTarget);
-        }
     }
 
     private void HandleMeleeCombat(float distanceToTarget)
@@ -253,14 +298,24 @@ public class CreatureController : MonoBehaviour
     {
         if (currentTarget != null)
         {
+            // Try to damage as creature first
             CreatureBase targetCreature = currentTarget.GetComponent<CreatureBase>();
             if (targetCreature != null)
             {
                 targetCreature.TakeDamage(creatureBase.attackDamage, creatureBase.elementType);
-
-                // Optional: Play attack animation or effects
-                StartCoroutine(MeleeAttackAnimation());
             }
+            else
+            {
+                // If not a creature, try to damage as player
+                PlayerController targetPlayer = currentTarget.GetComponent<PlayerController>();
+                if (targetPlayer != null)
+                {
+                    targetPlayer.TakeDamage(creatureBase.attackDamage, creatureBase.elementType);
+                }
+            }
+
+            // Optional: Play attack animation or effects
+            StartCoroutine(MeleeAttackAnimation());
         }
     }
 
@@ -280,9 +335,15 @@ public class CreatureController : MonoBehaviour
             if (currentTarget != null)
             {
                 CreatureBase targetCreature = currentTarget.GetComponent<CreatureBase>();
+                PlayerController targetPlayer = currentTarget.GetComponent<PlayerController>();
+
                 if (targetCreature != null)
                 {
                     targetCreature.TakeDamage(creatureBase.attackDamage, creatureBase.elementType);
+                }
+                else if (targetPlayer != null)
+                {
+                    targetPlayer.TakeDamage(creatureBase.attackDamage, creatureBase.elementType);
                 }
             }
         }
@@ -290,17 +351,40 @@ public class CreatureController : MonoBehaviour
 
     private void ReturnToPlayer()
     {
-        if (playerTransform != null && hasReturnPosition)
-        {
-            // Update return position to be near player but not exactly on top
-            Vector3 randomOffset = Random.insideUnitSphere * 3f;
-            randomOffset.y = 0;
-            returnPosition = playerTransform.position + randomOffset;
+        if (playerTransform == null || !hasReturnPosition) return;
 
-            if (navMeshAgent.isActiveAndEnabled)
+        // Calculate distance to player
+        float distanceToPlayer = Vector3.Distance(transform.position, playerTransform.position);
+
+        // If we're too far from player, move towards them
+        if (distanceToPlayer > 3f) // Increased from 1.5f to 3f
+        {
+            // Update return position to be near player (not on top of them)
+            Vector3 directionToPlayer = (playerTransform.position - transform.position).normalized;
+            returnPosition = playerTransform.position - directionToPlayer * 2f; // Stay 2 units away
+
+            // Ensure the position is on the NavMesh
+            NavMeshHit hit;
+            if (NavMesh.SamplePosition(returnPosition, out hit, 3f, NavMesh.AllAreas))
+            {
+                returnPosition = hit.position;
+            }
+
+            if (navMeshAgent.isActiveAndEnabled && navMeshAgent.isOnNavMesh)
             {
                 navMeshAgent.isStopped = false;
                 navMeshAgent.SetDestination(returnPosition);
+
+                // Debug: Draw the path
+                Debug.DrawLine(transform.position, returnPosition, Color.green);
+            }
+        }
+        else
+        {
+            // We're close enough to player, stop moving
+            if (navMeshAgent.isActiveAndEnabled && navMeshAgent.isOnNavMesh)
+            {
+                navMeshAgent.isStopped = true;
             }
         }
     }

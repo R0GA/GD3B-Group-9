@@ -7,6 +7,7 @@ public class EnemyTrialTrigger : MonoBehaviour
     [Header("References")]
     public GameObject promptUI;
     public GameObject enemyParent;
+    public Collider myTrigger;
 
     private bool playerInRange = false;
     private bool trialStarted = false;
@@ -59,8 +60,13 @@ public class EnemyTrialTrigger : MonoBehaviour
         if (enemyParent != null)
             enemyParent.SetActive(true);
 
+        var trialManager = GetComponent<EnemyTrialManager>();
+        if (trialManager != null)
+            trialManager.StartTrial();
+
         Debug.Log("Trial started and Enemies are activated");
 
-        gameObject.SetActive(false);
+        myTrigger.enabled = false;
+        //gameObject.SetActive(false);
     }
 }

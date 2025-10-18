@@ -1,12 +1,14 @@
 using UnityEngine;
 using UnityEngine.InputSystem; 
 
-public class TrialTrigger : MonoBehaviour
+public class TimeTrigger : MonoBehaviour
 {
+    [Header("References")]
     public GameObject promptUI;        
     public GameObject timerObject;
     public GameObject timerText;
-    public GameObject trialOneEnemies;
+    public GameObject finalEnemies;
+    public Collider myTrigger;
 
     private bool playerInRange = false;
 
@@ -46,7 +48,7 @@ public class TrialTrigger : MonoBehaviour
             if (timerObject != null)
             {
                 timerObject.SetActive(true);
-                trialOneEnemies.SetActive(true);
+                finalEnemies.SetActive(true);
                 timerText.SetActive(true);
             }
                  
@@ -56,7 +58,8 @@ public class TrialTrigger : MonoBehaviour
 
             FindObjectOfType<TrialManager>().StartTrial();
 
-            gameObject.SetActive(false);
+            myTrigger.enabled = false;
+            //gameObject.SetActive(false);
         }
     }
 }

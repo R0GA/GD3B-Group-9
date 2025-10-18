@@ -43,23 +43,33 @@ public class TimeTrigger : MonoBehaviour
 
     private void Update()
     {
-        if (playerInRange && Keyboard.current.eKey.wasPressedThisFrame) //New Input System check
+        
+        bool eKeyPressed = Keyboard.current != null && Keyboard.current.eKey.wasPressedThisFrame;
+        bool eastButtonPressed = Gamepad.current != null && Gamepad.current.buttonEast.wasPressedThisFrame;
+
+        
+        if (playerInRange && ( eKeyPressed || eastButtonPressed))
         {
+            Debug.Log("Interaction input detected! Starting trial...");
+
             if (timerObject != null)
-            {
                 timerObject.SetActive(true);
+
+            if (finalEnemies != null)
                 finalEnemies.SetActive(true);
+
+            if (timerText != null)
                 timerText.SetActive(true);
-            }
-                 
 
             if (promptUI != null)
                 promptUI.SetActive(false);
 
-            FindObjectOfType<TrialManager>().StartTrial();
+            var trialManager = FindObjectOfType<TrialManager>();
+            if (trialManager != null)
+                trialManager.StartTrial();
 
-            myTrigger.enabled = false;
-            //gameObject.SetActive(false);
+            if (myTrigger != null)
+                myTrigger.enabled = false;
         }
     }
 }

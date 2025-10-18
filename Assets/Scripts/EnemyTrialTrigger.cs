@@ -23,12 +23,18 @@ public class EnemyTrialTrigger : MonoBehaviour
 
     private void Update()
     {
-        if (playerInRange && !trialStarted && Keyboard.current.eKey.wasPressedThisFrame)
+        if (playerInRange && !trialStarted)
         {
-            StartTrial();
-        }
-    }
+            bool keyboardPressed = Keyboard.current != null && Keyboard.current.eKey.wasPressedThisFrame;
+            bool controllerPressed = Gamepad.current != null && Gamepad.current.buttonEast.wasPressedThisFrame;
 
+            if (keyboardPressed || controllerPressed)
+            {
+                StartTrial();
+            }
+        }
+
+    }
     private void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("Player"))

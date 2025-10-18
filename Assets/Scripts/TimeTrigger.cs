@@ -5,6 +5,7 @@ public class TrialTrigger : MonoBehaviour
 {
     public GameObject promptUI;        
     public GameObject timerObject;
+    public GameObject timerText;
     public GameObject trialOneEnemies;
 
     private bool playerInRange = false;
@@ -46,13 +47,15 @@ public class TrialTrigger : MonoBehaviour
             {
                 timerObject.SetActive(true);
                 trialOneEnemies.SetActive(true);
+                timerText.SetActive(true);
             }
                  
 
             if (promptUI != null)
                 promptUI.SetActive(false);
 
-            
+            FindObjectOfType<TrialManager>().StartTrial();
+
             gameObject.SetActive(false);
         }
     }

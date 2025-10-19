@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
+using UnityEngine.AI;
 
 public class PlayerInventory : MonoBehaviour
 {
@@ -13,12 +14,23 @@ public class PlayerInventory : MonoBehaviour
 
     private CreatureBase activeCreatureInstance;
     private int activePartyIndex = 0;
+    private Transform playerTransform;
 
     private Dictionary<ItemBase, int> equippedItems = new Dictionary<ItemBase, int>();
 
     public IReadOnlyList<CreatureData> MainCreatureInventory => mainCreatureInventory;
     public IReadOnlyList<CreatureData> PartyCreatureInventory => partyCreatureInventory;
     public IReadOnlyList<ItemBase> Items => items;
+
+    private void Awake()
+    {
+        // Find the player transform
+        GameObject player = GameObject.FindGameObjectWithTag("Player");
+        if (player != null)
+        {
+            playerTransform = player.transform;
+        }
+    }
 
     // Add creature to main inventory (from gacha)
     public void AddCreature(CreatureBase creature)
@@ -54,6 +66,9 @@ public class PlayerInventory : MonoBehaviour
         if (partyCreatureInventory.Count >= 3)
             return false;
 
+        // Check if party was empty before adding
+        bool wasPartyEmpty = partyCreatureInventory.Count == 0;
+
         // Get the creature data from main inventory
         CreatureData creatureToMove = mainCreatureInventory[mainInventoryIndex];
 
@@ -62,6 +77,14 @@ public class PlayerInventory : MonoBehaviour
 
         // Add to party
         partyCreatureInventory.Add(creatureToMove);
+
+        // If party was empty, set this as active and instantiate it
+        if (wasPartyEmpty)
+        {
+            activePartyIndex = partyCreatureInventory.Count - 1;
+            GetActiveCreature(); // This will instantiate the creature
+        }
+
         return true;
     }
 
@@ -137,9 +160,43 @@ public class PlayerInventory : MonoBehaviour
             Debug.LogError($"Creature prefab '{data.prefabName}' not found in Resources.");
             return null;
         }
-        activeCreatureInstance = Instantiate(prefab);
+
+        // Spawn near player
+        Vector3 spawnPosition = GetSpawnPositionNearPlayer();
+        activeCreatureInstance = Instantiate(prefab, spawnPosition, Quaternion.identity);
+
+        // Set up the creature controller to follow player
+        CreatureController creatureController = activeCreatureInstance.GetComponent<CreatureController>();
+        if (creatureController != null && playerTransform != null)
+        {
+            creatureController.SetReturnPosition(spawnPosition);
+        }
+
         SetCreatureFromData(activeCreatureInstance, data);
         return activeCreatureInstance;
+    }
+
+    private Vector3 GetSpawnPositionNearPlayer()
+    {
+        if (playerTransform == null)
+        {
+            // Fallback to near the inventory object if player not found
+            return transform.position + new Vector3(Random.Range(-2f, 2f), 0, Random.Range(-2f, 2f));
+        }
+
+        // Calculate position around player with some randomness
+        Vector3 randomOffset = new Vector3(Random.Range(-2f, 2f), 0, Random.Range(-2f, 2f));
+        Vector3 spawnPosition = playerTransform.position + randomOffset;
+
+        // Ensure the position is on the NavMesh
+        NavMeshHit hit;
+        if (NavMesh.SamplePosition(spawnPosition, out hit, 3f, NavMesh.AllAreas))
+        {
+            return hit.position;
+        }
+
+        // If NavMesh sampling fails, return the original position
+        return spawnPosition;
     }
 
     public void SaveActiveCreature()

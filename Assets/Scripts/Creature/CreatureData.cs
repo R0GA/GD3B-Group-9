@@ -18,6 +18,7 @@ public class CreatureData
     public ElementType elementType;
     public List<string> equippedItemIDs = new List<string>();
     public string creatureID; // Unique ID for this creature instance
+    public bool isPlayerCreature;
 
     public CreatureData(CreatureBase creature)
     {
@@ -33,6 +34,7 @@ public class CreatureData
         xpToNextLevel = creature.xpToNextLevel;
         icon = creature.icon;
         creatureID = creature.CreatureID;
+        isPlayerCreature = creature.isPlayerCreature;
 
         // Get equipped item ID if any
         var equippedItem = creature.GetEquippedItem();

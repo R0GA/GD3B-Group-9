@@ -311,6 +311,7 @@ public class PlayerInventory : MonoBehaviour
         creature.currentXP = data.currentXP;
         creature.xpToNextLevel = data.xpToNextLevel;
         creature.icon = data.icon;
+        creature.isPlayerCreature = data.isPlayerCreature;
 
         // Re-equip any items that were equipped to this creature using ItemID
         foreach (var itemID in data.equippedItemIDs)

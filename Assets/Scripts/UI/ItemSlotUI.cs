@@ -9,6 +9,8 @@ public class ItemSlotUI : MonoBehaviour
     [SerializeField] private TextMeshProUGUI nameText;
     [SerializeField] private TextMeshProUGUI statsText;
     [SerializeField] private Button equipButton;
+    [SerializeField] private Button dequipButton;
+    [SerializeField] private Toggle equippedCheckbox; // Added
 
     private PlayerInventory playerInventory;
 
@@ -17,6 +19,9 @@ public class ItemSlotUI : MonoBehaviour
     public void Initialize(ItemBase itemData)
     {
         item = itemData;
+
+        if (playerInventory == null)
+            playerInventory = FindObjectOfType<PlayerInventory>();
 
         itemIcon.sprite = itemData.icon;
         nameText.text = itemData.ItemName;
@@ -30,7 +35,21 @@ public class ItemSlotUI : MonoBehaviour
 
         statsText.text = stats;
 
+        // Ensure no duplicate listeners
+        equipButton.onClick.RemoveAllListeners();
+        dequipButton.onClick.RemoveAllListeners();
+
         equipButton.onClick.AddListener(OnEquipButtonClicked);
+        dequipButton.onClick.AddListener(OnDequipButtonClicked);
+
+        // Update checkbox based on current equip state (safe-guard null)
+        if (equippedCheckbox != null)
+        {
+            bool isEquipped = playerInventory != null && playerInventory.IsItemEquipped(item);
+            equippedCheckbox.isOn = isEquipped;
+            // Make it an indicator by default (not interactable). Remove or change if you want toggle behavior.
+            equippedCheckbox.interactable = false;
+        }
     }
 
     private void Awake()
@@ -40,6 +59,19 @@ public class ItemSlotUI : MonoBehaviour
 
     private void OnEquipButtonClicked()
     {
-        playerInventory.EquipItemToActiveCreature(item);
+        if (playerInventory == null || item == null) return;
+
+        bool success = playerInventory.EquipItemToActiveCreature(item);
+        if (equippedCheckbox != null && success)
+            equippedCheckbox.isOn = true;
+    }
+
+    private void OnDequipButtonClicked()
+    {
+        if (playerInventory == null || item == null) return;
+
+        bool success = playerInventory.DequipItemFromActiveCreature(item);
+        if (equippedCheckbox != null && success)
+            equippedCheckbox.isOn = false;
     }
 }

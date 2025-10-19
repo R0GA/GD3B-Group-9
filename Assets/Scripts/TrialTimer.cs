@@ -8,15 +8,17 @@ public class TrialTimer : MonoBehaviour
     public float addTime = 10.0f;
     public float timeDisplayFrame = 2.0f;
 
+    [Header("UI References")]
+    public Text timerText;
+    public Text addTimeText;
+    public GameObject gameOverPanel;
+
     [Header("Debug")]
     public bool testingGUI = false;
 
     private bool showGUI = false;
 
-    public Text timerText;
-    public Text addTimeText;
-
-    public GameObject gameOverPanel;
+    
 
     void Start()
     {

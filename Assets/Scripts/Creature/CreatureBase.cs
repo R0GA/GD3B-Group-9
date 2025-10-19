@@ -2,6 +2,7 @@ using UnityEngine;
 using UnityEngine.Rendering;
 using System.Collections.Generic;
 using UnityEngine.UI;
+using System;
 
 public class CreatureBase : MonoBehaviour
 {
@@ -29,6 +30,15 @@ public class CreatureBase : MonoBehaviour
     [SerializeField] private float baseAttackSpeed = 1f;
     [SerializeField] private float baseAttackDamage = 10f;
 
+    // Item management
+    private ItemBase equippedItem;
+    private float baseMaxHealthWithoutItem;
+    private float baseAttackDamageWithoutItem;
+    private float currentMaxHealth; // Track current max health for health addition calculation
+
+    // Unique ID for each creature instance
+    [SerializeField] private string creatureID;
+
     // Example: effectiveness[attacker][defender] = multiplier
     private static readonly Dictionary<ElementType, Dictionary<ElementType, float>> effectiveness =
         new Dictionary<ElementType, Dictionary<ElementType, float>>
@@ -45,49 +55,140 @@ public class CreatureBase : MonoBehaviour
 
     private void Awake()
     {
+        // Store base stats before any item modifications
+        baseMaxHealthWithoutItem = baseMaxHealth;
+        baseAttackDamageWithoutItem = baseAttackDamage;
+        currentMaxHealth = baseMaxHealth;
+
+        // Generate unique ID if not already set
+        if (string.IsNullOrEmpty(creatureID))
+        {
+            GenerateNewID();
+        }
+
         // Scale stats based on level
         ScaleStatsWithLevel();
         health = maxHealth;
     }
+
     void Start()
     {
         ScaleStatsWithLevel();
         health = maxHealth;
     }
 
+    // Generate a new unique ID for this creature
+    public void GenerateNewID()
+    {
+        creatureID = Guid.NewGuid().ToString();
+    }
+
+    // Set a specific ID (for loading saved games)
+    public void SetID(string id)
+    {
+        creatureID = id;
+    }
+
+    public string CreatureID => creatureID;
+
     private void ScaleStatsWithLevel()
     {
         float growthMultiplier = statGrowthCurve.Evaluate(level);
 
-        maxHealth = baseMaxHealth * growthMultiplier;
+        // Calculate base stats without item
+        float calculatedMaxHealth = baseMaxHealthWithoutItem * growthMultiplier;
         if (isPlayerCreature)
-            maxHealth *= playerCreatureModifier;
-        speed = baseSpeed;
-        attackSpeed = baseAttackSpeed * (1 + (growthMultiplier - 1) * 0.5f); // Slower scaling for attack speed
-        attackDamage = baseAttackDamage * growthMultiplier;
+            calculatedMaxHealth *= playerCreatureModifier;
 
-        
+        float calculatedAttackDamage = baseAttackDamageWithoutItem * growthMultiplier;
+        float calculatedAttackSpeed = baseAttackSpeed * (1 + (growthMultiplier - 1) * 0.5f);
+
+        // Apply item bonuses if equipped
+        if (equippedItem != null)
+        {
+            calculatedMaxHealth *= (1 + equippedItem.HealthModifierPercent);
+            if (equippedItem.ElementType == elementType)
+            {
+                calculatedAttackDamage *= (1 + equippedItem.DamageModifierPercent);
+            }
+        }
+
+        // Store the old max health for health addition calculation
+        float oldMaxHealth = maxHealth;
+
+        maxHealth = calculatedMaxHealth;
+        attackDamage = calculatedAttackDamage;
+        attackSpeed = calculatedAttackSpeed;
+        speed = baseSpeed;
 
         // Update XP requirement for current level
         xpToNextLevel = Mathf.RoundToInt(xpCurve.Evaluate(level));
+
+        // Store current max health for future calculations
+        currentMaxHealth = maxHealth;
     }
 
     public void EquipItem(ItemBase item)
     {
-        health += item.HealthModifier;
-        if (item.ElementType == elementType)
+        if (equippedItem != null)
         {
-            attackDamage += item.DamageModifier;
+            Debug.LogWarning($"Creature {creatureID} already has {equippedItem.ItemName} equipped. Dequip first.");
+            return;
+        }
+
+        // Store old max health before equipping
+        float oldMaxHealth = maxHealth;
+
+        equippedItem = item;
+        Debug.Log($"Equipped {item.ItemName} to creature {creatureID}");
+
+        // Recalculate stats with new item
+        ScaleStatsWithLevel();
+
+        // Calculate health increase and add to current health
+        float healthIncrease = maxHealth - oldMaxHealth;
+        if (healthIncrease > 0)
+        {
+            health += healthIncrease;
+            Debug.Log($"Added {healthIncrease} health from item. New health: {health}/{maxHealth}");
         }
     }
 
     public void DequipItem(ItemBase item)
     {
-        health -= item.HealthModifier;
-        if (item.ElementType == elementType)
+        if (equippedItem == item)
         {
-            attackDamage -= item.DamageModifier;
+            // Store old max health before dequipping
+            float oldMaxHealth = maxHealth;
+
+            Debug.Log($"Dequipped {item.ItemName} from creature {creatureID}");
+            equippedItem = null;
+
+            // Recalculate stats without the item
+            ScaleStatsWithLevel();
+
+            // Calculate health decrease but don't let health drop below 1
+            float healthDecrease = oldMaxHealth - maxHealth;
+            if (healthDecrease > 0)
+            {
+                health = Mathf.Max(health - healthDecrease, 1);
+                Debug.Log($"Removed {healthDecrease} health from item. New health: {health}/{maxHealth}");
+            }
         }
+        else
+        {
+            Debug.LogWarning($"Item {item.ItemName} is not equipped to creature {creatureID}.");
+        }
+    }
+
+    public ItemBase GetEquippedItem()
+    {
+        return equippedItem;
+    }
+
+    public bool HasEquippedItem()
+    {
+        return equippedItem != null;
     }
 
     public void TakeDamage(float damage, ElementType attackerType)
@@ -139,7 +240,7 @@ public class CreatureBase : MonoBehaviour
     private void GrantXPToPlayer()
     {
         // Calculate XP reward based on level (higher level = more XP)
-        int xpReward = Mathf.RoundToInt(10 * level * Random.Range(0.8f, 1.2f));
+        int xpReward = Mathf.RoundToInt(10 * level * UnityEngine.Random.Range(0.8f, 1.2f));
 
         PlayerInventory playerInventory = FindObjectOfType<PlayerInventory>();
         if (playerInventory != null)
@@ -170,16 +271,23 @@ public class CreatureBase : MonoBehaviour
         currentXP -= xpToNextLevel;
         level++;
 
+        // Store old max health before leveling up
+        float oldMaxHealth = maxHealth;
+
         // Scale stats for new level
         ScaleStatsWithLevel();
 
-        // Restore health on level up
-        health = maxHealth;
+        // Add the health increase from level up to current health
+        float healthIncrease = maxHealth - oldMaxHealth;
+        health += healthIncrease;
+
+        // Ensure health doesn't exceed max health
+        health = Mathf.Min(health, maxHealth);
+
+        Debug.Log($"{gameObject.name} (ID: {creatureID}) leveled up to level {level}! Gained {healthIncrease} health.");
 
         // Trigger level up event
         OnLevelUp?.Invoke(this, level);
-
-        Debug.Log($"{gameObject.name} leveled up to level {level}!");
     }
 
     public void Heal(float amount)

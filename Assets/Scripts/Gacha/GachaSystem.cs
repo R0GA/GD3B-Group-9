@@ -17,14 +17,22 @@ public class GachaSystem : MonoBehaviour
     {
         if (Random.value < creatureChance && creaturePool.Count > 0)
         {
-            var randomCreature = creaturePool[Random.Range(0, creaturePool.Count)];
-            randomCreature.isPlayerCreature = true; // Ensure it's flagged as a player creature
-            var creatureData = new CreatureData(randomCreature);
+            var randomCreaturePrefab = creaturePool[Random.Range(0, creaturePool.Count)];
+            // Create an instance to generate unique ID
+            var creatureInstance = Instantiate(randomCreaturePrefab);
+            creatureInstance.isPlayerCreature = true;
+            creatureInstance.GenerateNewID(); // Generate unique ID
+
+            var creatureData = new CreatureData(creatureInstance);
             playerInventory.AddCreatureData(creatureData);
+
+            // Destroy the instance since we only needed it for data
+            Destroy(creatureInstance.gameObject);
         }
         else if (itemPool.Count > 0)
         {
-            var randomItem = itemPool[Random.Range(0, itemPool.Count)];
+            var randomItem = Instantiate(itemPool[Random.Range(0, itemPool.Count)]); // Create instance copy
+            randomItem.GenerateNewID(); // Generate unique ID
             playerInventory.AddItem(randomItem);
         }
     }
@@ -34,13 +42,23 @@ public class GachaSystem : MonoBehaviour
     {
         if (Random.value < creatureChance && creaturePool.Count > 0)
         {
-            var randomCreature = creaturePool[Random.Range(0, creaturePool.Count)];
-            randomCreature.isPlayerCreature = true; // Ensure it's flagged as a player creature
-            return new CreatureData(randomCreature);
+            var randomCreaturePrefab = creaturePool[Random.Range(0, creaturePool.Count)];
+            // Create an instance to generate unique ID
+            var creatureInstance = Instantiate(randomCreaturePrefab);
+            creatureInstance.isPlayerCreature = true;
+            creatureInstance.GenerateNewID(); // Generate unique ID
+
+            var creatureData = new CreatureData(creatureInstance);
+
+            // Destroy the instance since we only needed it for data
+            Destroy(creatureInstance.gameObject);
+
+            return creatureData;
         }
         else if (itemPool.Count > 0)
         {
-            var randomItem = itemPool[Random.Range(0, itemPool.Count)];
+            var randomItem = Instantiate(itemPool[Random.Range(0, itemPool.Count)]); // Create instance copy
+            randomItem.GenerateNewID(); // Generate unique ID
             return randomItem;
         }
         return null;
@@ -53,13 +71,23 @@ public class GachaSystem : MonoBehaviour
 
         foreach (var creature in creaturePool)
         {
-            creature.isPlayerCreature = true; // Ensure all are flagged as player creatures
-            allResults.Add(new CreatureData(creature));
+            // Create an instance to generate unique ID
+            var creatureInstance = Instantiate(creature);
+            creatureInstance.isPlayerCreature = true;
+            creatureInstance.GenerateNewID(); // Generate unique ID
+
+            var creatureData = new CreatureData(creatureInstance);
+            allResults.Add(creatureData);
+
+            // Destroy the instance since we only needed it for data
+            Destroy(creatureInstance.gameObject);
         }
 
         foreach (var item in itemPool)
         {
-            allResults.Add(item);
+            var itemCopy = Instantiate(item); // Create instance copy for display
+            itemCopy.GenerateNewID(); // Generate unique ID
+            allResults.Add(itemCopy);
         }
 
         return allResults;

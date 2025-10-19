@@ -13,7 +13,8 @@ MonoBehaviour:
   m_Name: FireBall
   m_EditorClassIdentifier: Assembly-CSharp::ItemBase
   itemName: FireBall
-  healthModifier: 10
-  damageModifier: 10
+  healthModifierPercent: 0.1
+  damageModifierPercent: 0.1
   elementType: 1
   icon: {fileID: 21300000, guid: e4b4d01345d3cdb4c96f90a2e4166658, type: 3}
+  itemID: 

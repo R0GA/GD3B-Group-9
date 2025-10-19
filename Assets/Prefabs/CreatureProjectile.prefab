@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 7293475586311555212}
   - component: {fileID: 6866406518002645043}
   - component: {fileID: 3400875697824149437}
-  m_Layer: 0
+  m_Layer: 13
   m_Name: CreatureProjectile
   m_TagString: Untagged
   m_Icon: {fileID: 0}

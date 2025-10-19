@@ -16,7 +16,8 @@ public class CreatureData
     public int xpToNextLevel;
     public Sprite icon;
     public ElementType elementType;
-    public List<string> equippedItemNames = new List<string>();
+    public List<string> equippedItemIDs = new List<string>();
+    public string creatureID; // Unique ID for this creature instance
 
     public CreatureData(CreatureBase creature)
     {
@@ -31,6 +32,14 @@ public class CreatureData
         currentXP = creature.currentXP;
         xpToNextLevel = creature.xpToNextLevel;
         icon = creature.icon;
-        // Populate equippedItemNames as needed
+        creatureID = creature.CreatureID;
+
+        // Get equipped item ID if any
+        var equippedItem = creature.GetEquippedItem();
+        if (equippedItem != null)
+        {
+            equippedItemIDs.Clear();
+            equippedItemIDs.Add(equippedItem.ItemID);
+        }
     }
 }

@@ -262,10 +262,10 @@ public class GachaUIManager : MonoBehaviour
             resultName.color = Color.white;
 
             string stats = "";
-            if (item.HealthModifier != 0)
-                stats += $"HP: {item.HealthModifier:+#;-#}\n";
-            if (item.DamageModifier != 0)
-                stats += $"Damage: {item.DamageModifier:+#;-#}\n";
+            if (item.HealthModifierPercent != 0)
+                stats += $"HP % Mod: {item.HealthModifierPercent:+#;-#}\n";
+            if (item.DamageModifierPercent != 0)
+                stats += $"Damage % Mod: {item.DamageModifierPercent:+#;-#}\n";
             stats += $"Element: {item.ElementType}";
 
             itemStatsText.text = stats;

@@ -10,6 +10,8 @@ public class ItemSlotUI : MonoBehaviour
     [SerializeField] private TextMeshProUGUI statsText;
     [SerializeField] private Button equipButton;
 
+    private PlayerInventory playerInventory;
+
     private ItemBase item;
 
     public void Initialize(ItemBase itemData)
@@ -21,19 +23,23 @@ public class ItemSlotUI : MonoBehaviour
 
         // Show stats
         string stats = "";
-        if (itemData.HealthModifier != 0)
-            stats += $"HP: {itemData.HealthModifier:+0;-0}\n";
-        if (itemData.DamageModifier != 0)
-            stats += $"DMG: {itemData.DamageModifier:+0;-0}";
+        if (itemData.HealthModifierPercent != 0)
+            stats += $"HP % Mod: {itemData.HealthModifierPercent:+0;-0}\n";
+        if (itemData.DamageModifierPercent != 0)
+            stats += $"DMG % Mod: {itemData.DamageModifierPercent:+0;-0}";
 
         statsText.text = stats;
 
         equipButton.onClick.AddListener(OnEquipButtonClicked);
     }
 
+    private void Awake()
+    {
+        playerInventory = FindObjectOfType<PlayerInventory>();
+    }
+
     private void OnEquipButtonClicked()
     {
-        // Open equipment panel or show which creatures can equip this
-        Debug.Log($"Equip {item.ItemName} - This would open an equipment interface");
+        playerInventory.EquipItemToActiveCreature(item);
     }
 }

@@ -308,7 +308,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 01b22f3f619c82d42bc3e24a1c309168, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CreatureController
-  isMelee: 0
+  isMelee: 1
   detectionRange: 10
   attackRange: 7
   rangedOptimalDistance: 4
@@ -3982,7 +3982,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 01b22f3f619c82d42bc3e24a1c309168, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CreatureController
-  isMelee: 0
+  isMelee: 1
   detectionRange: 10
   attackRange: 7
   rangedOptimalDistance: 4
@@ -7837,7 +7837,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 01b22f3f619c82d42bc3e24a1c309168, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CreatureController
-  isMelee: 0
+  isMelee: 1
   detectionRange: 10
   attackRange: 7
   rangedOptimalDistance: 4
@@ -8029,7 +8029,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3180315977240896772, guid: 1e42e0ccb85359f46bb2924bea016faf, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 0.00029411205
+      value: -0.000014423452
       objectReference: {fileID: 0}
     - target: {fileID: 3263534462416646567, guid: 1e42e0ccb85359f46bb2924bea016faf, type: 3}
       propertyPath: m_AnchorMax.y
@@ -8041,7 +8041,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3318177560725091962, guid: 1e42e0ccb85359f46bb2924bea016faf, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 0.00029411205
+      value: -0.000014423452
       objectReference: {fileID: 0}
     - target: {fileID: 3501063972021386956, guid: 1e42e0ccb85359f46bb2924bea016faf, type: 3}
       propertyPath: rotationSpeed
@@ -10404,7 +10404,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 01b22f3f619c82d42bc3e24a1c309168, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CreatureController
-  isMelee: 0
+  isMelee: 1
   detectionRange: 10
   attackRange: 7
   rangedOptimalDistance: 4
@@ -10851,7 +10851,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 01b22f3f619c82d42bc3e24a1c309168, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CreatureController
-  isMelee: 0
+  isMelee: 1
   detectionRange: 10
   attackRange: 7
   rangedOptimalDistance: 4
@@ -11094,7 +11094,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 01b22f3f619c82d42bc3e24a1c309168, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CreatureController
-  isMelee: 0
+  isMelee: 1
   detectionRange: 10
   attackRange: 7
   rangedOptimalDistance: 4
@@ -12006,7 +12006,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 01b22f3f619c82d42bc3e24a1c309168, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CreatureController
-  isMelee: 0
+  isMelee: 1
   detectionRange: 10
   attackRange: 7
   rangedOptimalDistance: 4
@@ -12280,7 +12280,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 01b22f3f619c82d42bc3e24a1c309168, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CreatureController
-  isMelee: 0
+  isMelee: 1
   detectionRange: 10
   attackRange: 7
   rangedOptimalDistance: 4
@@ -13592,7 +13592,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 01b22f3f619c82d42bc3e24a1c309168, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CreatureController
-  isMelee: 0
+  isMelee: 1
   detectionRange: 10
   attackRange: 7
   rangedOptimalDistance: 4
@@ -14245,7 +14245,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 01b22f3f619c82d42bc3e24a1c309168, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CreatureController
-  isMelee: 0
+  isMelee: 1
   detectionRange: 10
   attackRange: 7
   rangedOptimalDistance: 4
@@ -18859,7 +18859,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 01b22f3f619c82d42bc3e24a1c309168, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CreatureController
-  isMelee: 0
+  isMelee: 1
   detectionRange: 10
   attackRange: 7
   rangedOptimalDistance: 4
@@ -20027,7 +20027,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 01b22f3f619c82d42bc3e24a1c309168, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CreatureController
-  isMelee: 0
+  isMelee: 1
   detectionRange: 10
   attackRange: 7
   rangedOptimalDistance: 4
@@ -20682,7 +20682,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 01b22f3f619c82d42bc3e24a1c309168, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CreatureController
-  isMelee: 0
+  isMelee: 1
   detectionRange: 10
   attackRange: 7
   rangedOptimalDistance: 4
@@ -21297,7 +21297,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 01b22f3f619c82d42bc3e24a1c309168, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CreatureController
-  isMelee: 0
+  isMelee: 1
   detectionRange: 10
   attackRange: 7
   rangedOptimalDistance: 4
@@ -23872,7 +23872,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 01b22f3f619c82d42bc3e24a1c309168, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CreatureController
-  isMelee: 0
+  isMelee: 1
   detectionRange: 10
   attackRange: 7
   rangedOptimalDistance: 4
@@ -25687,7 +25687,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 01b22f3f619c82d42bc3e24a1c309168, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CreatureController
-  isMelee: 0
+  isMelee: 1
   detectionRange: 10
   attackRange: 7
   rangedOptimalDistance: 4

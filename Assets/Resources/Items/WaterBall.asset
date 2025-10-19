@@ -13,7 +13,8 @@ MonoBehaviour:
   m_Name: WaterBall
   m_EditorClassIdentifier: Assembly-CSharp::ItemBase
   itemName: WaterBall
-  healthModifier: 10
-  damageModifier: 10
+  healthModifierPercent: 0.1
+  damageModifierPercent: 0.1
   elementType: 2
   icon: {fileID: 21300000, guid: 7064e418efd1e9a4aba59c93ed56903e, type: 3}
+  itemID: 

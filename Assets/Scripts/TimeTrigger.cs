@@ -7,7 +7,7 @@ public class TimeTrigger : MonoBehaviour
     public GameObject promptUI;        
     public GameObject timerObject;
     public GameObject timerText;
-    public GameObject finalEnemies;
+    public GameObject enemiesParent;
     public Collider myTrigger;
 
     private bool playerInRange = false;
@@ -55,8 +55,8 @@ public class TimeTrigger : MonoBehaviour
             if (timerObject != null)
                 timerObject.SetActive(true);
 
-            if (finalEnemies != null)
-                finalEnemies.SetActive(true);
+            if (enemiesParent != null)
+                enemiesParent.SetActive(true);
 
             if (timerText != null)
                 timerText.SetActive(true);

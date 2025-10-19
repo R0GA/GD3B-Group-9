@@ -598,7 +598,7 @@ MonoBehaviour:
   promptUI: {fileID: 728231534}
   timerObject: {fileID: 1393025735}
   timerText: {fileID: 2092522755}
-  finalEnemies: {fileID: 2084730255}
+  enemiesParent: {fileID: 2084730255}
   myTrigger: {fileID: 93494430}
 --- !u!65 &97584127
 BoxCollider:
@@ -2448,7 +2448,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3180315977240896772, guid: 1e42e0ccb85359f46bb2924bea016faf, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 0.00027265135
+      value: 0.0008706253
       objectReference: {fileID: 0}
     - target: {fileID: 3263534462416646567, guid: 1e42e0ccb85359f46bb2924bea016faf, type: 3}
       propertyPath: m_AnchorMax.y
@@ -2460,7 +2460,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3318177560725091962, guid: 1e42e0ccb85359f46bb2924bea016faf, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 0.00027265135
+      value: 0.0008706253
       objectReference: {fileID: 0}
     - target: {fileID: 3501063972021386956, guid: 1e42e0ccb85359f46bb2924bea016faf, type: 3}
       propertyPath: rotationSpeed

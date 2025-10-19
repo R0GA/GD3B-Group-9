@@ -5,6 +5,8 @@ using UnityEngine.AI;
 
 public class PlayerInventory : MonoBehaviour
 {
+    public static PlayerInventory Instance { get; private set; }
+
     [Header("Player's Creatures")]
     [SerializeField] private List<CreatureData> mainCreatureInventory = new List<CreatureData>();
     [Header("Player's Party (Max 3)")]
@@ -25,6 +27,15 @@ public class PlayerInventory : MonoBehaviour
 
     private void Awake()
     {
+        // Singleton pattern: ensure only one instance exists
+        if (Instance != null && Instance != this)
+        {
+            Destroy(gameObject);
+            return;
+        }
+        Instance = this;
+        DontDestroyOnLoad(gameObject);
+
         // Find the player transform
         GameObject player = GameObject.FindGameObjectWithTag("Player");
         if (player != null)

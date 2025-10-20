@@ -10,6 +10,14 @@ public class SceneManangementScript : MonoBehaviour
     {
         if (other.CompareTag("Player"))
         {
+            portalPanel.SetActive(true);
+        }
+    }
+
+    public void OnTriggerExit(Collider other)
+    {
+        if (other.CompareTag("Player"))
+        {
             portalPanel.SetActive(false);
         }
     }

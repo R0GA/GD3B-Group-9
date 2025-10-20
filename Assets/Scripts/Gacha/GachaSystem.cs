@@ -48,6 +48,8 @@ public class GachaSystem : MonoBehaviour
             // Create an instance to generate unique ID
             var creatureInstance = Instantiate(randomCreaturePrefab);
             creatureInstance.isPlayerCreature = true;
+            creatureInstance.ScaleStatsWithLevel(); // Scale stats
+            creatureInstance.health = creatureInstance.maxHealth; // Set health to max
             creatureInstance.GenerateNewID(); // Generate unique ID
 
             var creatureData = new CreatureData(creatureInstance);

@@ -3,6 +3,7 @@ using UnityEngine.InputSystem;
 using Unity.Cinemachine;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEngine.SceneManagement;
 
 public class PlayerController : MonoBehaviour
 {
@@ -93,6 +94,12 @@ public class PlayerController : MonoBehaviour
         // Disable sword hitbox initially
         if (swordHitbox != null)
             swordHitbox.enabled = false;
+
+        GameObject spawn = GameObject.FindWithTag("Spawn");
+        if (spawn != null)
+        {
+            transform.position = spawn.transform.position;
+        }
     }
 
     private void Start()
@@ -112,6 +119,9 @@ public class PlayerController : MonoBehaviour
         jumpAction?.Enable();
         sprintAction?.Enable();
         attackAction?.Enable();
+
+        // Subscribe to sceneLoaded event
+        SceneManager.sceneLoaded += OnSceneLoaded;
     }
 
     private void OnDisable()
@@ -134,6 +144,9 @@ public class PlayerController : MonoBehaviour
         {
             StopCoroutine(jumpTransitionCoroutine);
         }
+
+        // Unsubscribe from sceneLoaded event
+        SceneManager.sceneLoaded -= OnSceneLoaded;
     }
 
     private void Update()
@@ -681,4 +694,16 @@ public class PlayerController : MonoBehaviour
     public int CurrentJumps => currentJumps;
     public bool IsAttacking => isAttacking;
     public int CurrentAttackCombo => currentAttackCombo;
+
+    // This method will be called after a new scene is loaded
+    private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+    {
+        GameObject spawn = GameObject.FindWithTag("Spawn");
+        if (spawn != null)
+        {
+            transform.position = spawn.transform.position;
+            // Optionally reset rotation:
+            transform.rotation = spawn.transform.rotation;
+        }
+    }
 }

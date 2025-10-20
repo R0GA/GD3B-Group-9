@@ -228,9 +228,10 @@ MonoBehaviour:
     m_PostInfinity: 2
     m_RotationOrder: 4
   baseMaxHealth: 100
-  baseSpeed: 55
+  baseSpeed: 42
   baseAttackSpeed: 3
-  baseAttackDamage: 12
+  baseAttackDamage: 15
+  creatureID: 
 --- !u!114 &7164894368251105385
 MonoBehaviour:
   m_ObjectHideFlags: 0

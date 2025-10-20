@@ -9,6 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4694943808129671641}
+  - component: {fileID: 9042774790725601282}
   m_Layer: 10
   m_Name: CharacterAndComponents
   m_TagString: Untagged
@@ -38,6 +39,18 @@ Transform:
   - {fileID: 6703122002583758635}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &9042774790725601282
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 114484631357899411}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 29fec8eb654f84a4ab00ecae00505a2f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PlayerHolder
 --- !u!1 &175694141281425534
 GameObject:
   m_ObjectHideFlags: 0
@@ -484,9 +497,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::GachaSystem
   creaturePool:
-  - {fileID: 5905624612446705029, guid: f956534d79b06be4a8b5a7955185c886, type: 3}
-  - {fileID: 5905624612446705029, guid: 8048a0ed6b0f6da44b2faa3e7ccbd710, type: 3}
-  - {fileID: 5905624612446705029, guid: 400e66bd0a1d9264d8df2c48d1548ed6, type: 3}
+  - {fileID: 3671898484149456538, guid: d9221bf801dd9f74cbfbc9ff8bf34bba, type: 3}
+  - {fileID: 9068016691174304418, guid: 32110d577981ad842af95bf0972af2c8, type: 3}
+  - {fileID: 6223116894136111511, guid: 5d257e4dc5f8ac44a869d8dd2b7cdedb, type: 3}
   itemPool:
   - {fileID: 11400000, guid: 780e1c30ba9090f4db49323d8681e2b1, type: 2}
   - {fileID: 11400000, guid: 147573d9b29f455449891a9432ee2406, type: 2}
@@ -764,7 +777,7 @@ Transform:
   m_GameObject: {fileID: 1897107540183207223}
   serializedVersion: 2
   m_LocalRotation: {x: 0.13806584, y: -0.05922871, z: 0.008271627, w: 0.98861593}
-  m_LocalPosition: {x: 2.175, y: 1.89, z: 18.689999}
+  m_LocalPosition: {x: 53.985348, y: 53.01782, z: -0.15999913}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -4046,8 +4059,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d11efff3d5c1b2f4caaf52e334dabf18, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::GenshinStyleCharacterController
-  walkSpeed: 4
-  sprintSpeed: 6
+  walkSpeed: 5
+  sprintSpeed: 7
   rotationSpeed: 15
   maxRotationSpeed: 180
   jumpHeight: 1.5
@@ -5249,11 +5262,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 9006695931063586153, guid: eafd697b2e7717e498bb839c14700536, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 0.0003285903
+      value: 0.0009111957
       objectReference: {fileID: 0}
     - target: {fileID: 9137942577188822551, guid: eafd697b2e7717e498bb839c14700536, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 0.0003285903
+      value: 0.0009111957
       objectReference: {fileID: 0}
     - target: {fileID: 9203345113628428980, guid: eafd697b2e7717e498bb839c14700536, type: 3}
       propertyPath: m_AnchorMax.y

@@ -49,6 +49,43 @@ public class InventoryUIManager : MonoBehaviour
             gameObject.SetActive(false);
     }
 
+    private void RefreshActiveCreatureDisplay()
+    {
+        // Try to get live creature data first
+        CreatureBase liveCreature = playerInventory.GetActiveCreature();
+        if (liveCreature != null)
+        {
+            // Use live data for active creature display
+            activeCreatureName.text = liveCreature.gameObject.name.Replace("(Clone)", "").Trim();
+            activeCreatureIcon.sprite = liveCreature.icon;
+            activeCreatureHealth.maxValue = liveCreature.maxHealth;
+            activeCreatureHealth.value = liveCreature.health;
+        }
+        else
+        {
+            // Fall back to saved data
+            var activeData = playerInventory.ActivePartyCreatureData;
+            if (activeData != null)
+            {
+                activeCreatureName.text = activeData.prefabName.Replace("Creatures/", "");
+                activeCreatureIcon.sprite = activeData.icon;
+                activeCreatureHealth.maxValue = activeData.maxHealth;
+                activeCreatureHealth.value = activeData.health;
+            }
+            else
+            {
+                activeCreatureName.text = "No Active Creature";
+                activeCreatureIcon.sprite = null;
+                activeCreatureHealth.value = 0;
+            }
+        }
+    }
+
+    public void RefreshActiveCreatureDisplayOnly()
+    {
+        RefreshActiveCreatureDisplay();
+    }
+
     public void RefreshAllDisplays()
     {
         RefreshPartyDisplay();
@@ -123,24 +160,6 @@ public class InventoryUIManager : MonoBehaviour
             var slotUI = slotObj.GetComponent<ItemSlotUI>();
             slotUI.Initialize(item);
             currentItemSlots.Add(slotObj);
-        }
-    }
-
-    private void RefreshActiveCreatureDisplay()
-    {
-        var activeData = playerInventory.ActivePartyCreatureData;
-        if (activeData != null)
-        {
-            activeCreatureName.text = activeData.prefabName.Replace("Creatures/", "");
-            activeCreatureIcon.sprite = activeData.icon;
-            activeCreatureHealth.maxValue = activeData.maxHealth;
-            activeCreatureHealth.value = activeData.health;
-        }
-        else
-        {
-            activeCreatureName.text = "No Active Creature";
-            activeCreatureIcon.sprite = null;
-            activeCreatureHealth.value = 0;
         }
     }
 

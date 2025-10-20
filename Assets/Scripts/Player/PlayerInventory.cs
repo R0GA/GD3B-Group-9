@@ -27,6 +27,9 @@ public class PlayerInventory : MonoBehaviour
 
     public int ActivePartyIndex => activePartyIndex;
 
+    public System.Action<CreatureBase> OnActiveCreatureStatsChanged;
+
+
     private void Awake()
     {
         // Singleton pattern: ensure only one instance exists
@@ -46,24 +49,56 @@ public class PlayerInventory : MonoBehaviour
         }
     }
 
-    private void LateUpdate()
+    private void Start()
     {
-        RefreshAllUI();
+        // Subscribe to creature events for real-time updates
+        if (activeCreatureInstance != null)
+        {
+            SubscribeToCreatureEvents(activeCreatureInstance);
+        }
     }
 
-    private void RefreshAllUI()
+    private void SubscribeToCreatureEvents(CreatureBase creature)
     {
+        if (creature == null) return;
+
+        // Unsubscribe first to avoid duplicates
+        UnsubscribeFromCreatureEvents(creature);
+
+        // Subscribe to damage and healing events
+        // Note: You'll need to add these events to CreatureBase if they don't exist
+        creature.OnDamageTaken += OnCreatureStatsChanged;
+        creature.OnHealed += OnCreatureStatsChanged;
+        creature.OnLevelUp += OnCreatureStatsChanged;
+    }
+
+    private void UnsubscribeFromCreatureEvents(CreatureBase creature)
+    {
+        if (creature == null) return;
+
+        creature.OnDamageTaken -= OnCreatureStatsChanged;
+        creature.OnHealed -= OnCreatureStatsChanged;
+        creature.OnLevelUp -= OnCreatureStatsChanged;
+    }
+
+    private void OnCreatureStatsChanged(CreatureBase creature)
+    {
+        // Notify UI to refresh
+        OnActiveCreatureStatsChanged?.Invoke(creature);
+
         // Refresh hotbar
-        if (HotbarUIManager.Instance != null)
-        {
-            HotbarUIManager.Instance.RefreshHotbar();
-        }
+        HotbarUIManager.Instance?.RefreshHotbar();
 
         // Refresh inventory UI if it's open
         if (InventoryUIManager.Instance != null && InventoryUIManager.Instance.gameObject.activeInHierarchy)
         {
-            InventoryUIManager.Instance.RefreshAllDisplays();
+            InventoryUIManager.Instance.RefreshActiveCreatureDisplayOnly();
         }
+    }
+
+    private void OnCreatureStatsChanged(CreatureBase creature, int newLevel)
+    {
+        OnCreatureStatsChanged(creature);
     }
 
     // Helper method to get creature by ID
@@ -276,7 +311,41 @@ public class PlayerInventory : MonoBehaviour
         }
 
         SetCreatureFromData(activeCreatureInstance, data);
+
+        // Subscribe to events for real-time updates
+        SubscribeToCreatureEvents(activeCreatureInstance);
+
         return activeCreatureInstance;
+    }
+
+    // Update SwitchActiveCreature to handle event subscriptions
+    public void SwitchActiveCreature(int newPartyIndex)
+    {
+        if (newPartyIndex < 0 || newPartyIndex >= partyCreatureInventory.Count || newPartyIndex == activePartyIndex)
+            return;
+
+        // Unsubscribe from current creature events
+        if (activeCreatureInstance != null)
+        {
+            UnsubscribeFromCreatureEvents(activeCreatureInstance);
+        }
+
+        SaveActiveCreature();
+        activePartyIndex = newPartyIndex;
+        GetActiveCreature(); // This will subscribe to new creature events
+    }
+
+    // Update SaveActiveCreature to unsubscribe from events
+    public void SaveActiveCreature()
+    {
+        if (activeCreatureInstance == null) return;
+
+        // Unsubscribe from events
+        UnsubscribeFromCreatureEvents(activeCreatureInstance);
+
+        partyCreatureInventory[activePartyIndex] = new CreatureData(activeCreatureInstance);
+        Destroy(activeCreatureInstance.gameObject);
+        activeCreatureInstance = null;
     }
 
     private Vector3 GetSpawnPositionNearPlayer()
@@ -302,24 +371,6 @@ public class PlayerInventory : MonoBehaviour
         return spawnPosition;
     }
 
-    public void SaveActiveCreature()
-    {
-        if (activeCreatureInstance == null) return;
-        partyCreatureInventory[activePartyIndex] = new CreatureData(activeCreatureInstance);
-        Destroy(activeCreatureInstance.gameObject);
-        activeCreatureInstance = null;
-    }
-
-    // Switch active creature in party by index
-    public void SwitchActiveCreature(int newPartyIndex)
-    {
-        if (newPartyIndex < 0 || newPartyIndex >= partyCreatureInventory.Count || newPartyIndex == activePartyIndex)
-            return;
-
-        SaveActiveCreature();
-        activePartyIndex = newPartyIndex;
-        GetActiveCreature();
-    }
 
     // Switch active creature in party by creature ID
     public void SwitchActiveCreatureByID(string creatureID)

@@ -41,6 +41,12 @@ public class HotbarUIManager : MonoBehaviour
             }
         }
 
+        // Subscribe to inventory events for real-time updates
+        if (playerInventory != null)
+        {
+            playerInventory.OnActiveCreatureStatsChanged += OnActiveCreatureStatsChanged;
+        }
+
         RefreshHotbar();
 
         // Set up switch hint text
@@ -48,6 +54,21 @@ public class HotbarUIManager : MonoBehaviour
         {
             switchHintText.text = "Press 1, 2, 3 to switch creatures";
         }
+    }
+
+    private void OnDestroy()
+    {
+        // Unsubscribe from events
+        if (playerInventory != null)
+        {
+            playerInventory.OnActiveCreatureStatsChanged -= OnActiveCreatureStatsChanged;
+        }
+    }
+
+    private void OnActiveCreatureStatsChanged(CreatureBase creature)
+    {
+        // Refresh hotbar when creature stats change
+        RefreshHotbar();
     }
 
     private void Update()
@@ -93,7 +114,19 @@ public class HotbarUIManager : MonoBehaviour
             {
                 if (i < party.Count)
                 {
-                    hotbarSlots[i].SetCreatureData(party[i], i == activeIndex);
+                    // For active creature, try to get live data from spawned instance
+                    if (i == activeIndex && playerInventory.GetActiveCreature() != null)
+                    {
+                        // Use live creature data for active creature
+                        CreatureBase liveCreature = playerInventory.GetActiveCreature();
+                        CreatureData liveData = new CreatureData(liveCreature);
+                        hotbarSlots[i].SetCreatureData(liveData, true);
+                    }
+                    else
+                    {
+                        // Use saved data for inactive creatures
+                        hotbarSlots[i].SetCreatureData(party[i], i == activeIndex);
+                    }
                 }
                 else
                 {

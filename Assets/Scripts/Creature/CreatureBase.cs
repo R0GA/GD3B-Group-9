@@ -68,13 +68,15 @@ public class CreatureBase : MonoBehaviour
 
         // Scale stats based on level
         ScaleStatsWithLevel();
-        health = maxHealth;
+        if (!isPlayerCreature)
+            health = maxHealth;
     }
 
     void Start()
     {
         ScaleStatsWithLevel();
-        health = maxHealth;
+        if (!isPlayerCreature)
+            health = maxHealth;
     }
 
     // Generate a new unique ID for this creature
@@ -91,7 +93,7 @@ public class CreatureBase : MonoBehaviour
 
     public string CreatureID => creatureID;
 
-    private void ScaleStatsWithLevel()
+    public void ScaleStatsWithLevel()
     {
         float growthMultiplier = statGrowthCurve.Evaluate(level);
 

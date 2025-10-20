@@ -46,6 +46,26 @@ public class PlayerInventory : MonoBehaviour
         }
     }
 
+    private void LateUpdate()
+    {
+        RefreshAllUI();
+    }
+
+    private void RefreshAllUI()
+    {
+        // Refresh hotbar
+        if (HotbarUIManager.Instance != null)
+        {
+            HotbarUIManager.Instance.RefreshHotbar();
+        }
+
+        // Refresh inventory UI if it's open
+        if (InventoryUIManager.Instance != null && InventoryUIManager.Instance.gameObject.activeInHierarchy)
+        {
+            InventoryUIManager.Instance.RefreshAllDisplays();
+        }
+    }
+
     // Helper method to get creature by ID
     private CreatureData GetCreatureByID(string creatureID)
     {

@@ -152,18 +152,28 @@ public class InventoryUIManager : MonoBehaviour
         }
     }
 
-    // Public methods called by UI buttons
+    public void ToggleInventory()
+    {
+        gameObject.SetActive(!gameObject.activeInHierarchy);
+        if (gameObject.activeInHierarchy)
+        {
+            RefreshAllDisplays();
+        }
+
+        // Notify hotbar about inventory state
+        if (HotbarUIManager.Instance != null)
+        {
+            HotbarUIManager.Instance.OnInventoryStateChanged(gameObject.activeInHierarchy);
+        }
+    }
+
     public void AddCreatureToParty(int inventoryIndex)
     {
         if (playerInventory.AddCreatureToParty(inventoryIndex))
         {
             RefreshAllDisplays();
-        }
-        else
-        {
-            // Show error message (party full)
-            Debug.LogWarning("Party is full! Remove a creature first.");
-            // You could add a UI notification here
+            // Refresh hotbar when party changes
+            HotbarUIManager.Instance?.RefreshHotbar();
         }
     }
 
@@ -172,6 +182,8 @@ public class InventoryUIManager : MonoBehaviour
         if (playerInventory.RemoveCreatureFromParty(partyIndex))
         {
             RefreshAllDisplays();
+            // Refresh hotbar when party changes
+            HotbarUIManager.Instance?.RefreshHotbar();
         }
     }
 
@@ -179,14 +191,7 @@ public class InventoryUIManager : MonoBehaviour
     {
         playerInventory.SwitchActiveCreature(partyIndex);
         RefreshActiveCreatureDisplay();
-    }
-
-    public void ToggleInventory()
-    {
-        gameObject.SetActive(!gameObject.activeInHierarchy);
-        if (gameObject.activeInHierarchy)
-        {
-            RefreshAllDisplays();
-        }
+        // Refresh hotbar when active creature changes
+        HotbarUIManager.Instance?.RefreshHotbar();
     }
 }

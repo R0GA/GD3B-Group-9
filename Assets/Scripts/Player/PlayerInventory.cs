@@ -25,6 +25,8 @@ public class PlayerInventory : MonoBehaviour
     public IReadOnlyList<CreatureData> PartyCreatureInventory => partyCreatureInventory;
     public IReadOnlyList<ItemBase> Items => items;
 
+    public int ActivePartyIndex => activePartyIndex;
+
     private void Awake()
     {
         // Singleton pattern: ensure only one instance exists
@@ -312,7 +314,6 @@ public class PlayerInventory : MonoBehaviour
     private void SetCreatureFromData(CreatureBase creature, CreatureData data)
     {
         creature.SetID(data.creatureID); // Set the creature ID from data
-        creature.health = data.health;
         creature.maxHealth = data.maxHealth;
         creature.speed = data.speed;
         creature.attackSpeed = data.attackSpeed;
@@ -323,6 +324,7 @@ public class PlayerInventory : MonoBehaviour
         creature.xpToNextLevel = data.xpToNextLevel;
         creature.icon = data.icon;
         creature.isPlayerCreature = data.isPlayerCreature;
+        creature.health = data.health;
 
         // Re-equip any items that were equipped to this creature using ItemID
         foreach (var itemID in data.equippedItemIDs)

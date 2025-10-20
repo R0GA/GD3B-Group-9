@@ -456,6 +456,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: litwick
       objectReference: {fileID: 0}
+    - target: {fileID: 7164894368251105385, guid: 32110d577981ad842af95bf0972af2c8, type: 3}
+      propertyPath: isMelee
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 9068016691174304418, guid: 32110d577981ad842af95bf0972af2c8, type: 3}
       propertyPath: level
       value: 10
@@ -795,6 +799,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1670875616}
     m_Modifications:
+    - target: {fileID: 3318317530413608427, guid: 5d257e4dc5f8ac44a869d8dd2b7cdedb, type: 3}
+      propertyPath: isMelee
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 3736007113126660525, guid: 5d257e4dc5f8ac44a869d8dd2b7cdedb, type: 3}
       propertyPath: m_Name
       value: Tympole
@@ -1720,6 +1728,10 @@ PrefabInstance:
       propertyPath: level
       value: 9
       objectReference: {fileID: 0}
+    - target: {fileID: 7777462425970907070, guid: d9221bf801dd9f74cbfbc9ff8bf34bba, type: 3}
+      propertyPath: isMelee
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 8447556940165407161, guid: d9221bf801dd9f74cbfbc9ff8bf34bba, type: 3}
       propertyPath: m_LocalScale.x
       value: 0.1
@@ -1798,6 +1810,10 @@ PrefabInstance:
     - target: {fileID: 3671898484149456538, guid: d9221bf801dd9f74cbfbc9ff8bf34bba, type: 3}
       propertyPath: level
       value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 7777462425970907070, guid: d9221bf801dd9f74cbfbc9ff8bf34bba, type: 3}
+      propertyPath: isMelee
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8447556940165407161, guid: d9221bf801dd9f74cbfbc9ff8bf34bba, type: 3}
       propertyPath: m_LocalScale.x
@@ -2050,6 +2066,10 @@ PrefabInstance:
     - target: {fileID: 6859660226137559372, guid: 32110d577981ad842af95bf0972af2c8, type: 3}
       propertyPath: m_Name
       value: litwick
+      objectReference: {fileID: 0}
+    - target: {fileID: 7164894368251105385, guid: 32110d577981ad842af95bf0972af2c8, type: 3}
+      propertyPath: isMelee
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 9068016691174304418, guid: 32110d577981ad842af95bf0972af2c8, type: 3}
       propertyPath: level
@@ -2448,7 +2468,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3180315977240896772, guid: 1e42e0ccb85359f46bb2924bea016faf, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 0.0008706253
+      value: 0.0009235027
       objectReference: {fileID: 0}
     - target: {fileID: 3263534462416646567, guid: 1e42e0ccb85359f46bb2924bea016faf, type: 3}
       propertyPath: m_AnchorMax.y
@@ -2460,7 +2480,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3318177560725091962, guid: 1e42e0ccb85359f46bb2924bea016faf, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 0.0008706253
+      value: 0.0009235027
       objectReference: {fileID: 0}
     - target: {fileID: 3501063972021386956, guid: 1e42e0ccb85359f46bb2924bea016faf, type: 3}
       propertyPath: rotationSpeed
@@ -2705,6 +2725,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 2084730256}
     m_Modifications:
+    - target: {fileID: 3318317530413608427, guid: 5d257e4dc5f8ac44a869d8dd2b7cdedb, type: 3}
+      propertyPath: isMelee
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 3736007113126660525, guid: 5d257e4dc5f8ac44a869d8dd2b7cdedb, type: 3}
       propertyPath: m_Name
       value: Tympole
@@ -2887,6 +2911,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 2084730256}
     m_Modifications:
+    - target: {fileID: 2541096989644719558, guid: 32110d577981ad842af95bf0972af2c8, type: 3}
+      propertyPath: m_IsTrigger
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 6087098738021387254, guid: 32110d577981ad842af95bf0972af2c8, type: 3}
       propertyPath: m_LocalPosition.x
       value: 9.43
@@ -3004,6 +3032,10 @@ PrefabInstance:
     - target: {fileID: 6442462423822201545, guid: d9221bf801dd9f74cbfbc9ff8bf34bba, type: 3}
       propertyPath: m_Name
       value: Cottonee 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 7777462425970907070, guid: d9221bf801dd9f74cbfbc9ff8bf34bba, type: 3}
+      propertyPath: isMelee
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8447556940165407161, guid: d9221bf801dd9f74cbfbc9ff8bf34bba, type: 3}
       propertyPath: m_LocalPosition.x
@@ -3398,6 +3430,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1797496678}
     m_Modifications:
+    - target: {fileID: 3318317530413608427, guid: 5d257e4dc5f8ac44a869d8dd2b7cdedb, type: 3}
+      propertyPath: isMelee
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 3736007113126660525, guid: 5d257e4dc5f8ac44a869d8dd2b7cdedb, type: 3}
       propertyPath: m_Name
       value: Tympole
@@ -4872,6 +4908,10 @@ PrefabInstance:
       propertyPath: level
       value: 9
       objectReference: {fileID: 0}
+    - target: {fileID: 7773182449598991947, guid: d9221bf801dd9f74cbfbc9ff8bf34bba, type: 3}
+      propertyPath: m_IsTrigger
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 8447556940165407161, guid: d9221bf801dd9f74cbfbc9ff8bf34bba, type: 3}
       propertyPath: m_LocalScale.x
       value: 0.10000002
@@ -5461,6 +5501,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1738820251}
     m_Modifications:
+    - target: {fileID: 3318317530413608427, guid: 5d257e4dc5f8ac44a869d8dd2b7cdedb, type: 3}
+      propertyPath: isMelee
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 3736007113126660525, guid: 5d257e4dc5f8ac44a869d8dd2b7cdedb, type: 3}
       propertyPath: m_Name
       value: Tympole
@@ -6412,6 +6456,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 2084730256}
     m_Modifications:
+    - target: {fileID: 3318317530413608427, guid: 5d257e4dc5f8ac44a869d8dd2b7cdedb, type: 3}
+      propertyPath: isMelee
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 3736007113126660525, guid: 5d257e4dc5f8ac44a869d8dd2b7cdedb, type: 3}
       propertyPath: m_Name
       value: Tympole
@@ -6596,7 +6644,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &2084730256
 Transform:
   m_ObjectHideFlags: 0
@@ -6895,6 +6943,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 2084730256}
     m_Modifications:
+    - target: {fileID: 3318317530413608427, guid: 5d257e4dc5f8ac44a869d8dd2b7cdedb, type: 3}
+      propertyPath: isMelee
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 3736007113126660525, guid: 5d257e4dc5f8ac44a869d8dd2b7cdedb, type: 3}
       propertyPath: m_Name
       value: Tympole
@@ -6961,6 +7013,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1581304357}
     m_Modifications:
+    - target: {fileID: 3318317530413608427, guid: 5d257e4dc5f8ac44a869d8dd2b7cdedb, type: 3}
+      propertyPath: isMelee
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 3736007113126660525, guid: 5d257e4dc5f8ac44a869d8dd2b7cdedb, type: 3}
       propertyPath: m_Name
       value: Tympole
@@ -7134,6 +7190,10 @@ PrefabInstance:
     - target: {fileID: 6859660226137559372, guid: 32110d577981ad842af95bf0972af2c8, type: 3}
       propertyPath: m_Name
       value: litwick
+      objectReference: {fileID: 0}
+    - target: {fileID: 7164894368251105385, guid: 32110d577981ad842af95bf0972af2c8, type: 3}
+      propertyPath: isMelee
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 9068016691174304418, guid: 32110d577981ad842af95bf0972af2c8, type: 3}
       propertyPath: level

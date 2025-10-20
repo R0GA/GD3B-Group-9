@@ -28,10 +28,25 @@ public class InventoryInput : MonoBehaviour
 
     private void OnInventoryPressed(InputAction.CallbackContext context)
     {
+        bool inventoryOpen = InventoryUIManager.Instance.gameObject.activeInHierarchy;
         InventoryUIManager.Instance.ToggleInventory();
+
+        // Update hotbar visibility
+        if (HotbarUIManager.Instance != null)
+        {
+            HotbarUIManager.Instance.OnInventoryStateChanged(!inventoryOpen);
+        }
     }
+
     private void OnGachaPressed(InputAction.CallbackContext context)
     {
+        // Assuming GachaUIManager has similar toggle functionality
         GachaUIManager.Instance.ShowGachaUI();
+
+        // Hide hotbar when gacha is open
+        if (HotbarUIManager.Instance != null)
+        {
+            HotbarUIManager.Instance.OnInventoryStateChanged(true);
+        }
     }
 }

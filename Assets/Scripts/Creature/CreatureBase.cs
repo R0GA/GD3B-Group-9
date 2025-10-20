@@ -52,6 +52,8 @@ public class CreatureBase : MonoBehaviour
     // Events for death and level up
     public System.Action<CreatureBase> OnDeath;
     public System.Action<CreatureBase, int> OnLevelUp;
+    public System.Action<CreatureBase> OnDamageTaken;
+    public System.Action<CreatureBase> OnHealed;
 
     private void Awake()
     {
@@ -68,13 +70,15 @@ public class CreatureBase : MonoBehaviour
 
         // Scale stats based on level
         ScaleStatsWithLevel();
-        health = maxHealth;
+        if (!isPlayerCreature)
+            health = maxHealth;
     }
 
     void Start()
     {
         ScaleStatsWithLevel();
-        health = maxHealth;
+        if (!isPlayerCreature)
+            health = maxHealth;
     }
 
     // Generate a new unique ID for this creature
@@ -91,7 +95,7 @@ public class CreatureBase : MonoBehaviour
 
     public string CreatureID => creatureID;
 
-    private void ScaleStatsWithLevel()
+    public void ScaleStatsWithLevel()
     {
         float growthMultiplier = statGrowthCurve.Evaluate(level);
 
@@ -205,11 +209,46 @@ public class CreatureBase : MonoBehaviour
         health -= scaledDamage;
         health = Mathf.Clamp(health, 0, maxHealth);
 
+        // Trigger damage event
+        OnDamageTaken?.Invoke(this);
+
         // Check for death
         if (health <= 0)
         {
             Die();
         }
+    }
+
+    // Update Heal method to trigger event
+    public void Heal(float amount)
+    {
+        health = Mathf.Clamp(health + amount, 0, maxHealth);
+        OnHealed?.Invoke(this);
+    }
+
+    // Update LevelUp method to trigger event
+    private void LevelUp()
+    {
+        currentXP -= xpToNextLevel;
+        level++;
+
+        // Store old max health before leveling up
+        float oldMaxHealth = maxHealth;
+
+        // Scale stats for new level
+        ScaleStatsWithLevel();
+
+        // Add the health increase from level up to current health
+        float healthIncrease = maxHealth - oldMaxHealth;
+        health += healthIncrease;
+
+        // Ensure health doesn't exceed max health
+        health = Mathf.Min(health, maxHealth);
+
+        Debug.Log($"{gameObject.name} (ID: {creatureID}) leveled up to level {level}! Gained {healthIncrease} health.");
+
+        // Trigger level up event
+        OnLevelUp?.Invoke(this, level);
     }
 
     private void Die()
@@ -264,35 +303,6 @@ public class CreatureBase : MonoBehaviour
         {
             LevelUp();
         }
-    }
-
-    private void LevelUp()
-    {
-        currentXP -= xpToNextLevel;
-        level++;
-
-        // Store old max health before leveling up
-        float oldMaxHealth = maxHealth;
-
-        // Scale stats for new level
-        ScaleStatsWithLevel();
-
-        // Add the health increase from level up to current health
-        float healthIncrease = maxHealth - oldMaxHealth;
-        health += healthIncrease;
-
-        // Ensure health doesn't exceed max health
-        health = Mathf.Min(health, maxHealth);
-
-        Debug.Log($"{gameObject.name} (ID: {creatureID}) leveled up to level {level}! Gained {healthIncrease} health.");
-
-        // Trigger level up event
-        OnLevelUp?.Invoke(this, level);
-    }
-
-    public void Heal(float amount)
-    {
-        health = Mathf.Clamp(health + amount, 0, maxHealth);
     }
 
     public void FullHeal()

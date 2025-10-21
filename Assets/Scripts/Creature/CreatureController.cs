@@ -16,9 +16,9 @@ public class CreatureController : MonoBehaviour
     [SerializeField] private Transform projectileSpawnPoint;
 
     [Header("Teleport Settings")]
-    [SerializeField] private float maxDistanceFromPlayer = 7f;
-    [SerializeField] private float teleportCheckInterval = 2f;
-    [SerializeField] private float stuckCheckInterval = 3f;
+    [SerializeField] private float maxDistanceFromPlayer = 10f;
+    [SerializeField] private float teleportCheckInterval = 1f;
+    [SerializeField] private float stuckCheckInterval = 1f;
     [SerializeField] private float stuckDistanceThreshold = 1f;
 
     private float lastTeleportCheckTime = 0f;

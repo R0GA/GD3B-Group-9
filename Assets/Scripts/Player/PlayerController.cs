@@ -273,7 +273,7 @@ public class PlayerController : MonoBehaviour
     {
 
         // Can't attack while jumping/falling
-        if (!isGrounded || isJumping)
+        if (!isGrounded || isJumping || isInLandingState)
         {
             return;
         }

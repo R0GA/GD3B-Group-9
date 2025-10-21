@@ -41,6 +41,10 @@ public class CreatureBase : MonoBehaviour
     [SerializeField] private string creatureID;
     [SerializeField] private ParticleSystem hurtParticles;
 
+    [Header("Damage Numbers")]
+    [SerializeField] private GameObject floatingDamageNumberPrefab;
+    [SerializeField] private Vector3 damageNumberOffset = new Vector3(0, 1.5f, 0);
+
     // Example: effectiveness[attacker][defender] = multiplier
     private static readonly Dictionary<ElementType, Dictionary<ElementType, float>> effectiveness =
         new Dictionary<ElementType, Dictionary<ElementType, float>>
@@ -232,16 +236,45 @@ public class CreatureBase : MonoBehaviour
         health -= scaledDamage;
         health = Mathf.Clamp(health, 0, maxHealth);
 
+        // SPAWN FLOATING DAMAGE NUMBER
+        SpawnDamageNumber(scaledDamage, attackerType, multiplier);
+
         // Trigger damage event
         OnDamageTaken?.Invoke(this);
 
         if (hurtParticles != null)
-            hurtParticles.Play(); 
+            hurtParticles.Play();
 
         // Check for death
         if (health <= 0)
         {
             Die();
+        }
+    }
+
+    private void SpawnDamageNumber(float damage, ElementType damageType, float effectivenessMultiplier)
+    {
+        if (floatingDamageNumberPrefab == null)
+        {
+            // Try to load the prefab from Resources if not assigned
+            floatingDamageNumberPrefab = Resources.Load<GameObject>("FloatingDamageNumber");
+            if (floatingDamageNumberPrefab == null)
+            {
+                Debug.LogWarning("FloatingDamageNumber prefab not found in Resources!");
+                return;
+            }
+        }
+
+        // Calculate spawn position (above the creature with offset)
+        Vector3 spawnPosition = transform.position + damageNumberOffset;
+
+        // Instantiate the damage number
+        GameObject damageNumberObj = Instantiate(floatingDamageNumberPrefab, spawnPosition, Quaternion.identity);
+        FloatingDamageNumber damageNumber = damageNumberObj.GetComponent<FloatingDamageNumber>();
+
+        if (damageNumber != null)
+        {
+            damageNumber.Initialize(damage, damageType, effectivenessMultiplier, spawnPosition);
         }
     }
 

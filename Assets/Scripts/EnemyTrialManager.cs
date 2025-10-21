@@ -16,6 +16,9 @@ public class EnemyTrialManager : MonoBehaviour
     [Header("Wave Delay")]
     public float waveDelay = 2f;
 
+    [Header("Audio")]
+    public AudioSource trialAudioSource;
+
     private List<GameObject> enemies = new List<GameObject>();
     private int currentWave = 0;
     private bool trialActive = false;
@@ -72,11 +75,19 @@ public class EnemyTrialManager : MonoBehaviour
 
     public void StartTrial()
     {
+
+        if (trialAudioSource != null)
+            trialAudioSource.Play();
+
+
         if (trialActive) return;
 
         trialActive = true;
         trialComplete = false;
         currentWave = 0;
+
+        
+
 
         ActivateWave(currentWave);
 
@@ -135,6 +146,10 @@ public class EnemyTrialManager : MonoBehaviour
     private void OnTrialComplete()
     {
         Debug.Log("Trial complete! All waves cleared.");
+
+        if (trialAudioSource != null)
+            trialAudioSource.Stop();
+
 
         if (successPanel != null)
         {

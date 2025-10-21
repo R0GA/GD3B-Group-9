@@ -442,6 +442,10 @@ PrefabInstance:
       propertyPath: isPlayerCreature
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5905624612446705029, guid: 8048a0ed6b0f6da44b2faa3e7ccbd710, type: 3}
+      propertyPath: floatingDamageNumberPrefab
+      value: 
+      objectReference: {fileID: 4434697349383195816, guid: 99bbfd5f4e3868a4bb46e2a3d7599d8d, type: 3}
     - target: {fileID: 6530285380363451477, guid: 8048a0ed6b0f6da44b2faa3e7ccbd710, type: 3}
       propertyPath: m_LocalPosition.x
       value: -18.03738
@@ -1072,6 +1076,10 @@ PrefabInstance:
     - target: {fileID: 3799627839735967724, guid: 1e42e0ccb85359f46bb2924bea016faf, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3868432678742272435, guid: 1e42e0ccb85359f46bb2924bea016faf, type: 3}
+      propertyPath: m_TagString
+      value: MainCamera
       objectReference: {fileID: 0}
     - target: {fileID: 3877914260343796361, guid: 1e42e0ccb85359f46bb2924bea016faf, type: 3}
       propertyPath: m_AnchorMax.y

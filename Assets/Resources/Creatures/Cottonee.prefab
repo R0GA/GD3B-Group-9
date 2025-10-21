@@ -189,7 +189,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 5d898ce3e8b89bd4fa50d05364acef2d, type: 3}
       propertyPath: m_Name
-      value: Cottonee 2
+      value: Cottonee
       objectReference: {fileID: 0}
     - target: {fileID: 1495151890735586726, guid: 5d898ce3e8b89bd4fa50d05364acef2d, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -424,7 +424,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 01b22f3f619c82d42bc3e24a1c309168, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CreatureController
-  isMelee: 0
+  isMelee: 1
   detectionRange: 10
   attackRange: 7
   rangedOptimalDistance: 4

@@ -15,6 +15,17 @@ public class CreatureController : MonoBehaviour
     [SerializeField] private CreatureProjectile projectilePrefab;
     [SerializeField] private Transform projectileSpawnPoint;
 
+    [Header("Teleport Settings")]
+    [SerializeField] private float maxDistanceFromPlayer = 7f;
+    [SerializeField] private float teleportCheckInterval = 2f;
+    [SerializeField] private float stuckCheckInterval = 3f;
+    [SerializeField] private float stuckDistanceThreshold = 1f;
+
+    private float lastTeleportCheckTime = 0f;
+    private float lastStuckCheckTime = 0f;
+    private Vector3 lastPosition;
+    private bool isStuck = false;
+
     private CreatureBase creatureBase;
     private NavMeshAgent navMeshAgent;
     private Transform currentTarget;
@@ -56,6 +67,9 @@ public class CreatureController : MonoBehaviour
                 {
                     navMeshAgent.stoppingDistance = 2f; // Comfortable distance from player
                 }
+
+                // Initialize stuck detection
+                lastPosition = transform.position;
             }
         }
 
@@ -76,6 +90,12 @@ public class CreatureController : MonoBehaviour
     private void Update()
     {
         if (creatureBase.health <= 0) return;
+
+        // Handle teleportation for player creatures
+        if (creatureBase.isPlayerCreature)
+        {
+            HandleTeleportation();
+        }
 
         // For player creatures, always check if we should return to player
         if (creatureBase.isPlayerCreature && !isInCombat)
@@ -466,4 +486,143 @@ public class CreatureController : MonoBehaviour
     {
         return currentTarget;
     }
+
+    private void HandleTeleportation()
+    {
+        if (!creatureBase.isPlayerCreature || playerTransform == null || isInCombat)
+            return;
+
+        // Check if it's time to perform teleport check
+        if (Time.time - lastTeleportCheckTime < teleportCheckInterval)
+            return;
+
+        lastTeleportCheckTime = Time.time;
+
+        float distanceToPlayer = Vector3.Distance(transform.position, playerTransform.position);
+
+        // If creature is too far from player, teleport to player
+        if (distanceToPlayer > maxDistanceFromPlayer)
+        {
+            TeleportToPlayer();
+            return;
+        }
+
+        // Check if creature is stuck (not moving much)
+        CheckIfStuck();
+    }
+
+    private void CheckIfStuck()
+    {
+        if (Time.time - lastStuckCheckTime < stuckCheckInterval)
+            return;
+
+        lastStuckCheckTime = Time.time;
+
+        float distanceMoved = Vector3.Distance(transform.position, lastPosition);
+
+        // If creature hasn't moved much and is trying to follow player, it might be stuck
+        if (distanceMoved < stuckDistanceThreshold && !isInCombat && navMeshAgent.hasPath)
+        {
+            isStuck = true;
+            // Wait a bit more to confirm it's really stuck
+            Invoke(nameof(ConfirmStuckAndTeleport), 1f);
+        }
+        else
+        {
+            isStuck = false;
+        }
+
+        lastPosition = transform.position;
+    }
+
+    private void ConfirmStuckAndTeleport()
+    {
+        // Check if still stuck after the delay
+        float currentDistanceMoved = Vector3.Distance(transform.position, lastPosition);
+        if (currentDistanceMoved < stuckDistanceThreshold && isStuck && !isInCombat)
+        {
+            TeleportToPlayer();
+        }
+        isStuck = false;
+    }
+
+    private void TeleportToPlayer()
+    {
+        if (playerTransform == null) return;
+
+        // Stop current movement
+        if (navMeshAgent.isActiveAndEnabled)
+        {
+            navMeshAgent.isStopped = true;
+            navMeshAgent.ResetPath();
+        }
+
+        // Find a valid position near the player
+        Vector3 teleportPosition = FindValidPositionNearPlayer();
+
+        // Teleport the creature
+        transform.position = teleportPosition;
+
+        // Update return position
+        returnPosition = teleportPosition;
+        hasReturnPosition = true;
+
+        // Resume movement
+        if (navMeshAgent.isActiveAndEnabled)
+        {
+            navMeshAgent.isStopped = false;
+        }
+
+        Debug.Log($"Creature {creatureBase.CreatureID} teleported to player (was too far or stuck)");
+    }
+
+    private Vector3 FindValidPositionNearPlayer()
+    {
+        if (playerTransform == null)
+            return transform.position;
+
+        // Try multiple positions around the player
+        for (int i = 0; i < 10; i++)
+        {
+            // Calculate position around player (closer than maxDistanceFromPlayer)
+            float angle = i * Mathf.PI * 2f / 10f;
+            Vector3 direction = new Vector3(Mathf.Cos(angle), 0, Mathf.Sin(angle));
+            Vector3 candidatePosition = playerTransform.position + direction * Random.Range(1f, 3f);
+
+            // Check if this position is valid on NavMesh
+            NavMeshHit hit;
+            if (NavMesh.SamplePosition(candidatePosition, out hit, 3f, NavMesh.AllAreas))
+            {
+                // Also check if there's a clear path to player (optional, can be removed if too restrictive)
+                NavMeshPath path = new NavMeshPath();
+                if (NavMesh.CalculatePath(hit.position, playerTransform.position, NavMesh.AllAreas, path))
+                {
+                    if (path.status == NavMeshPathStatus.PathComplete)
+                    {
+                        return hit.position;
+                    }
+                }
+            }
+        }
+
+        // If no ideal position found, use a fallback position very close to player
+        Vector3 fallbackPosition = playerTransform.position + new Vector3(Random.Range(-1f, 1f), 0, Random.Range(-1f, 1f));
+        NavMeshHit fallbackHit;
+        if (NavMesh.SamplePosition(fallbackPosition, out fallbackHit, 5f, NavMesh.AllAreas))
+        {
+            return fallbackHit.position;
+        }
+
+        // Last resort: position directly at player (might cause visual clipping)
+        return playerTransform.position;
+    }
+    // Public method to force teleport to player (can be called from other systems)
+    public void ForceTeleportToPlayer()
+    {
+        if (creatureBase.isPlayerCreature && playerTransform != null)
+        {
+            TeleportToPlayer();
+        }
+    }
+
 }

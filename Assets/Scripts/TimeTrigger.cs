@@ -1,10 +1,10 @@
 using UnityEngine;
-using UnityEngine.InputSystem; 
+using UnityEngine.InputSystem;
 
 public class TimeTrigger : MonoBehaviour
 {
     [Header("References")]
-    public GameObject promptUI;        
+    public GameObject promptUI;
     public GameObject timerObject;
     public GameObject timerText;
     public GameObject enemiesParent;
@@ -18,7 +18,10 @@ public class TimeTrigger : MonoBehaviour
             promptUI.SetActive(false);
 
         if (timerObject != null)
-            timerObject.SetActive(false); 
+            timerObject.SetActive(false);
+
+        if (enemiesParent != null)
+            enemiesParent.SetActive(false);
     }
 
     private void OnTriggerEnter(Collider other)
@@ -43,20 +46,15 @@ public class TimeTrigger : MonoBehaviour
 
     private void Update()
     {
-        
         bool eKeyPressed = Keyboard.current != null && Keyboard.current.eKey.wasPressedThisFrame;
         bool eastButtonPressed = Gamepad.current != null && Gamepad.current.buttonEast.wasPressedThisFrame;
 
-        
-        if (playerInRange && ( eKeyPressed || eastButtonPressed))
+        if (playerInRange && (eKeyPressed || eastButtonPressed))
         {
-            Debug.Log("Interaction input detected! Starting trial...");
+            Debug.Log("Interaction input detected! Starting timed trial");
 
             if (timerObject != null)
                 timerObject.SetActive(true);
-
-            if (enemiesParent != null)
-                enemiesParent.SetActive(true);
 
             if (timerText != null)
                 timerText.SetActive(true);
@@ -64,7 +62,12 @@ public class TimeTrigger : MonoBehaviour
             if (promptUI != null)
                 promptUI.SetActive(false);
 
-            var trialManager = FindObjectOfType<TrialManager>();
+            
+            if (enemiesParent != null)
+                enemiesParent.SetActive(true);
+
+            
+            var trialManager = FindObjectOfType<TimedTrialManager>();
             if (trialManager != null)
                 trialManager.StartTrial();
 

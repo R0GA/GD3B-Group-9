@@ -661,7 +661,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::CreatureController
   isMelee: 1
   detectionRange: 10
-  attackRange: 7
+  attackRange: 2
   rangedOptimalDistance: 4
   stoppingDistance: 1.5
   projectilePrefab: {fileID: 6866406518002645043, guid: 361f58df97c491e4d968e2495788896e, type: 3}

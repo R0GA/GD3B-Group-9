@@ -698,12 +698,25 @@ public class PlayerController : MonoBehaviour
     // This method will be called after a new scene is loaded
     private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
-        GameObject spawn = GameObject.FindWithTag("Spawn");
+        HotbarUIManager.Instance.RefreshHotbar();
+        GameObject spawn = GameObject.FindWithTag("LevelSpawn");
         if (spawn != null)
         {
             transform.position = spawn.transform.position;
-            // Optionally reset rotation:
             transform.rotation = spawn.transform.rotation;
         }
+        else if (spawn == null)
+        {
+            spawn = GameObject.FindWithTag("HubSpawn");
+            if (spawn != null)
+            {
+                transform.position = spawn.transform.position;
+                transform.rotation = spawn.transform.rotation;
+            }
+        }
+    }
+    public static bool IsInHub()
+    {
+        return UnityEngine.SceneManagement.SceneManager.GetActiveScene().name == "Hub";
     }
 }

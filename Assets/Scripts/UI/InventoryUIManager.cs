@@ -173,6 +173,12 @@ public class InventoryUIManager : MonoBehaviour
 
     public void ToggleInventory()
     {
+        if (!PlayerController.IsInHub())
+        {
+            Debug.Log("Inventory can only be opened in the hub.");
+            return;
+        }
+
         gameObject.SetActive(!gameObject.activeInHierarchy);
         if (gameObject.activeInHierarchy)
         {

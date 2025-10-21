@@ -36,8 +36,10 @@ public class CreatureBase : MonoBehaviour
     private float baseAttackDamageWithoutItem;
     private float currentMaxHealth; // Track current max health for health addition calculation
 
+    [Header("Other")]
     // Unique ID for each creature instance
     [SerializeField] private string creatureID;
+    [SerializeField] private ParticleSystem hurtParticles;
 
     // Example: effectiveness[attacker][defender] = multiplier
     private static readonly Dictionary<ElementType, Dictionary<ElementType, float>> effectiveness =
@@ -66,6 +68,27 @@ public class CreatureBase : MonoBehaviour
         if (string.IsNullOrEmpty(creatureID))
         {
             GenerateNewID();
+        }
+
+        if (hurtParticles != null)
+        {
+            hurtParticles.Stop();
+            var main = hurtParticles.main;
+            switch (elementType)
+            {
+                case ElementType.Fire:
+                    main.startColor = Color.red;
+                    break;
+                case ElementType.Water:
+                    main.startColor = Color.blue;
+                    break;
+                case ElementType.Grass:
+                    main.startColor = Color.green;
+                    break;
+                default:
+                    main.startColor = Color.white;
+                    break;
+            }
         }
 
         // Scale stats based on level
@@ -211,6 +234,9 @@ public class CreatureBase : MonoBehaviour
 
         // Trigger damage event
         OnDamageTaken?.Invoke(this);
+
+        if (hurtParticles != null)
+            hurtParticles.Play(); 
 
         // Check for death
         if (health <= 0)

@@ -5,6 +5,8 @@ TagManager:
   serializedVersion: 3
   tags:
   - Spawn
+  - LevelSpawn
+  - HubSpawn
   layers:
   - Default
   - TransparentFX

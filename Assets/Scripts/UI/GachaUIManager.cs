@@ -84,6 +84,11 @@ public class GachaUIManager : MonoBehaviour
 
     public void ShowGachaUI()
     {
+        if (!PlayerController.IsInHub())
+        {
+            Debug.Log("Gacha can only be opened in the hub.");
+               return;
+       }
         if (!gameObject.active)
         {
             gameObject.SetActive(true);

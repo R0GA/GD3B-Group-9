@@ -29316,6 +29316,10 @@ PrefabInstance:
       propertyPath: m_ConstrainProportionsScale
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: -8270237889823493819, guid: 881405c769ad86d4abdcdbb4f91ece88, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: c94e0a0c2783dac4f87c01b82a27f637, type: 2}
     - target: {fileID: -8143710011712545758, guid: 881405c769ad86d4abdcdbb4f91ece88, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
@@ -29368,6 +29372,10 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 466608246689542871, guid: 881405c769ad86d4abdcdbb4f91ece88, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: c94e0a0c2783dac4f87c01b82a27f637, type: 2}
     - target: {fileID: 919132149155446097, guid: 881405c769ad86d4abdcdbb4f91ece88, type: 3}
       propertyPath: m_Name
       value: Domain1
@@ -29380,6 +29388,10 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5008022236170083033, guid: 881405c769ad86d4abdcdbb4f91ece88, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: c94e0a0c2783dac4f87c01b82a27f637, type: 2}
     - target: {fileID: 5252682845850649624, guid: 881405c769ad86d4abdcdbb4f91ece88, type: 3}
       propertyPath: m_IsActive
       value: 0
@@ -29400,6 +29412,10 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 8628502785719625371, guid: 881405c769ad86d4abdcdbb4f91ece88, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: c94e0a0c2783dac4f87c01b82a27f637, type: 2}
     - target: {fileID: 9141816029861474070, guid: 881405c769ad86d4abdcdbb4f91ece88, type: 3}
       propertyPath: m_Name
       value: Floor

@@ -22209,7 +22209,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 15b307af82dec774f965af7432d9befa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::TrialTimer
-  timer: 150
+  timer: 90
   addTime: 10
   timeDisplayFrame: 2
   timerText: {fileID: 2092522757}

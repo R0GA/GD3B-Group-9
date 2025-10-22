@@ -4,6 +4,7 @@ using Unity.Cinemachine;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine.SceneManagement;
+using System;
 
 public class PlayerController : MonoBehaviour
 {
@@ -704,19 +705,24 @@ public class PlayerController : MonoBehaviour
     private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
         HotbarUIManager.Instance.RefreshHotbar();
+        
         GameObject spawn = GameObject.FindWithTag("LevelSpawn");
         if (spawn != null)
         {
+            characterController.enabled = false; // Disable to set position
             transform.position = spawn.transform.position;
             transform.rotation = spawn.transform.rotation;
+            characterController.enabled = true; // Re-enable after setting position
         }
         else if (spawn == null)
         {
             spawn = GameObject.FindWithTag("HubSpawn");
             if (spawn != null)
             {
+                characterController.enabled = false; // Disable to set position
                 transform.position = spawn.transform.position;
                 transform.rotation = spawn.transform.rotation;
+                characterController.enabled = true; // Re-enable after setting position
             }
         }
         OnAttackComplete();

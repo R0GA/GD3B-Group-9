@@ -7,9 +7,9 @@ public class TimedTrialManager : MonoBehaviour
     [Header("References")]
     public GameObject[] enemyWaves;
     public GameObject successPanel;
-    public GameObject failurePanel;  // shown when time runs out
+    public GameObject failurePanel;  
     //public GameObject trialWall;
-    public TrialTimer timerScript;   // reference to your TrialTimer
+    public TrialTimer timerScript;   
 
     [Header("UI")]
     public Text waveNameText;
@@ -17,6 +17,9 @@ public class TimedTrialManager : MonoBehaviour
 
     [Header("Wave Delay")]
     public float waveDelay = 2f;
+
+    [Header("Audio")]
+    public AudioSource trialAudioSource;
 
     private List<GameObject> enemies = new List<GameObject>();
     private int currentWave = 0;
@@ -53,17 +56,17 @@ public class TimedTrialManager : MonoBehaviour
         if (!trialActive || trialComplete || waveTransitioning)
             return;
 
-        // --- Check for time out ---
+        
         if (timerScript != null && timerScript.timer <= 0)
         {
             OnTrialFailed();
             return;
         }
 
-        // Remove destroyed or inactive enemies
+        //Remove all destroyed enemies
         enemies.RemoveAll(e => e == null || !e.activeInHierarchy);
 
-        // --- Progress waves ---
+        
         if (enemies.Count == 0 && currentWave < enemyWaves.Length)
         {
             string defeatedWaveName = enemyWaves[currentWave].name;
@@ -87,13 +90,18 @@ public class TimedTrialManager : MonoBehaviour
 
     public void StartTrial()
     {
+
+        if (trialAudioSource != null)
+            trialAudioSource.Play();
+
+
         if (trialActive) return;
 
         trialActive = true;
         trialComplete = false;
         currentWave = 0;
 
-        // Start timer
+        //Starts the timer
         if (timerScript != null)
         {
             timerScript.enabled = true;
@@ -155,13 +163,17 @@ public class TimedTrialManager : MonoBehaviour
     {
         Debug.Log("Timed Trial complete! All waves cleared.");
 
+        if (trialAudioSource != null)
+            trialAudioSource.Stop();
+
+
         if (successPanel != null)
             successPanel.SetActive(true);
 
         /*if (trialWall != null)
             trialWall.SetActive(false);*/
 
-        // Stop timer so it doesn’t trigger failure
+        
         if (timerScript != null)
             timerScript.enabled = false;
     }

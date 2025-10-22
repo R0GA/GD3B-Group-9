@@ -623,7 +623,7 @@ public class PlayerController : MonoBehaviour
     {
         if (isGrounded && currentAnimState == 9)
         {
-            //SetAnimationState(0); // Idle
+            SetAnimationState(0); // Idle
             isInLandingState = false;
         }
     }
@@ -719,6 +719,7 @@ public class PlayerController : MonoBehaviour
                 transform.rotation = spawn.transform.rotation;
             }
         }
+        OnAttackComplete();
     }
     public static bool IsInHub()
     {

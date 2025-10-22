@@ -1734,7 +1734,7 @@ AudioSource:
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 0}
-  m_Resource: {fileID: 0}
+  m_Resource: {fileID: 8300000, guid: f18f8e146b1c62841b4b7e1b0f732b1a, type: 3}
   m_PlayOnAwake: 0
   m_Volume: 1
   m_Pitch: 1
@@ -3827,7 +3827,7 @@ MonoBehaviour:
   waveNameText: {fileID: 1699982020}
   waveNameDisplayTime: 3
   waveDelay: 2
-  trialAudioSource: {fileID: 233330455}
+  trialMusic: {fileID: 233330455}
 --- !u!82 &233330455
 AudioSource:
   m_ObjectHideFlags: 0
@@ -3839,7 +3839,7 @@ AudioSource:
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 0}
-  m_Resource: {fileID: 0}
+  m_Resource: {fileID: 8300000, guid: 5629e7e244ed10b47a336d05faadff6f, type: 3}
   m_PlayOnAwake: 0
   m_Volume: 1
   m_Pitch: 1
@@ -5210,7 +5210,7 @@ MonoBehaviour:
   waveNameText: {fileID: 1699982020}
   waveNameDisplayTime: 3
   waveDelay: 2
-  trialAudioSource: {fileID: 303854400}
+  trialMusic: {fileID: 303854400}
 --- !u!82 &303854400
 AudioSource:
   m_ObjectHideFlags: 0
@@ -5222,7 +5222,7 @@ AudioSource:
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 0}
-  m_Resource: {fileID: 0}
+  m_Resource: {fileID: 8300000, guid: 774f29aac9c51d742aa1be6b0f09d26d, type: 3}
   m_PlayOnAwake: 0
   m_Volume: 1
   m_Pitch: 1
@@ -18442,7 +18442,7 @@ MonoBehaviour:
   waveNameText: {fileID: 1699982020}
   waveNameDisplayTime: 3
   waveDelay: 2
-  trialAudioSource: {fileID: 1101911883}
+  trialMusic: {fileID: 1101911883}
 --- !u!114 &1101911882
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -23467,7 +23467,7 @@ MonoBehaviour:
   waveNameText: {fileID: 1699982020}
   waveNameDisplayTime: 3
   waveDelay: 2
-  trialAudioSource: {fileID: 1465269155}
+  trialMusic: {fileID: 1465269155}
 --- !u!82 &1465269155
 AudioSource:
   m_ObjectHideFlags: 0
@@ -23479,7 +23479,7 @@ AudioSource:
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 0}
-  m_Resource: {fileID: 0}
+  m_Resource: {fileID: 8300000, guid: 7212bc1b046724b40b9583ce9c182dd4, type: 3}
   m_PlayOnAwake: 0
   m_Volume: 1
   m_Pitch: 1

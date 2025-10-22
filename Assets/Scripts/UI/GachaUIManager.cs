@@ -50,7 +50,7 @@ public class GachaUIManager : MonoBehaviour
     private List<object> allPossibleResults = new List<object>();
     private Coroutine rollingCoroutine;
     private object finalResult;
-    private int availablePacks = 100; // You can modify this based on your game economy
+    public int availablePacks = 100; 
 
     private void Awake()
     {

@@ -10,6 +10,7 @@ public class TimedTrialManager : MonoBehaviour
     public GameObject failurePanel;  
     //public GameObject trialWall;
     public TrialTimer timerScript;   
+    public int xpReward = 200;
 
     [Header("UI")]
     public Text waveNameText;
@@ -166,6 +167,11 @@ public class TimedTrialManager : MonoBehaviour
         if (trialAudioSource != null)
             trialAudioSource.Stop();
 
+        // HEAL AND REWARD THE PLAYER AND PARTY
+        if (PlayerInventory.Instance != null)
+        {
+            PlayerInventory.Instance.GrantTrialRewardsToParty(xpReward);
+        }
 
         if (successPanel != null)
             successPanel.SetActive(true);
@@ -173,7 +179,6 @@ public class TimedTrialManager : MonoBehaviour
         /*if (trialWall != null)
             trialWall.SetActive(false);*/
 
-        
         if (timerScript != null)
             timerScript.enabled = false;
     }

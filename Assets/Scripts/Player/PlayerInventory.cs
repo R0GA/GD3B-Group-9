@@ -340,8 +340,12 @@ public class PlayerInventory : MonoBehaviour
     {
         if (activeCreatureInstance == null) return;
 
-        // Unsubscribe from events
-        UnsubscribeFromCreatureEvents(activeCreatureInstance);
+        // Clear any pending rewards for this creature since we're saving its current state
+        if (partyCreatureInventory.Count > activePartyIndex)
+        {
+            partyCreatureInventory[activePartyIndex].pendingReward.pendingXP = 0;
+            partyCreatureInventory[activePartyIndex].pendingReward.needsHealing = false;
+        }
 
         partyCreatureInventory[activePartyIndex] = new CreatureData(activeCreatureInstance);
         Destroy(activeCreatureInstance.gameObject);
@@ -384,7 +388,7 @@ public class PlayerInventory : MonoBehaviour
 
     private void SetCreatureFromData(CreatureBase creature, CreatureData data)
     {
-        creature.SetID(data.creatureID); // Set the creature ID from data
+        creature.SetID(data.creatureID);
         creature.maxHealth = data.maxHealth;
         creature.speed = data.speed;
         creature.attackSpeed = data.attackSpeed;
@@ -397,6 +401,22 @@ public class PlayerInventory : MonoBehaviour
         creature.isPlayerCreature = data.isPlayerCreature;
         creature.health = data.health;
 
+        // Apply pending rewards if any
+        if (data.pendingReward != null)
+        {
+            if (data.pendingReward.pendingXP > 0)
+            {
+                creature.GainXP(data.pendingReward.pendingXP);
+                data.pendingReward.pendingXP = 0; // Clear pending XP
+            }
+
+            if (data.pendingReward.needsHealing)
+            {
+                creature.FullHeal();
+                data.pendingReward.needsHealing = false; // Clear healing flag
+            }
+        }
+
         // Re-equip any items that were equipped to this creature using ItemID
         foreach (var itemID in data.equippedItemIDs)
         {
@@ -404,7 +424,6 @@ public class PlayerInventory : MonoBehaviour
             if (item != null)
             {
                 creature.EquipItem(item);
-                // Track the equipped item
                 equippedItems[itemID] = activePartyIndex;
             }
         }
@@ -620,4 +639,44 @@ public class PlayerInventory : MonoBehaviour
             return partyCreatureInventory[activePartyIndex];
         }
     }
+    public void GrantTrialRewardsToParty(int xpReward)
+    {
+        // Grant Gacha Pack
+        GachaUIManager.Instance.AddPacks(5);
+
+        // Heal the player
+        PlayerController player = FindObjectOfType<PlayerController>();
+        if (player != null)
+        {
+            player.FullHeal();
+        }
+
+        // Grant rewards to all party creatures (both active and reserve)
+        for (int i = 0; i < partyCreatureInventory.Count; i++)
+        {
+            if (i == activePartyIndex && activeCreatureInstance != null)
+            {
+                // Active creature - apply rewards immediately
+                activeCreatureInstance.FullHeal();
+                activeCreatureInstance.GainXP(xpReward);
+
+                // Update the party data to reflect healing
+                partyCreatureInventory[i].health = activeCreatureInstance.maxHealth;
+            }
+            else
+            {
+                // Reserve creature - store rewards for when they're spawned
+                partyCreatureInventory[i].pendingReward.pendingXP += xpReward;
+                partyCreatureInventory[i].pendingReward.needsHealing = true;
+                partyCreatureInventory[i].health = partyCreatureInventory[i].maxHealth; // Heal immediately
+            }
+        }
+
+        // Refresh UI to show updated stats
+        HotbarUIManager.Instance?.RefreshHotbar();
+        OnActiveCreatureStatsChanged?.Invoke(activeCreatureInstance);
+
+        Debug.Log($"Granted {xpReward} XP to all party creatures and fully healed everyone!");
+    }
+
 }

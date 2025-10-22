@@ -25,7 +25,7 @@ Transform:
   m_GameObject: {fileID: 8013225498239549056}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 4.53, z: 0}
+  m_LocalPosition: {x: 0.03, y: 6.56, z: 6.3}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -663,7 +663,7 @@ MonoBehaviour:
   detectionRange: 10
   attackRange: 2
   rangedOptimalDistance: 4
-  stoppingDistance: 1.5
+  stoppingDistance: 1
   projectilePrefab: {fileID: 6866406518002645043, guid: 361f58df97c491e4d968e2495788896e, type: 3}
   projectileSpawnPoint: {fileID: 4518674147489773985}
   maxDistanceFromPlayer: 10

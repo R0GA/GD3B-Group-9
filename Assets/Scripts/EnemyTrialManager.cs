@@ -8,6 +8,7 @@ public class EnemyTrialManager : MonoBehaviour
     public GameObject[] enemyWaves;
     public GameObject successPanel;
     public GameObject trialWall;
+    public int xpReward = 200;
 
     [Header("UI")]
     public Text waveNameText;
@@ -150,6 +151,11 @@ public class EnemyTrialManager : MonoBehaviour
         if (trialAudioSource != null)
             trialAudioSource.Stop();
 
+        // HEAL AND REWARD THE PLAYER AND PARTY
+        if (PlayerInventory.Instance != null)
+        {
+            PlayerInventory.Instance.GrantTrialRewardsToParty(xpReward);
+        }
 
         if (successPanel != null)
         {

@@ -1701,6 +1701,7 @@ MonoBehaviour:
   successPanel: {fileID: 2095947967}
   failurePanel: {fileID: 1237060928}
   timerScript: {fileID: 1393025737}
+  xpReward: 200
   waveNameText: {fileID: 1699982020}
   waveNameDisplayTime: 3
   waveDelay: 2
@@ -3822,6 +3823,7 @@ MonoBehaviour:
   - {fileID: 1498583525}
   successPanel: {fileID: 1327525573}
   trialWall: {fileID: 1405915506}
+  xpReward: 200
   waveNameText: {fileID: 1699982020}
   waveNameDisplayTime: 3
   waveDelay: 2
@@ -5204,6 +5206,7 @@ MonoBehaviour:
   - {fileID: 511469364}
   successPanel: {fileID: 1327525573}
   trialWall: {fileID: 1524911721}
+  xpReward: 200
   waveNameText: {fileID: 1699982020}
   waveNameDisplayTime: 3
   waveDelay: 2
@@ -17932,7 +17935,12 @@ MonoBehaviour:
   m_Text: 'Success!
 
 
-    Move on to next trial?'
+    You and your party members have been healed as well as
+    given an xp reward as well as some extra creature searches :D
+
+
+    Move on to
+    next trial?'
 --- !u!222 &1077853375
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -18430,6 +18438,7 @@ MonoBehaviour:
   - {fileID: 119802572}
   successPanel: {fileID: 1327525573}
   trialWall: {fileID: 921843589}
+  xpReward: 200
   waveNameText: {fileID: 1699982020}
   waveNameDisplayTime: 3
   waveDelay: 2
@@ -23454,6 +23463,7 @@ MonoBehaviour:
   - {fileID: 927594177}
   successPanel: {fileID: 1327525573}
   trialWall: {fileID: 160837}
+  xpReward: 200
   waveNameText: {fileID: 1699982020}
   waveNameDisplayTime: 3
   waveDelay: 2

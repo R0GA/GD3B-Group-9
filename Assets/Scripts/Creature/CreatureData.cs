@@ -44,4 +44,14 @@ public class CreatureData
             equippedItemIDs.Add(equippedItem.ItemID);
         }
     }
+
+    [System.Serializable]
+    public class PendingReward
+    {
+        public int pendingXP = 0;
+        public bool needsHealing = false;
+    }
+
+    public PendingReward pendingReward = new PendingReward();
 }
+

@@ -378,7 +378,7 @@ MonoBehaviour:
   isMelee: 0
   detectionRange: 10
   attackRange: 7
-  rangedOptimalDistance: 4
+  rangedOptimalDistance: 2
   stoppingDistance: 1.5
   projectilePrefab: {fileID: 6866406518002645043, guid: 361f58df97c491e4d968e2495788896e, type: 3}
   projectileSpawnPoint: {fileID: 1793409375200379325}

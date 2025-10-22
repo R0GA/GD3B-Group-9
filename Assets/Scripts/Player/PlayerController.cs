@@ -649,6 +649,7 @@ public class PlayerController : MonoBehaviour
 
     private void Die()
     {
+        /*
         isDead = true;
 
         // Disable movement and input
@@ -669,6 +670,10 @@ public class PlayerController : MonoBehaviour
 
         // Optional: Restart level or show game over screen after delay
         // Invoke(nameof(GameOver), 3f);
+        */
+
+        SceneManager.LoadScene("Hub");
+        health = maxHealth;
     }
 
     private void GameOver()

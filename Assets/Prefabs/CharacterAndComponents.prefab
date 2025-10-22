@@ -3217,7 +3217,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 1, g: 0.51886785, b: 0.51886785, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -4079,8 +4079,8 @@ MonoBehaviour:
   animator: {fileID: 3613234059041552237}
   cameraTarget: {fileID: 0}
   swordHitbox: {fileID: 5476142577918156701}
-  health: 10000
-  maxHealth: 10000
+  health: 1000
+  maxHealth: 1000
   isDead: 0
 --- !u!114 &406412949793089375
 MonoBehaviour:
@@ -5311,11 +5311,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 9006695931063586153, guid: eafd697b2e7717e498bb839c14700536, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -0.00007280726
+      value: 0.0005855146
       objectReference: {fileID: 0}
     - target: {fileID: 9137942577188822551, guid: eafd697b2e7717e498bb839c14700536, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -0.00007280726
+      value: 0.0005855146
       objectReference: {fileID: 0}
     - target: {fileID: 9203345113628428980, guid: eafd697b2e7717e498bb839c14700536, type: 3}
       propertyPath: m_AnchorMax.y

@@ -720,6 +720,11 @@ public class PlayerController : MonoBehaviour
             }
         }
         OnAttackComplete();
+        CreatureBase active = PlayerInventory.Instance.GetActiveCreature();
+        if(active != null)
+        {
+            active.gameObject.GetComponent<CreatureController>().SetupNavMeshAgent();
+        }
     }
     public static bool IsInHub()
     {

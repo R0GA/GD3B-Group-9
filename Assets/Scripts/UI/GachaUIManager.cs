@@ -112,7 +112,7 @@ public class GachaUIManager : MonoBehaviour
 
     private void UpdatePackDisplay()
     {
-        packCountText.text = $"Packs Available: {availablePacks}";
+        packCountText.text = $"Creature Searches Available: {availablePacks}";
         openPackButton.interactable = availablePacks > 0;
     }
 

@@ -776,8 +776,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1897107540183207223}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.13806584, y: -0.05922871, z: 0.008271627, w: 0.98861593}
-  m_LocalPosition: {x: 0.28500003, y: 0.78, z: -2.36}
+  m_LocalRotation: {x: 0.138066, y: -0.05922871, z: 0.0082716355, w: 0.98861593}
+  m_LocalPosition: {x: 53.985348, y: 53.01782, z: -0.15999913}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -4607,6 +4607,42 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4588741022100324219, guid: 436a40131d831b642a1383b978deb3bd, type: 3}
+      propertyPath: m_Type
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4588741022100324219, guid: 436a40131d831b642a1383b978deb3bd, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: cda3b666a94918c4fb9ad338cf012d58, type: 3}
+    - target: {fileID: 4588741022100324219, guid: 436a40131d831b642a1383b978deb3bd, type: 3}
+      propertyPath: m_Color.a
+      value: 0.7490196
+      objectReference: {fileID: 0}
+    - target: {fileID: 4863219033455862943, guid: 436a40131d831b642a1383b978deb3bd, type: 3}
+      propertyPath: m_Type
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4863219033455862943, guid: 436a40131d831b642a1383b978deb3bd, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: e756a308252e6cd4ca1e3ca878073501, type: 3}
+    - target: {fileID: 4863219033455862943, guid: 436a40131d831b642a1383b978deb3bd, type: 3}
+      propertyPath: m_Color.a
+      value: 0.7490196
+      objectReference: {fileID: 0}
+    - target: {fileID: 5366409014521831838, guid: 436a40131d831b642a1383b978deb3bd, type: 3}
+      propertyPath: m_Type
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5366409014521831838, guid: 436a40131d831b642a1383b978deb3bd, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 30368fb6eabb503438ad842164dcba03, type: 3}
+    - target: {fileID: 5366409014521831838, guid: 436a40131d831b642a1383b978deb3bd, type: 3}
+      propertyPath: m_Color.a
+      value: 0.7490196
+      objectReference: {fileID: 0}
     - target: {fileID: 7048965865244173681, guid: 436a40131d831b642a1383b978deb3bd, type: 3}
       propertyPath: m_Name
       value: GachaCanvas
@@ -5103,7 +5139,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2313613966324279572, guid: eafd697b2e7717e498bb839c14700536, type: 3}
       propertyPath: m_Size
-      value: 0.9999973
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2425000930553216745, guid: eafd697b2e7717e498bb839c14700536, type: 3}
       propertyPath: m_AnchorMax.x
@@ -5131,7 +5167,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3532098705572243396, guid: eafd697b2e7717e498bb839c14700536, type: 3}
       propertyPath: m_Size
-      value: 0.9999973
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3900450349116940980, guid: eafd697b2e7717e498bb839c14700536, type: 3}
       propertyPath: m_AnchorMax.x
@@ -5275,11 +5311,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 9006695931063586153, guid: eafd697b2e7717e498bb839c14700536, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 0.001044067
+      value: -0.00007280726
       objectReference: {fileID: 0}
     - target: {fileID: 9137942577188822551, guid: eafd697b2e7717e498bb839c14700536, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 0.001044067
+      value: -0.00007280726
       objectReference: {fileID: 0}
     - target: {fileID: 9203345113628428980, guid: eafd697b2e7717e498bb839c14700536, type: 3}
       propertyPath: m_AnchorMax.y

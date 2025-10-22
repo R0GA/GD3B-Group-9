@@ -587,7 +587,7 @@ MonoBehaviour:
   attackSpeed: 1
   attackDamage: 1
   elementType: 3
-  icon: {fileID: 21300000, guid: dceffb31695eee94faa55b47b8217def, type: 3}
+  icon: {fileID: 21300000, guid: 0651b8ab85b2f164692e016d81bf4a1c, type: 3}
   level: 1
   currentXP: 0
   xpToNextLevel: 100

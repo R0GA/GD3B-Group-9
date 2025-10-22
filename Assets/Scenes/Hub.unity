@@ -869,8 +869,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: -35}
-  m_SizeDelta: {x: 613.7991, y: 112.2752}
+  m_AnchoredPosition: {x: 0, y: 13}
+  m_SizeDelta: {x: 829.4089, y: 157.14}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &188948996
 MonoBehaviour:
@@ -905,7 +905,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Travel to this world?
+  m_Text: Travel to Ridge Watch of the Victory Road?
 --- !u!222 &188948997
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -1522,8 +1522,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 8}
-  m_SizeDelta: {x: 613.7991, y: 143.14}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 691.5955, y: 143.14}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &495282664
 MonoBehaviour:
@@ -1538,7 +1538,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Text
   m_Material: {fileID: 0}
-  m_Color: {r: 0.19607843, g: 0.19607843, b: 0.19607843, a: 1}
+  m_Color: {r: 0, g: 0, b: 0, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -1558,7 +1558,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Travelling to Happy Meadows?
+  m_Text: Travelling to Cecilia Garden of the Cerulean Cave?
 --- !u!222 &495282665
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -3209,11 +3209,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3180315977240896772, guid: 1e42e0ccb85359f46bb2924bea016faf, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 0.0008753839
+      value: 0.00004340314
       objectReference: {fileID: 0}
     - target: {fileID: 3318177560725091962, guid: 1e42e0ccb85359f46bb2924bea016faf, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 0.0008753839
+      value: 0.00004340314
       objectReference: {fileID: 0}
     - target: {fileID: 3560204780668775847, guid: 1e42e0ccb85359f46bb2924bea016faf, type: 3}
       propertyPath: m_AnchorMax.y
@@ -4292,8 +4292,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: -35}
-  m_SizeDelta: {x: 613.7991, y: 112.2752}
+  m_AnchoredPosition: {x: 0, y: -9.446594}
+  m_SizeDelta: {x: 763.7263, y: 165.1068}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1837701338
 MonoBehaviour:
@@ -4328,7 +4328,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Travel to this world?
+  m_Text: Travel to Hidden Palace of the Safari Zone?
 --- !u!222 &1837701339
 CanvasRenderer:
   m_ObjectHideFlags: 0

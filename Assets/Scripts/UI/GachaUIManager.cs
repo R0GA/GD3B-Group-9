@@ -108,6 +108,7 @@ public class GachaUIManager : MonoBehaviour
     {
         gachaMainPanel.SetActive(false);
         gameObject.SetActive(false);    
+        HotbarUIManager.Instance.OnInventoryStateChanged(false);
     }
 
     private void UpdatePackDisplay()

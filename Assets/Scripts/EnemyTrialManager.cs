@@ -44,7 +44,7 @@ public class EnemyTrialManager : MonoBehaviour
             trialWall.SetActive(true);
 
         if (trialStartText != null)
-            trialStartText.SetActive(true);
+            trialStartText.SetActive(false);
 
         if (waveNameText != null)
             waveNameText.gameObject.SetActive(false);

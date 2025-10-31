@@ -147,7 +147,7 @@ public class EnemyTrialManager : MonoBehaviour
     {
         if (waveNameText != null)
         {
-            waveNameText.text = $"Wave {currentWave + 1}: {name}";
+            waveNameText.text = $"{name}";
             waveNameText.gameObject.SetActive(true);
             CancelInvoke(nameof(HideWaveName));
             Invoke(nameof(HideWaveName), waveNameDisplayTime);

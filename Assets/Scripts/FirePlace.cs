@@ -6,6 +6,12 @@ public class FirePlace : MonoBehaviour
     public GameObject dimPanel;
     private PlayerController playerController;
     private bool isPlayerInZone = false;
+    private AudioSource fireAudio;
+
+    private void Start()
+    {
+        fireAudio = GetComponent<AudioSource>();
+    }
     private void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("Player"))
@@ -17,6 +23,9 @@ public class FirePlace : MonoBehaviour
                 dimPanel.SetActive(false);
                 InvokeRepeating(nameof(HealPlayer), 1f, 1f);
                 Debug.Log("You are warming up, health regenerating!");
+
+                if (fireAudio != null && !fireAudio.isPlaying)
+                    fireAudio.Play();
             }
             
         }
@@ -32,6 +41,9 @@ public class FirePlace : MonoBehaviour
                 dimPanel.SetActive(true);
                 CancelInvoke(nameof(HealPlayer));
                 playerController = null;
+
+                if (fireAudio != null && fireAudio.isPlaying)
+                    fireAudio.Stop();
             }
         }
     }

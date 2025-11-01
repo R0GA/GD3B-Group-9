@@ -50,7 +50,7 @@ public class GachaUIManager : MonoBehaviour
     private List<object> allPossibleResults = new List<object>();
     private Coroutine rollingCoroutine;
     private object finalResult;
-    private int availablePacks = 100; // You can modify this based on your game economy
+    public int availablePacks = 10; 
 
     private void Awake()
     {
@@ -108,11 +108,12 @@ public class GachaUIManager : MonoBehaviour
     {
         gachaMainPanel.SetActive(false);
         gameObject.SetActive(false);    
+        HotbarUIManager.Instance.OnInventoryStateChanged(false);
     }
 
     private void UpdatePackDisplay()
     {
-        packCountText.text = $"Packs Available: {availablePacks}";
+        packCountText.text = $"Creature Searches Available: {availablePacks}";
         openPackButton.interactable = availablePacks > 0;
     }
 

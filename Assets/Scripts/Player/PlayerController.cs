@@ -4,6 +4,7 @@ using Unity.Cinemachine;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine.SceneManagement;
+using System;
 
 public class PlayerController : MonoBehaviour
 {
@@ -623,7 +624,7 @@ public class PlayerController : MonoBehaviour
     {
         if (isGrounded && currentAnimState == 9)
         {
-            //SetAnimationState(0); // Idle
+            SetAnimationState(0); // Idle
             isInLandingState = false;
         }
     }
@@ -649,6 +650,7 @@ public class PlayerController : MonoBehaviour
 
     private void Die()
     {
+        /*
         isDead = true;
 
         // Disable movement and input
@@ -669,6 +671,10 @@ public class PlayerController : MonoBehaviour
 
         // Optional: Restart level or show game over screen after delay
         // Invoke(nameof(GameOver), 3f);
+        */
+
+        SceneManager.LoadScene("Hub");
+        health = maxHealth;
     }
 
     private void GameOver()
@@ -699,20 +705,31 @@ public class PlayerController : MonoBehaviour
     private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
         HotbarUIManager.Instance.RefreshHotbar();
+        
         GameObject spawn = GameObject.FindWithTag("LevelSpawn");
         if (spawn != null)
         {
+            characterController.enabled = false; // Disable to set position
             transform.position = spawn.transform.position;
             transform.rotation = spawn.transform.rotation;
+            characterController.enabled = true; // Re-enable after setting position
         }
         else if (spawn == null)
         {
             spawn = GameObject.FindWithTag("HubSpawn");
             if (spawn != null)
             {
+                characterController.enabled = false; // Disable to set position
                 transform.position = spawn.transform.position;
                 transform.rotation = spawn.transform.rotation;
+                characterController.enabled = true; // Re-enable after setting position
             }
+        }
+        OnAttackComplete();
+        CreatureBase active = PlayerInventory.Instance.GetActiveCreature();
+        if(active != null)
+        {
+            active.gameObject.GetComponent<CreatureController>().SetupNavMeshAgent();
         }
     }
     public static bool IsInHub()

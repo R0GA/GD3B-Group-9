@@ -7,7 +7,9 @@ public class EnemyTrialManager : MonoBehaviour
     [Header("References")]
     public GameObject[] enemyWaves;
     public GameObject successPanel;
+    public GameObject trialStartText;
     public GameObject trialWall;
+    public int xpReward = 200;
 
     [Header("UI")]
     public Text waveNameText;
@@ -17,7 +19,7 @@ public class EnemyTrialManager : MonoBehaviour
     public float waveDelay = 2f;
 
     [Header("Audio")]
-    public AudioSource trialAudioSource;
+    //public AudioSource trialMusic;
 
     private List<GameObject> enemies = new List<GameObject>();
     private int currentWave = 0;
@@ -26,10 +28,13 @@ public class EnemyTrialManager : MonoBehaviour
     private bool waveTransitioning = false;
     void Start()
     {
-        foreach (GameObject wave in enemyWaves)
+        for (int i = 0; i < enemyWaves.Length; i++)
         {
-            if (wave != null)
-                wave.SetActive(false);
+            if (enemyWaves[i] != null)
+            {
+                if (i == 0) continue;
+                enemyWaves[i].SetActive(false);
+            }
         }
 
         if (successPanel != null)
@@ -37,6 +42,9 @@ public class EnemyTrialManager : MonoBehaviour
 
         if (trialWall != null)
             trialWall.SetActive(true);
+
+        if (trialStartText != null)
+            trialStartText.SetActive(false);
 
         if (waveNameText != null)
             waveNameText.gameObject.SetActive(false);
@@ -76,8 +84,8 @@ public class EnemyTrialManager : MonoBehaviour
     public void StartTrial()
     {
 
-        if (trialAudioSource != null)
-            trialAudioSource.Play();
+        
+        //trialMusic.Play();
 
 
         if (trialActive) return;
@@ -86,12 +94,16 @@ public class EnemyTrialManager : MonoBehaviour
         trialComplete = false;
         currentWave = 0;
 
+        Debug.Log("Trial started!");
+
+        if (trialStartText != null)
+        {
+            trialStartText.SetActive(true);
+            Invoke(nameof(HideTrialStartText), 2f);
+        }
+
+        RegisterActiveEnemies(enemyWaves[0]);
         
-
-
-        ActivateWave(currentWave);
-
-        Debug.Log("Trial started! First wave activated.");
     }
 
     private void StartNextWave()
@@ -110,12 +122,7 @@ public class EnemyTrialManager : MonoBehaviour
         if (wave != null)
         {
             wave.SetActive(true);
-
-            foreach (Transform child in wave.transform)
-            {
-                if (child.gameObject != null)
-                    enemies.Add(child.gameObject);
-            }
+            RegisterActiveEnemies(wave);
 
             string waveName = wave.name;
             Debug.Log($" Wave {index + 1} - \"{wave.name}\" activated with {enemies.Count} enemies.");
@@ -127,11 +134,20 @@ public class EnemyTrialManager : MonoBehaviour
     
     }
 
+    private void RegisterActiveEnemies(GameObject wave)
+    {
+        foreach (Transform child in wave.transform)
+        {
+            if (child.gameObject != null)
+                enemies.Add(child.gameObject);
+        }
+    }
+
     private void ShowWaveName(string name)
     {
         if (waveNameText != null)
         {
-            waveNameText.text = $"Wave {currentWave + 1}: {name}";
+            waveNameText.text = $"{name}";
             waveNameText.gameObject.SetActive(true);
             CancelInvoke(nameof(HideWaveName));
             Invoke(nameof(HideWaveName), waveNameDisplayTime);
@@ -143,13 +159,24 @@ public class EnemyTrialManager : MonoBehaviour
         if (waveNameText != null)
             waveNameText.gameObject.SetActive(false);
     }
+
+    private void HideTrialStartText()
+    {
+        if (trialStartText != null)
+            trialStartText.SetActive(false);
+    }
     private void OnTrialComplete()
     {
         Debug.Log("Trial complete! All waves cleared.");
 
-        if (trialAudioSource != null)
-            trialAudioSource.Stop();
+        //trialMusic.Stop();
+        
 
+        // HEAL AND REWARD THE PLAYER AND PARTY
+        if (PlayerInventory.Instance != null)
+        {
+            PlayerInventory.Instance.GrantTrialRewardsToParty(xpReward);
+        }
 
         if (successPanel != null)
         {

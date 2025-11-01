@@ -40,6 +40,13 @@ public class CreatureController : MonoBehaviour
         creatureBase = GetComponent<CreatureBase>();
         navMeshAgent = GetComponent<NavMeshAgent>();
 
+        
+
+        SetupNavMeshAgent();
+    }
+
+    public void SetupNavMeshAgent()
+    {
         // Find player transform
         GameObject player = GameObject.FindGameObjectWithTag("Player");
         if (player != null)
@@ -73,11 +80,6 @@ public class CreatureController : MonoBehaviour
             }
         }
 
-        SetupNavMeshAgent();
-    }
-
-    private void SetupNavMeshAgent()
-    {
         if (navMeshAgent != null)
         {
             navMeshAgent.speed = creatureBase.speed;
@@ -495,6 +497,20 @@ public class CreatureController : MonoBehaviour
         // Check if it's time to perform teleport check
         if (Time.time - lastTeleportCheckTime < teleportCheckInterval)
             return;
+
+        if (!navMeshAgent.isOnNavMesh)
+        {
+            SetupNavMeshAgent();
+            NavMeshHit hit;
+            if (NavMesh.SamplePosition(navMeshAgent.transform.position, out hit, 10f, NavMesh.AllAreas))
+            {
+                navMeshAgent.Warp(hit.position);
+            }
+            else
+            {
+                Debug.LogWarning("Agent could not reconnect to NavMesh in new scene.");
+            }
+        }
 
         lastTeleportCheckTime = Time.time;
 

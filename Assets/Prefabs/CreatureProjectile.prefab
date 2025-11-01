@@ -129,7 +129,7 @@ MonoBehaviour:
   impactEffect: {fileID: 0}
   collisionLayers:
     serializedVersion: 2
-    m_Bits: 7287
+    m_Bits: 7232
 --- !u!54 &3400875697824149437
 Rigidbody:
   m_ObjectHideFlags: 0

@@ -40,6 +40,7 @@ public class CreatureBase : MonoBehaviour
     // Unique ID for each creature instance
     [SerializeField] private string creatureID;
     [SerializeField] private ParticleSystem hurtParticles;
+    [SerializeField] private GameObject friendlyIndicator;
 
     [Header("Damage Numbers")]
     [SerializeField] private GameObject floatingDamageNumberPrefab;
@@ -106,6 +107,17 @@ public class CreatureBase : MonoBehaviour
         ScaleStatsWithLevel();
         if (!isPlayerCreature)
             health = maxHealth;
+
+        if (isPlayerCreature)
+        {
+            if (friendlyIndicator != null)
+                friendlyIndicator.SetActive(true);
+        }
+        else
+        {
+            if (friendlyIndicator != null)
+                friendlyIndicator.SetActive(false);
+        }
     }
 
     // Generate a new unique ID for this creature

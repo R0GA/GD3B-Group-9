@@ -7,78 +7,132 @@ public class TimedTrialManager : MonoBehaviour
     [Header("References")]
     public GameObject[] enemyWaves;
     public GameObject successPanel;
-    public GameObject failurePanel;  
-    //public GameObject trialWall;
-    public TrialTimer timerScript;   
-    public int xpReward = 200;
+    public GameObject trialStartText;
+    public GameObject trialWall;
+    public GameObject invisibleWall;
+    public TrialTimer trialTimer;
+    public int xpReward = 500;
 
     [Header("UI")]
+    public GameObject bossIntroPanel;
+    public Button startTrialButton; 
     public Text waveNameText;
     public float waveNameDisplayTime = 3f;
 
     [Header("Wave Delay")]
     public float waveDelay = 2f;
 
-    [Header("Audio")]
-    public AudioSource trialAudioSource;
-
     private List<GameObject> enemies = new List<GameObject>();
     private int currentWave = 0;
     private bool trialActive = false;
     private bool trialComplete = false;
     private bool waveTransitioning = false;
+    private bool trialFailed = false;
 
     void Start()
     {
-        foreach (GameObject wave in enemyWaves)
+        for (int i = 0; i < enemyWaves.Length; i++)
         {
-            if (wave != null)
-                wave.SetActive(false);
+            if (enemyWaves[i] != null)
+            {
+                if (i == 0) continue;
+                enemyWaves[i].SetActive(false);
+            }
         }
 
         if (successPanel != null)
             successPanel.SetActive(false);
 
-        if (failurePanel != null)
-            failurePanel.SetActive(false);
+        if (trialWall != null)
+            trialWall.SetActive(true);
 
-        /*if (trialWall != null)
-            trialWall.SetActive(true);*/
+        if (trialStartText != null)
+            trialStartText.SetActive(false);
 
         if (waveNameText != null)
             waveNameText.gameObject.SetActive(false);
 
-        if (timerScript != null && timerScript.gameOverPanel != null)
-            timerScript.gameOverPanel.SetActive(false);
+        if (trialTimer != null)
+            trialTimer.gameObject.SetActive(false);
+
+        if (bossIntroPanel != null)
+            bossIntroPanel.SetActive(false);
+
+        if (invisibleWall != null)
+            invisibleWall.SetActive(true); 
+
+        if (startTrialButton != null)
+            startTrialButton.onClick.AddListener(OnStartTrialButtonPressed);
+    }
+
+    
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.CompareTag("Player") && !trialActive)
+        {
+            if (bossIntroPanel != null)
+                bossIntroPanel.SetActive(true);
+
+            if (invisibleWall != null)
+                invisibleWall.SetActive(true);
+        }
+    }
+
+    public void OnStartTrialButtonPressed()
+    {
+        if (bossIntroPanel != null)
+            bossIntroPanel.SetActive(false);
+
+        if (invisibleWall != null)
+            invisibleWall.SetActive(false);
+
+        StartTrial();
+    }
+
+    public void StartTrial()
+    {
+        if (trialActive) return;
+
+        trialActive = true;
+        trialComplete = false;
+        trialFailed = false;
+        currentWave = 0;
+
+        Debug.Log("Boss trial started!");
+
+        if (trialStartText != null)
+        {
+            trialStartText.SetActive(true);
+            Invoke(nameof(HideTrialStartText), 2f);
+        }
+
+        if (trialTimer != null)
+        {
+            trialTimer.gameObject.SetActive(true);
+        }
+
+        RegisterActiveEnemies(enemyWaves[0]);
     }
 
     void Update()
     {
-        if (!trialActive || trialComplete || waveTransitioning)
+        if (!trialActive || trialComplete || waveTransitioning || trialFailed)
             return;
 
-        
-        if (timerScript != null && timerScript.timer <= 0)
+        enemies.RemoveAll(e => e == null || !e.activeInHierarchy);
+
+        if (trialTimer != null && trialTimer.timer <= 0 && !trialComplete)
         {
-            OnTrialFailed();
+            TrialFailed();
             return;
         }
 
-        //Remove all destroyed enemies
-        enemies.RemoveAll(e => e == null || !e.activeInHierarchy);
-
-        
         if (enemies.Count == 0 && currentWave < enemyWaves.Length)
         {
-            string defeatedWaveName = enemyWaves[currentWave].name;
-            Debug.Log($"{defeatedWaveName} defeated!");
-
             currentWave++;
-
             if (currentWave < enemyWaves.Length)
             {
                 waveTransitioning = true;
-                Debug.Log($"Waiting {waveDelay} seconds before next wave");
                 Invoke(nameof(StartNextWave), waveDelay);
             }
             else
@@ -89,65 +143,39 @@ public class TimedTrialManager : MonoBehaviour
         }
     }
 
-    public void StartTrial()
-    {
-
-        if (trialAudioSource != null)
-            trialAudioSource.Play();
-
-
-        if (trialActive) return;
-
-        trialActive = true;
-        trialComplete = false;
-        currentWave = 0;
-
-        //Starts the timer
-        if (timerScript != null)
-        {
-            timerScript.enabled = true;
-        }
-
-        ActivateWave(currentWave);
-
-        Debug.Log("Timed Trial started! First wave activated.");
-    }
-
     private void StartNextWave()
     {
         waveTransitioning = false;
         ActivateWave(currentWave);
+        if (trialTimer != null)
+            trialTimer.AddTime();
     }
 
     private void ActivateWave(int index)
     {
         if (index >= enemyWaves.Length) return;
-
         enemies.Clear();
 
         GameObject wave = enemyWaves[index];
         if (wave != null)
         {
             wave.SetActive(true);
-
-            foreach (Transform child in wave.transform)
-            {
-                if (child.gameObject != null)
-                    enemies.Add(child.gameObject);
-            }
-
-            string waveName = wave.name;
-            Debug.Log($"Wave {index + 1} - \"{wave.name}\" activated with {enemies.Count} enemies.");
-
-            ShowWaveName(waveName);
+            RegisterActiveEnemies(wave);
+            ShowWaveName(wave.name);
         }
+    }
+
+    private void RegisterActiveEnemies(GameObject wave)
+    {
+        foreach (Transform child in wave.transform)
+            enemies.Add(child.gameObject);
     }
 
     private void ShowWaveName(string name)
     {
         if (waveNameText != null)
         {
-            waveNameText.text = $"Wave {currentWave + 1}: {name}";
+            waveNameText.text = $"{name}";
             waveNameText.gameObject.SetActive(true);
             CancelInvoke(nameof(HideWaveName));
             Invoke(nameof(HideWaveName), waveNameDisplayTime);
@@ -156,53 +184,39 @@ public class TimedTrialManager : MonoBehaviour
 
     private void HideWaveName()
     {
-        if (waveNameText != null)
-            waveNameText.gameObject.SetActive(false);
+        waveNameText.gameObject.SetActive(false);
+    }
+    private void HideTrialStartText()
+    {
+        trialStartText.SetActive(false);
     }
 
     private void OnTrialComplete()
     {
-        Debug.Log("Timed Trial complete! All waves cleared.");
+        Debug.Log("Boss defeated!");
+        trialTimer?.gameObject.SetActive(false);
+        successPanel?.SetActive(true);
+        trialWall?.SetActive(false);
 
-        if (trialAudioSource != null)
-            trialAudioSource.Stop();
-
-        // HEAL AND REWARD THE PLAYER AND PARTY
         if (PlayerInventory.Instance != null)
-        {
             PlayerInventory.Instance.GrantTrialRewardsToParty(xpReward);
-        }
-
-        if (successPanel != null)
-            successPanel.SetActive(true);
-
-        /*if (trialWall != null)
-            trialWall.SetActive(false);*/
-
-        if (timerScript != null)
-            timerScript.enabled = false;
     }
 
-    private void OnTrialFailed()
+    private void TrialFailed()
     {
-        if (trialComplete) return;
-
+        Debug.Log("Boss trial failed — time ran out!");
+        trialFailed = true;
         trialActive = false;
-        trialComplete = true;
-        Debug.Log("Timed Trial failed! Time ran out.");
 
-        if (failurePanel != null)
-            failurePanel.SetActive(true);
+        foreach (var wave in enemyWaves)
+            if (wave != null) wave.SetActive(false);
 
-        /*if (trialWall != null)
-            trialWall.SetActive(false);*/
+        if (trialTimer != null && trialTimer.gameOverPanel != null)
+            trialTimer.gameOverPanel.SetActive(true);
     }
 
     public void Continue()
     {
-        if (successPanel != null)
-            successPanel.SetActive(false);
-        if (failurePanel != null)
-            failurePanel.SetActive(false);
+        successPanel.SetActive(false);
     }
 }

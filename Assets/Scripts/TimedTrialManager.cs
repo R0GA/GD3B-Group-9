@@ -12,6 +12,7 @@ public class TimedTrialManager : MonoBehaviour
     public GameObject invisibleWall;
     public TrialTimer trialTimer;
     public int xpReward = 500;
+    public Transform rewardSpawn;
 
     [Header("UI")]
     public GameObject bossIntroPanel;
@@ -249,9 +250,13 @@ public class TimedTrialManager : MonoBehaviour
 
     private Vector3 GetRewardSpawnPosition()
     {
-        // Find a central position in the trial arena
-        // You might want to create an empty GameObject in your trial scene as a reward spawn point
-        GameObject rewardSpawnPoint = GameObject.FindGameObjectWithTag("RewardSpawn");
+        GameObject rewardSpawnPoint;
+
+        if (rewardSpawn != null)
+            rewardSpawnPoint = rewardSpawn.gameObject;
+        else
+            rewardSpawnPoint = gameObject;
+
         if (rewardSpawnPoint != null)
         {
             return rewardSpawnPoint.transform.position;

@@ -342,8 +342,8 @@ public class CreatureBase : MonoBehaviour
         }
         else
         {
-            // Enemy creature dies - destroy and grant XP
-            GrantXPToPlayer();
+            // Enemy creature dies - drop XP orb and destroy
+            DropXPOrb();
             Destroy(gameObject);
         }
 
@@ -391,6 +391,29 @@ public class CreatureBase : MonoBehaviour
         level = Mathf.Clamp(targetLevel, 1, 30);
         ScaleStatsWithLevel();
         health = maxHealth;
+    }
+    private void DropXPOrb()
+    {
+        // Calculate XP reward based on level
+        int xpReward = Mathf.RoundToInt(10 * level * UnityEngine.Random.Range(0.8f, 1.2f));
+
+        // Load XP orb prefab
+        GameObject xpOrbPrefab = Resources.Load<GameObject>("Collectibles/XPOrb");
+        if (xpOrbPrefab != null)
+        {
+            Vector3 spawnPosition = transform.position + new Vector3(0, 0.5f, 0);
+            GameObject xpOrb = Instantiate(xpOrbPrefab, spawnPosition, Quaternion.identity);
+
+            XPOrb xpOrbComponent = xpOrb.GetComponent<XPOrb>();
+            if (xpOrbComponent != null)
+            {
+                xpOrbComponent.xpAmount = xpReward;
+            }
+        }
+        else
+        {
+            Debug.LogWarning("XPOrb prefab not found in Resources/Collectibles/");
+        }
     }
 }
 

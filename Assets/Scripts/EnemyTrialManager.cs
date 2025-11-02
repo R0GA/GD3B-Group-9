@@ -175,7 +175,7 @@ public class EnemyTrialManager : MonoBehaviour
         // HEAL AND REWARD THE PLAYER AND PARTY
         if (PlayerInventory.Instance != null)
         {
-            PlayerInventory.Instance.GrantTrialRewardsToParty(xpReward);
+            SpawnTrialRewards();
         }
 
         if (successPanel != null)
@@ -196,5 +196,46 @@ public class EnemyTrialManager : MonoBehaviour
         if (successPanel != null)
             successPanel.SetActive(false);
         
+    }
+    private void SpawnTrialRewards()
+    {
+        Vector3 rewardSpawnPosition = GetRewardSpawnPosition();
+
+        // Spawn Super XP Orb
+        GameObject superXPOrbPrefab = Resources.Load<GameObject>("Collectibles/SuperXPOrb");
+        if (superXPOrbPrefab != null)
+        {
+            Instantiate(superXPOrbPrefab, rewardSpawnPosition, Quaternion.identity);
+        }
+
+        // Spawn Heal Item (offset position)
+        GameObject healItemPrefab = Resources.Load<GameObject>("Collectibles/HealItem");
+        if (healItemPrefab != null)
+        {
+            Vector3 healSpawnPos = rewardSpawnPosition + new Vector3(2f, 0, 0);
+            Instantiate(healItemPrefab, healSpawnPos, Quaternion.identity);
+        }
+
+        // Spawn Loot Bag (offset position)
+        GameObject lootBagPrefab = Resources.Load<GameObject>("Collectibles/LootBag");
+        if (lootBagPrefab != null)
+        {
+            Vector3 lootSpawnPos = rewardSpawnPosition + new Vector3(-2f, 0, 0);
+            Instantiate(lootBagPrefab, lootSpawnPos, Quaternion.identity);
+        }
+    }
+
+    private Vector3 GetRewardSpawnPosition()
+    {
+        // Find a central position in the trial arena
+        // You might want to create an empty GameObject in your trial scene as a reward spawn point
+        GameObject rewardSpawnPoint = GameObject.FindGameObjectWithTag("RewardSpawn");
+        if (rewardSpawnPoint != null)
+        {
+            return rewardSpawnPoint.transform.position;
+        }
+
+        // Fallback to trial manager position
+        return transform.position;
     }
 }

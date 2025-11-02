@@ -679,4 +679,53 @@ public class PlayerInventory : MonoBehaviour
         Debug.Log($"Granted {xpReward} XP to all party creatures and fully healed everyone!");
     }
 
+    public void GrantXPToAllPartyCreatures(int xpAmount)
+    {
+        // Grant XP to all party creatures (both active and reserve)
+        for (int i = 0; i < partyCreatureInventory.Count; i++)
+        {
+            if (i == activePartyIndex && activeCreatureInstance != null)
+            {
+                // Active creature - apply immediately
+                activeCreatureInstance.GainXP(xpAmount);
+            }
+            else
+            {
+                // Reserve creature - store rewards for when they're spawned
+                partyCreatureInventory[i].pendingReward.pendingXP += xpAmount;
+            }
+        }
+
+        Debug.Log($"Granted {xpAmount} XP to all party creatures!");
+    }
+
+    public void HealParty()
+    {
+        // Heal the player
+        PlayerController player = FindObjectOfType<PlayerController>();
+        if (player != null)
+        {
+            player.FullHeal();
+        }
+
+        // Heal all party creatures
+        for (int i = 0; i < partyCreatureInventory.Count; i++)
+        {
+            if (i == activePartyIndex && activeCreatureInstance != null)
+            {
+                // Active creature - heal immediately
+                activeCreatureInstance.FullHeal();
+                partyCreatureInventory[i].health = activeCreatureInstance.maxHealth;
+            }
+            else
+            {
+                // Reserve creature - mark for healing
+                partyCreatureInventory[i].pendingReward.needsHealing = true;
+                partyCreatureInventory[i].health = partyCreatureInventory[i].maxHealth;
+            }
+        }
+
+        Debug.Log("Party fully healed!");
+    }
+
 }

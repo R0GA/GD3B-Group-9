@@ -2082,7 +2082,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Unity.Cinemachine::Unity.Cinemachine.CinemachineThirdPersonFollow
   Damping: {x: 0.1, y: 0.1, z: 0.1}
-  ShoulderOffset: {x: 0.5, y: -0.07, z: 0.14}
+  ShoulderOffset: {x: 1.19, y: -0.07, z: 0.14}
   VerticalArmLength: 0.75
   CameraSide: 0.785
   CameraDistance: 2.5
@@ -2117,7 +2117,7 @@ MonoBehaviour:
       Size: {x: 0.8, y: 0.8}
       Offset: {x: 0, y: 0}
   CenterOnActivate: 1
-  TargetOffset: {x: 0, y: 0, z: 0}
+  TargetOffset: {x: 0.73, y: 0, z: 0}
   Damping: {x: 0, y: 0}
   Lookahead:
     Enabled: 1

@@ -23,6 +23,8 @@ public class CreatureBase : MonoBehaviour
     [SerializeField] private AnimationCurve xpCurve = new AnimationCurve(new Keyframe(1, 50), new Keyframe(30, 800));
     [SerializeField] private AnimationCurve statGrowthCurve = new AnimationCurve(new Keyframe(1, 1.0f), new Keyframe(30, 3.0f));
     float playerCreatureModifier = 5;
+    public ParticleSystem levelParticles;
+    public AudioSource levelAudio;
 
     [Header("Base Stats (Level 1)")]
     [SerializeField] private float baseMaxHealth = 100f;
@@ -302,6 +304,8 @@ public class CreatureBase : MonoBehaviour
     {
         currentXP -= xpToNextLevel;
         level++;
+        levelParticles?.Play();
+        levelAudio?.Play();
 
         // Store old max health before leveling up
         float oldMaxHealth = maxHealth;

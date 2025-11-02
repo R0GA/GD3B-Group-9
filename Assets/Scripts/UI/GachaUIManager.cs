@@ -269,9 +269,9 @@ public class GachaUIManager : MonoBehaviour
 
             string stats = "";
             if (item.HealthModifierPercent != 0)
-                stats += $"HP % Mod: {item.HealthModifierPercent:+#;-#}\n";
+                stats += $"HP % Mod: {(item.HealthModifierPercent >= 0 ? "+" : "")}{item.HealthModifierPercent:P0}\n";
             if (item.DamageModifierPercent != 0)
-                stats += $"Damage % Mod: {item.DamageModifierPercent:+#;-#}\n";
+                stats += $"DMG Mod: {(item.DamageModifierPercent >= 0 ? "+" : "")}{item.HealthModifierPercent:P0}\n";
             stats += $"Element: {item.ElementType}";
 
             itemStatsText.text = stats;

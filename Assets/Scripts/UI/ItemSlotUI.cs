@@ -29,9 +29,10 @@ public class ItemSlotUI : MonoBehaviour
         // Show stats
         string stats = "";
         if (itemData.HealthModifierPercent != 0)
-            stats += $"HP % Mod: {itemData.HealthModifierPercent:+0;-0}\n";
+            stats += $"HP Mod: {(item.HealthModifierPercent >= 0 ? "+" : "")}{item.HealthModifierPercent:P0}\n";
         if (itemData.DamageModifierPercent != 0)
-            stats += $"DMG % Mod: {itemData.DamageModifierPercent:+0;-0}";
+            stats += $"DMG Mod: {(item.DamageModifierPercent >= 0 ? "+" : "")}{item.HealthModifierPercent:P0}\n";
+
 
         statsText.text = stats;
 

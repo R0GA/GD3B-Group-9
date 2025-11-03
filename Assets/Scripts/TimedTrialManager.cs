@@ -7,6 +7,7 @@ public class TimedTrialManager : MonoBehaviour
     [Header("References")]
     public GameObject[] enemyWaves;
     public GameObject successPanel;
+    public GameObject timerText;
     public GameObject trialStartText;
     public GameObject trialWall;
     public GameObject invisibleWall;
@@ -52,6 +53,9 @@ public class TimedTrialManager : MonoBehaviour
 
         if (trialStartText != null)
             trialStartText.SetActive(false);
+
+        if (timerText  != null)
+            timerText.SetActive(false);
 
         if (waveNameText != null)
             waveNameText.gameObject.SetActive(false);
@@ -105,6 +109,11 @@ public class TimedTrialManager : MonoBehaviour
         currentWave = 0;
 
         Debug.Log("Boss trial started!");
+
+        if (timerText  != null)
+        {
+            timerText.SetActive(true);
+        }
 
         if (trialStartText != null)
         {
@@ -202,6 +211,7 @@ public class TimedTrialManager : MonoBehaviour
         //trialMusic.Stop();
 
         Debug.Log("Boss defeated!");
+        timerText?.SetActive(false);
         trialTimer?.gameObject.SetActive(false);
         successPanel?.SetActive(true);
         trialWall?.SetActive(false);

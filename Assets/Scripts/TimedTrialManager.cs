@@ -22,6 +22,9 @@ public class TimedTrialManager : MonoBehaviour
     [Header("Wave Delay")]
     public float waveDelay = 2f;
 
+    [Header("Audio")]
+    //public AudioSource trialMusic;
+
     private List<GameObject> enemies = new List<GameObject>();
     private int currentWave = 0;
     private bool trialActive = false;
@@ -91,6 +94,8 @@ public class TimedTrialManager : MonoBehaviour
 
     public void StartTrial()
     {
+        //trialMusic.Play();
+
         if (trialActive) return;
 
         trialActive = true;
@@ -193,11 +198,14 @@ public class TimedTrialManager : MonoBehaviour
 
     private void OnTrialComplete()
     {
+        //trialMusic.Stop();
+
         Debug.Log("Boss defeated!");
         trialTimer?.gameObject.SetActive(false);
         successPanel?.SetActive(true);
         trialWall?.SetActive(false);
 
+        // HEAL AND REWARD THE PLAYER AND PARTY
         if (PlayerInventory.Instance != null)
             PlayerInventory.Instance.GrantTrialRewardsToParty(xpReward);
     }

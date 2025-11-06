@@ -288,19 +288,19 @@ public class CreatureUIController : MonoBehaviour
             {
                 case ElementType.Fire:
                     elementIcon.sprite = fireIcon;
-                    elementIcon.color = Color.red;
+                    //elementIcon.color = Color.red;
                     break;
                 case ElementType.Water:
                     elementIcon.sprite = waterIcon;
-                    elementIcon.color = Color.blue;
+                    //elementIcon.color = Color.blue;
                     break;
                 case ElementType.Grass:
                     elementIcon.sprite = grassIcon;
-                    elementIcon.color = Color.green;
+                    //elementIcon.color = Color.green;
                     break;
                 default:
                     elementIcon.sprite = defaultIcon;
-                    elementIcon.color = Color.white;
+                    //elementIcon.color = Color.white;
                     break;
             }
         }

@@ -535,6 +535,8 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+  levelParticles: {fileID: 0}
+  levelAudio: {fileID: 0}
   baseMaxHealth: 100
   baseSpeed: 35
   baseAttackSpeed: 3

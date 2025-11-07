@@ -8,8 +8,10 @@ public class EnemyTrialManager : MonoBehaviour
     public GameObject[] enemyWaves;
     public GameObject successPanel;
     public GameObject trialStartText;
+    public GameObject lootPrompt;
     public GameObject trialWall;
     public int xpReward = 200;
+    public Transform rewardSpawn;
 
     [Header("UI")]
     public Text waveNameText;
@@ -39,6 +41,9 @@ public class EnemyTrialManager : MonoBehaviour
 
         if (successPanel != null)
             successPanel.SetActive(false);
+
+        if (lootPrompt != null)
+            lootPrompt.SetActive(false);
 
         if (trialWall != null)
             trialWall.SetActive(true);
@@ -175,13 +180,19 @@ public class EnemyTrialManager : MonoBehaviour
         // HEAL AND REWARD THE PLAYER AND PARTY
         if (PlayerInventory.Instance != null)
         {
-            PlayerInventory.Instance.GrantTrialRewardsToParty(xpReward);
+            SpawnTrialRewards();
         }
 
         if (successPanel != null)
         {
             successPanel.SetActive(true);
             Debug.Log("Success panel activated.");
+        }
+
+        if (lootPrompt != null)
+        {
+            lootPrompt.SetActive(true);
+            Debug.Log("Loot is ready");
         }
 
         if (trialWall != null)
@@ -196,5 +207,50 @@ public class EnemyTrialManager : MonoBehaviour
         if (successPanel != null)
             successPanel.SetActive(false);
         
+    }
+    private void SpawnTrialRewards()
+    {
+        Vector3 rewardSpawnPosition = GetRewardSpawnPosition();
+
+        // Spawn Super XP Orb
+        GameObject superXPOrbPrefab = Resources.Load<GameObject>("Collectibles/SuperXPOrb");
+        if (superXPOrbPrefab != null)
+        {
+            Instantiate(superXPOrbPrefab, rewardSpawnPosition, Quaternion.identity);
+        }
+
+        // Spawn Heal Item (offset position)
+        GameObject healItemPrefab = Resources.Load<GameObject>("Collectibles/HealItem");
+        if (healItemPrefab != null)
+        {
+            Vector3 healSpawnPos = rewardSpawnPosition + new Vector3(2f, 0, 0);
+            Instantiate(healItemPrefab, healSpawnPos, Quaternion.identity);
+        }
+
+        // Spawn Loot Bag (offset position)
+        GameObject lootBagPrefab = Resources.Load<GameObject>("Collectibles/LootBag");
+        if (lootBagPrefab != null)
+        {
+            Vector3 lootSpawnPos = rewardSpawnPosition + new Vector3(-2f, 0, 0);
+            Instantiate(lootBagPrefab, lootSpawnPos, Quaternion.identity);
+        }
+    }
+
+    private Vector3 GetRewardSpawnPosition()
+    {
+        GameObject rewardSpawnPoint;
+
+        if (rewardSpawn != null)
+            rewardSpawnPoint = rewardSpawn.gameObject;
+        else
+            rewardSpawnPoint = gameObject;
+
+        if (rewardSpawnPoint != null)
+        {
+            return rewardSpawnPoint.transform.position;
+        }
+
+        // Fallback to trial manager position
+        return transform.position;
     }
 }

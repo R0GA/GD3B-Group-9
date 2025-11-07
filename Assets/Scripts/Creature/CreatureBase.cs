@@ -23,6 +23,8 @@ public class CreatureBase : MonoBehaviour
     [SerializeField] private AnimationCurve xpCurve = new AnimationCurve(new Keyframe(1, 50), new Keyframe(30, 800));
     [SerializeField] private AnimationCurve statGrowthCurve = new AnimationCurve(new Keyframe(1, 1.0f), new Keyframe(30, 3.0f));
     float playerCreatureModifier = 5;
+    public ParticleSystem levelParticles;
+    public AudioSource levelAudio;
 
     [Header("Base Stats (Level 1)")]
     [SerializeField] private float baseMaxHealth = 100f;
@@ -40,7 +42,7 @@ public class CreatureBase : MonoBehaviour
     // Unique ID for each creature instance
     [SerializeField] private string creatureID;
     [SerializeField] private ParticleSystem hurtParticles;
-    [SerializeField] private GameObject friendlyIndicator;
+    [SerializeField] private Image friendlyIndicator;
 
     [Header("Damage Numbers")]
     [SerializeField] private GameObject floatingDamageNumberPrefab;
@@ -111,12 +113,12 @@ public class CreatureBase : MonoBehaviour
         if (isPlayerCreature)
         {
             if (friendlyIndicator != null)
-                friendlyIndicator.SetActive(true);
+                friendlyIndicator.color = Color.green;
         }
         else
         {
             if (friendlyIndicator != null)
-                friendlyIndicator.SetActive(false);
+                friendlyIndicator.color = Color.red;
         }
     }
 
@@ -302,6 +304,8 @@ public class CreatureBase : MonoBehaviour
     {
         currentXP -= xpToNextLevel;
         level++;
+        levelParticles?.Play();
+        levelAudio?.Play();
 
         // Store old max health before leveling up
         float oldMaxHealth = maxHealth;
@@ -338,8 +342,8 @@ public class CreatureBase : MonoBehaviour
         }
         else
         {
-            // Enemy creature dies - destroy and grant XP
-            GrantXPToPlayer();
+            // Enemy creature dies - drop XP orb and destroy
+            DropXPOrb();
             Destroy(gameObject);
         }
 
@@ -387,6 +391,29 @@ public class CreatureBase : MonoBehaviour
         level = Mathf.Clamp(targetLevel, 1, 30);
         ScaleStatsWithLevel();
         health = maxHealth;
+    }
+    private void DropXPOrb()
+    {
+        // Calculate XP reward based on level
+        int xpReward = Mathf.RoundToInt(10 * level * UnityEngine.Random.Range(0.8f, 1.2f));
+
+        // Load XP orb prefab
+        GameObject xpOrbPrefab = Resources.Load<GameObject>("Collectibles/XPOrb");
+        if (xpOrbPrefab != null)
+        {
+            Vector3 spawnPosition = transform.position + new Vector3(0, 0.5f, 0);
+            GameObject xpOrb = Instantiate(xpOrbPrefab, spawnPosition, Quaternion.identity);
+
+            XPOrb xpOrbComponent = xpOrb.GetComponent<XPOrb>();
+            if (xpOrbComponent != null)
+            {
+                xpOrbComponent.xpAmount = xpReward;
+            }
+        }
+        else
+        {
+            Debug.LogWarning("XPOrb prefab not found in Resources/Collectibles/");
+        }
     }
 }
 

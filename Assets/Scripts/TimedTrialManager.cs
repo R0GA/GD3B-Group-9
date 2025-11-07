@@ -7,11 +7,13 @@ public class TimedTrialManager : MonoBehaviour
     [Header("References")]
     public GameObject[] enemyWaves;
     public GameObject successPanel;
+    public GameObject timerText;
     public GameObject trialStartText;
     public GameObject trialWall;
     public GameObject invisibleWall;
     public TrialTimer trialTimer;
     public int xpReward = 500;
+    public Transform rewardSpawn;
 
     [Header("UI")]
     public GameObject bossIntroPanel;
@@ -21,6 +23,9 @@ public class TimedTrialManager : MonoBehaviour
 
     [Header("Wave Delay")]
     public float waveDelay = 2f;
+
+    [Header("Audio")]
+    //public AudioSource trialMusic;
 
     private List<GameObject> enemies = new List<GameObject>();
     private int currentWave = 0;
@@ -48,6 +53,9 @@ public class TimedTrialManager : MonoBehaviour
 
         if (trialStartText != null)
             trialStartText.SetActive(false);
+
+        if (timerText  != null)
+            timerText.SetActive(false);
 
         if (waveNameText != null)
             waveNameText.gameObject.SetActive(false);
@@ -91,6 +99,8 @@ public class TimedTrialManager : MonoBehaviour
 
     public void StartTrial()
     {
+        //trialMusic.Play();
+
         if (trialActive) return;
 
         trialActive = true;
@@ -99,6 +109,11 @@ public class TimedTrialManager : MonoBehaviour
         currentWave = 0;
 
         Debug.Log("Boss trial started!");
+
+        if (timerText  != null)
+        {
+            timerText.SetActive(true);
+        }
 
         if (trialStartText != null)
         {
@@ -193,13 +208,17 @@ public class TimedTrialManager : MonoBehaviour
 
     private void OnTrialComplete()
     {
+        //trialMusic.Stop();
+
         Debug.Log("Boss defeated!");
+        timerText?.SetActive(false);
         trialTimer?.gameObject.SetActive(false);
         successPanel?.SetActive(true);
         trialWall?.SetActive(false);
 
+        // HEAL AND REWARD THE PLAYER AND PARTY
         if (PlayerInventory.Instance != null)
-            PlayerInventory.Instance.GrantTrialRewardsToParty(xpReward);
+            SpawnTrialRewards();
     }
 
     private void TrialFailed()
@@ -218,5 +237,50 @@ public class TimedTrialManager : MonoBehaviour
     public void Continue()
     {
         successPanel.SetActive(false);
+    }
+    private void SpawnTrialRewards()
+    {
+        Vector3 rewardSpawnPosition = GetRewardSpawnPosition();
+
+        // Spawn Super XP Orb
+        GameObject superXPOrbPrefab = Resources.Load<GameObject>("Collectibles/SuperXPOrb");
+        if (superXPOrbPrefab != null)
+        {
+            Instantiate(superXPOrbPrefab, rewardSpawnPosition, Quaternion.identity);
+        }
+
+        // Spawn Heal Item (offset position)
+        GameObject healItemPrefab = Resources.Load<GameObject>("Collectibles/HealItem");
+        if (healItemPrefab != null)
+        {
+            Vector3 healSpawnPos = rewardSpawnPosition + new Vector3(2f, 0, 0);
+            Instantiate(healItemPrefab, healSpawnPos, Quaternion.identity);
+        }
+
+        // Spawn Loot Bag (offset position)
+        GameObject lootBagPrefab = Resources.Load<GameObject>("Collectibles/LootBag");
+        if (lootBagPrefab != null)
+        {
+            Vector3 lootSpawnPos = rewardSpawnPosition + new Vector3(-2f, 0, 0);
+            Instantiate(lootBagPrefab, lootSpawnPos, Quaternion.identity);
+        }
+    }
+
+    private Vector3 GetRewardSpawnPosition()
+    {
+        GameObject rewardSpawnPoint;
+
+        if (rewardSpawn != null)
+            rewardSpawnPoint = rewardSpawn.gameObject;
+        else
+            rewardSpawnPoint = gameObject;
+
+        if (rewardSpawnPoint != null)
+        {
+            return rewardSpawnPoint.transform.position;
+        }
+
+        // Fallback to trial manager position
+        return transform.position;
     }
 }

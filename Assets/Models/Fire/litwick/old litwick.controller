@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1102 &-2954579597351414593
+--- !u!1102 &-4065271769261043732
 AnimatorState:
   serializedVersion: 6
   m_ObjectHideFlags: 1
@@ -58,8 +58,13 @@ AnimatorStateMachine:
   m_Name: Base Layer
   m_ChildStates:
   - serializedVersion: 1
+<<<<<<< HEAD:Assets/Models/Fire/litwick/old litwick.controller
     m_State: {fileID: -2954579597351414593}
     m_Position: {x: 370, y: 40, z: 0}
+=======
+    m_State: {fileID: -4065271769261043732}
+    m_Position: {x: 360, y: 150, z: 0}
+>>>>>>> f3b8551221999ee0c6b77452fd4a64df1fe3c7a0:Assets/Models/Fire/litwick/litwick (new).controller
   m_ChildStateMachines: []
   m_AnyStateTransitions: []
   m_EntryTransitions: []
@@ -69,4 +74,4 @@ AnimatorStateMachine:
   m_EntryPosition: {x: 50, y: 120, z: 0}
   m_ExitPosition: {x: 800, y: 120, z: 0}
   m_ParentStateMachinePosition: {x: 800, y: 20, z: 0}
-  m_DefaultState: {fileID: -2954579597351414593}
+  m_DefaultState: {fileID: -4065271769261043732}

@@ -22,8 +22,6 @@ public class TrialTimer : MonoBehaviour
 
     void Start()
     {
-        if (timerText != null) 
-            timerText.gameObject.SetActive(true);
 
         if (addTimeText != null)
             addTimeText.gameObject.SetActive(false);

@@ -1,5 +1,9 @@
 fileFormatVersion: 2
+<<<<<<<< HEAD:Assets/Models/Fire/litwick/Litwick float up .fbx.meta
 guid: 775c14232755974419110febc60432f7
+========
+guid: 5e8750405b8446b49a999cfa4bcbd16f
+>>>>>>>> Dev:Assets/Models/Fire/litwick/Litwick (new) 1.fbx.meta
 ModelImporter:
   serializedVersion: 24200
   internalIDToNameTable: []
@@ -35,7 +39,7 @@ ModelImporter:
       takeName: Armature|ArmatureAction
       internalID: 4781951162920444690
       firstFrame: 0
-      lastFrame: 7
+      lastFrame: 55
       wrapMode: 0
       orientationOffsetY: 0
       level: 0
@@ -71,7 +75,7 @@ ModelImporter:
       cycleOffset: 0
       loop: 0
       hasAdditiveReferencePose: 0
-      loopTime: 1
+      loopTime: 0
       loopBlend: 0
       loopBlendOrientation: 0
       loopBlendPositionY: 0

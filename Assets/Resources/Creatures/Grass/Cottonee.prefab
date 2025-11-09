@@ -237,8 +237,8 @@ MonoBehaviour:
   levelParticles: {fileID: 3094203189290235072}
   levelAudio: {fileID: 1121130488591533809}
   baseMaxHealth: 100
-  baseSpeed: 30
-  baseAttackSpeed: 1.5
+  baseSpeed: 25
+  baseAttackSpeed: 1.2
   baseAttackDamage: 10
   creatureID: 
   hurtParticles: {fileID: 893435353738139691}
@@ -257,9 +257,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 01b22f3f619c82d42bc3e24a1c309168, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CreatureController
-  isMelee: 1
+  isMelee: 0
   detectionRange: 12
-  attackRange: 2
+  attackRange: 8
   rangedOptimalDistance: 5
   stoppingDistance: 1.5
   projectilePrefab: {fileID: 6866406518002645043, guid: 361f58df97c491e4d968e2495788896e, type: 3}

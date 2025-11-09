@@ -444,6 +444,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::GachaSystem
   creaturePool:
   - {fileID: 3673288704031870450, guid: 0013804990cd5a64aaf544a054ff6c9a, type: 3}
+  - {fileID: 3673288704031870450, guid: 84ced9244e7252a499dcc051df78a699, type: 3}
+  - {fileID: 3673288704031870450, guid: 2c06e70a059d05449881c89c40d9ce97, type: 3}
+  - {fileID: 3673288704031870450, guid: 183263b82965e2d42941164ae56c4aa6, type: 3}
+  - {fileID: 3673288704031870450, guid: 936331a4c12ed5f4aad9487d170338a9, type: 3}
+  - {fileID: 3673288704031870450, guid: 04ee4f781e4c43c4281407efb38cf53d, type: 3}
+  - {fileID: 3673288704031870450, guid: dea3528d9909c6c4db60d8c94236f8d5, type: 3}
+  - {fileID: 3673288704031870450, guid: d846804c519f0f84b8c3f917d5d00f6f, type: 3}
+  - {fileID: 3673288704031870450, guid: cd071bb6b14163b46994937d296f798a, type: 3}
   itemPool:
   - {fileID: 11400000, guid: 780e1c30ba9090f4db49323d8681e2b1, type: 2}
   - {fileID: 11400000, guid: 147573d9b29f455449891a9432ee2406, type: 2}
@@ -781,8 +789,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1897107540183207223}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.13806592, y: -0.05922875, z: 0.008271637, w: 0.98861593}
-  m_LocalPosition: {x: 0.915, y: 5.62, z: 14.163633}
+  m_LocalRotation: {x: 0.13976893, y: 0.010843896, z: -0.0015307582, w: 0.99012357}
+  m_LocalPosition: {x: 23.698301, y: 5.62, z: 14.163633}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -2019,8 +2027,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3868432678742272435}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.13806592, y: -0.05922875, z: 0.008271637, w: 0.98861593}
-  m_LocalPosition: {x: 0.28500003, y: 0.78, z: -2.36}
+  m_LocalRotation: {x: 0.13976893, y: 0.010843896, z: -0.0015307582, w: 0.99012357}
+  m_LocalPosition: {x: 0.6783001, y: 0.78, z: -2.36}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []

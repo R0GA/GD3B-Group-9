@@ -56,9 +56,10 @@ public class HotbarSlotUI : MonoBehaviour
 
         if (creatureNameText != null)
         {
-            creatureNameText.text = data.prefabName.Replace("Creatures/", "");
+            creatureNameText.text = data.DisplayName; // Use DisplayName instead of prefabName
             creatureNameText.gameObject.SetActive(true);
         }
+
 
         if (levelText != null)
         {

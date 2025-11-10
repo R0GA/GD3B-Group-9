@@ -401,6 +401,12 @@ public class PlayerInventory : MonoBehaviour
         creature.isPlayerCreature = data.isPlayerCreature;
         creature.health = data.health;
 
+        // Apply evolution state
+        if (data.hasEvolved)
+        {
+            creature.Evolve();
+        }
+
         // Apply pending rewards if any
         if (data.pendingReward != null)
         {
@@ -727,5 +733,46 @@ public class PlayerInventory : MonoBehaviour
 
         Debug.Log("Party fully healed!");
     }
+    public void UpdateCreatureDataAfterEvolution(CreatureBase evolvedCreature)
+    {
+        // Update the stored data for the evolved creature
+        for (int i = 0; i < partyCreatureInventory.Count; i++)
+        {
+            if (partyCreatureInventory[i].creatureID == evolvedCreature.CreatureID)
+            {
+                partyCreatureInventory[i] = new CreatureData(evolvedCreature);
+                break;
+            }
+        }
+
+        // Also update in main inventory if it's there
+        for (int i = 0; i < mainCreatureInventory.Count; i++)
+        {
+            if (mainCreatureInventory[i].creatureID == evolvedCreature.CreatureID)
+            {
+                mainCreatureInventory[i] = new CreatureData(evolvedCreature);
+                break;
+            }
+        }
+
+        // Refresh UI
+        RefreshUIAfterEvolution();
+    }
+
+    private void RefreshUIAfterEvolution()
+    {
+        // Refresh hotbar
+        HotbarUIManager.Instance?.RefreshHotbar();
+
+        // Refresh inventory UI if it's open
+        if (InventoryUIManager.Instance != null && InventoryUIManager.Instance.gameObject.activeInHierarchy)
+        {
+            InventoryUIManager.Instance.RefreshAllDisplays();
+        }
+
+        // Notify about stats change
+        OnActiveCreatureStatsChanged?.Invoke(GetActiveCreature());
+    }
+
 
 }

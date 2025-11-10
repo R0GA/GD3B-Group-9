@@ -22,7 +22,7 @@ public class CreatureBase : MonoBehaviour
     [SerializeField] public int xpToNextLevel = 100;
     [SerializeField] private AnimationCurve xpCurve = new AnimationCurve(new Keyframe(1, 50), new Keyframe(30, 800));
     [SerializeField] private AnimationCurve statGrowthCurve = new AnimationCurve(new Keyframe(1, 1.0f), new Keyframe(30, 3.0f));
-    float playerCreatureModifier = 5;
+    float playerCreatureModifier = 2.5f;
     public ParticleSystem levelParticles;
     public AudioSource levelAudio;
 
@@ -47,6 +47,14 @@ public class CreatureBase : MonoBehaviour
     [Header("Damage Numbers")]
     [SerializeField] private GameObject floatingDamageNumberPrefab;
     [SerializeField] private Vector3 damageNumberOffset = new Vector3(0, 1.5f, 0);
+
+    [Header("Evolution")]
+    [SerializeField] private GameObject baseModel;
+    [SerializeField] private GameObject evolvedModel;
+    [SerializeField] private Sprite evolvedIcon;
+    [SerializeField] public string evolvedCreatureName;
+    [SerializeField] public bool hasEvolved = false;
+    [SerializeField] public string basePrefabName;
 
     // Example: effectiveness[attacker][defender] = multiplier
     private static readonly Dictionary<ElementType, Dictionary<ElementType, float>> effectiveness =
@@ -75,6 +83,12 @@ public class CreatureBase : MonoBehaviour
         if (string.IsNullOrEmpty(creatureID))
         {
             GenerateNewID();
+        }
+
+        // Store the base prefab name for saving
+        if (string.IsNullOrEmpty(basePrefabName))
+        {
+            basePrefabName = gameObject.name.Replace("(Clone)", "").Trim();
         }
 
         if (hurtParticles != null)
@@ -119,6 +133,33 @@ public class CreatureBase : MonoBehaviour
         {
             if (friendlyIndicator != null)
                 friendlyIndicator.color = Color.red;
+        }
+
+        // Check if placed creature is already evolved and update accordingly
+        if (hasEvolved)
+        {
+            ApplyEvolutionVisuals();
+        }
+    }
+
+    private void ApplyEvolutionVisuals()
+    {
+        // Switch models
+        if (baseModel != null && evolvedModel != null)
+        {
+            baseModel.SetActive(false);
+            evolvedModel.SetActive(true);
+        }
+
+        // Update icon and name
+        if (evolvedIcon != null)
+        {
+            icon = evolvedIcon;
+        }
+
+        if (!string.IsNullOrEmpty(evolvedCreatureName))
+        {
+            gameObject.name = evolvedCreatureName;
         }
     }
 
@@ -171,6 +212,21 @@ public class CreatureBase : MonoBehaviour
 
         // Store current max health for future calculations
         currentMaxHealth = maxHealth;
+    }
+
+    public void Evolve()
+    {
+        if (hasEvolved) return;
+
+        ApplyEvolutionVisuals();
+        hasEvolved = true;
+        Debug.Log($"{creatureID} has evolved!");
+
+        // Update the stored data in PlayerInventory
+        if (isPlayerCreature)
+        {
+            PlayerInventory.Instance?.UpdateCreatureDataAfterEvolution(this);
+        }
     }
 
     public void EquipItem(ItemBase item)
@@ -321,6 +377,12 @@ public class CreatureBase : MonoBehaviour
         health = Mathf.Min(health, maxHealth);
 
         Debug.Log($"{gameObject.name} (ID: {creatureID}) leveled up to level {level}! Gained {healthIncrease} health.");
+
+        // Check for evolution at level 15
+        if (level == 15 && !hasEvolved)
+        {
+            Evolve();
+        }
 
         // Trigger level up event
         OnLevelUp?.Invoke(this, level);

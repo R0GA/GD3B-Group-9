@@ -490,6 +490,7 @@ public class PlayerController : MonoBehaviour
         {
             currentAttackCombo = 0;
             attackInputQueued = false;
+            OnAttackComplete();
         }
     }
 

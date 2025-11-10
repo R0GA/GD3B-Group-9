@@ -75,7 +75,7 @@ public class CreatureSlotUI : MonoBehaviour
         elementIcon.gameObject.SetActive(true);
 
         creatureIcon.sprite = creatureData.icon;
-        nameText.text = creatureData.prefabName.Replace("Creatures/", "");
+        nameText.text = creatureData.DisplayName; // Use DisplayName instead of prefabName
         levelText.text = $"Lv. {creatureData.level}";
 
         // Health bar
@@ -85,6 +85,7 @@ public class CreatureSlotUI : MonoBehaviour
         // Element icon
         elementIcon.sprite = GetElementSprite(creatureData.elementType);
     }
+
 
     private Sprite GetElementSprite(ElementType element)
     {

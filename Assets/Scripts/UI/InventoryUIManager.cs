@@ -67,7 +67,7 @@ public class InventoryUIManager : MonoBehaviour
             var activeData = playerInventory.ActivePartyCreatureData;
             if (activeData != null)
             {
-                activeCreatureName.text = activeData.prefabName.Replace("Creatures/", "");
+                activeCreatureName.text = activeData.DisplayName; // Use DisplayName here
                 activeCreatureIcon.sprite = activeData.icon;
                 activeCreatureHealth.maxValue = activeData.maxHealth;
                 activeCreatureHealth.value = activeData.health;

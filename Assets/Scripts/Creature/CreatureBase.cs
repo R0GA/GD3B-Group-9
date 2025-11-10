@@ -22,7 +22,7 @@ public class CreatureBase : MonoBehaviour
     [SerializeField] public int xpToNextLevel = 100;
     [SerializeField] private AnimationCurve xpCurve = new AnimationCurve(new Keyframe(1, 50), new Keyframe(30, 800));
     [SerializeField] private AnimationCurve statGrowthCurve = new AnimationCurve(new Keyframe(1, 1.0f), new Keyframe(30, 3.0f));
-    float playerCreatureModifier = 5;
+    float playerCreatureModifier = 2.5f;
     public ParticleSystem levelParticles;
     public AudioSource levelAudio;
 

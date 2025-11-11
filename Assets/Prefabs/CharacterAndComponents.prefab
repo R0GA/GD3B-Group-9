@@ -456,6 +456,12 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 780e1c30ba9090f4db49323d8681e2b1, type: 2}
   - {fileID: 11400000, guid: 147573d9b29f455449891a9432ee2406, type: 2}
   - {fileID: 11400000, guid: fdefc928ee9b28548ab34f3bf9c7dac0, type: 2}
+  - {fileID: 11400000, guid: fd88df18e838fe344987db0aec66b2ba, type: 2}
+  - {fileID: 11400000, guid: 17f7f88264c47374fb423cb8c9154864, type: 2}
+  - {fileID: 11400000, guid: dc22e32db9c96a24eb5fd97be752a4d9, type: 2}
+  - {fileID: 11400000, guid: eb513da8e4ce6a140a602b75f544da4b, type: 2}
+  - {fileID: 11400000, guid: 54c289084690c5740adddf0c03282c32, type: 2}
+  - {fileID: 11400000, guid: 26647f7fdf1907e469714b2984b0caab, type: 2}
   creatureChance: 0.5
 --- !u!114 &1686895523065633053
 MonoBehaviour:
@@ -789,8 +795,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1897107540183207223}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.08134317, y: -0.697755, z: 0.080260985, w: 0.707163}
-  m_LocalPosition: {x: 203.96999, y: -1.3799996, z: -19.16171}
+  m_LocalRotation: {x: 0.11427141, y: 0.0066525666, z: -0.000765228, w: 0.99342704}
+  m_LocalPosition: {x: 23.698301, y: 5.84, z: 12.663633}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []

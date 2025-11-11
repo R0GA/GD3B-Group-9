@@ -248,7 +248,7 @@ MonoBehaviour:
   damageNumberOffset: {x: 0, y: 1.5, z: 0}
   baseModel: {fileID: 7491326637505421549}
   evolvedModel: {fileID: 2561195158773298535}
-  evolvedIcon: {fileID: 0}
+  evolvedIcon: {fileID: 21300000, guid: 09b99cb8c2d21914bb39b9c90f918ff8, type: 3}
   evolvedCreatureName: Whmsicott
   hasEvolved: 0
   basePrefabName: 

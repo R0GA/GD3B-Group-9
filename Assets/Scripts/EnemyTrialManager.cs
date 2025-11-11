@@ -1,6 +1,7 @@
 using UnityEngine;
 using System.Collections.Generic;
 using UnityEngine.UI;
+using System.Collections;
 
 public class EnemyTrialManager : MonoBehaviour
 {
@@ -74,8 +75,8 @@ public class EnemyTrialManager : MonoBehaviour
             if (currentWave < enemyWaves.Length)
             {
                 waveTransitioning = true;
-                Debug.Log($"Waiting {waveDelay} seconds before next wave");
-                Invoke(nameof(StartNextWave), waveDelay);
+
+                StartCoroutine(HandleNextWaveTransition(currentWave));
             }
             else
             {
@@ -84,6 +85,18 @@ public class EnemyTrialManager : MonoBehaviour
             }
                 
         }
+    }
+
+    private IEnumerator HandleNextWaveTransition(int nextWaveIndex)
+    {
+        ShowWaveName("Wave Defeated!", Color.white);
+        yield return new WaitForSeconds(1f);
+
+        ShowWaveName("Enemies Incoming", Color.yellow);
+        yield return new WaitForSeconds(3f);
+
+        waveTransitioning = false;
+        ActivateWave(nextWaveIndex);
     }
 
     public void StartTrial()
@@ -132,11 +145,24 @@ public class EnemyTrialManager : MonoBehaviour
             string waveName = wave.name;
             Debug.Log($" Wave {index + 1} - \"{wave.name}\" activated with {enemies.Count} enemies.");
 
-            ShowWaveName(waveName);
+            Color waveColor = GetWaveColor(waveName);
+            ShowWaveName(waveName, waveColor);
         }
 
 
     
+    }
+
+    private Color GetWaveColor(string waveName)
+    {
+        waveName = waveName.ToLower();
+        if (waveName.Contains("Fire"))
+            return Color.red;
+        if (waveName.Contains("Water"))
+            return Color.blue;
+        if (waveName.Contains("Grass"))
+            return Color.green;
+        return Color.white;
     }
 
     private void RegisterActiveEnemies(GameObject wave)
@@ -148,11 +174,12 @@ public class EnemyTrialManager : MonoBehaviour
         }
     }
 
-    private void ShowWaveName(string name)
+    private void ShowWaveName(string name,Color color)
     {
         if (waveNameText != null)
         {
-            waveNameText.text = $"{name}";
+            waveNameText.color = color;
+            waveNameText.text = name;
             waveNameText.gameObject.SetActive(true);
             CancelInvoke(nameof(HideWaveName));
             Invoke(nameof(HideWaveName), waveNameDisplayTime);

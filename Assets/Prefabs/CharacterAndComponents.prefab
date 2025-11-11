@@ -4244,7 +4244,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::GenshinStyleCharacterController
   walkSpeed: 5
   sprintSpeed: 7
-  rotationSpeed: 15
+  rotationSpeed: 50
   maxRotationSpeed: 180
   jumpHeight: 1.5
   gravity: -9.81

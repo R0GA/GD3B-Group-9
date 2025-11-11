@@ -745,6 +745,6 @@ public class PlayerController : MonoBehaviour
     }
     public static bool IsInHub()
     {
-        return true; // UnityEngine.SceneManagement.SceneManager.GetActiveScene().name == "Hub";
+        return UnityEngine.SceneManagement.SceneManager.GetActiveScene().name == "Hub";
     }
 }

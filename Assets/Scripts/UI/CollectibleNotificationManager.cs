@@ -83,4 +83,10 @@ public class CollectibleNotificationManager : MonoBehaviour
         Color color = new Color(0.8f, 0.2f, 0.2f); // Red color for negative events
         ShowNotification(message, null, color);
     }
+    public void ShowEvolveNotification(string creatureName, string evolveName)
+    {
+        string message = $"{creatureName} has evolved into {evolveName}";
+        Color color = new Color(0.2f, 0.8f, 0.2f); // Red color for negative events
+        ShowNotification(message, null, color);
+    }
 }

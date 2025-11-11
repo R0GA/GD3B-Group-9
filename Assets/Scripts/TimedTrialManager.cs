@@ -1,6 +1,7 @@
 using UnityEngine;
 using System.Collections.Generic;
 using UnityEngine.UI;
+using System.Collections;
 
 public class TimedTrialManager : MonoBehaviour
 {
@@ -25,7 +26,7 @@ public class TimedTrialManager : MonoBehaviour
     public float waveDelay = 2f;
 
     [Header("Audio")]
-    //public AudioSource trialMusic;
+    public AudioSource trialMusic;
 
     private List<GameObject> enemies = new List<GameObject>();
     private int currentWave = 0;
@@ -99,7 +100,7 @@ public class TimedTrialManager : MonoBehaviour
 
     public void StartTrial()
     {
-        //trialMusic.Play();
+        trialMusic.Play();
 
         if (trialActive) return;
 
@@ -158,6 +159,18 @@ public class TimedTrialManager : MonoBehaviour
         }
     }
 
+    private IEnumerator HandleNextWaveTransition(int nextWaveIndex)
+    {
+        ShowWaveName("Wave Defeated!", Color.white);
+        yield return new WaitForSeconds(1.5f);
+
+        ShowWaveName("Enemies Incoming!", Color.yellow);
+        yield return new WaitForSeconds(4f);
+
+        waveTransitioning = false;
+        ActivateWave(nextWaveIndex);
+    }
+
     private void StartNextWave()
     {
         waveTransitioning = false;
@@ -176,8 +189,26 @@ public class TimedTrialManager : MonoBehaviour
         {
             wave.SetActive(true);
             RegisterActiveEnemies(wave);
-            ShowWaveName(wave.name);
+
+            string waveName = wave.name;
+            Color waveColor = GetWaveColor(waveName);
+            ShowWaveName(waveName, waveColor);
         }
+    }
+
+    private Color GetWaveColor(string waveName)
+    {
+        waveName = waveName.ToLower();
+        if (waveName.Contains("Fire"))
+            return new Color(1f, 0.25f, 0.1f);
+
+        if (waveName.Contains("Water"))
+            return new Color(0.2f, 0.7f, 1f);
+
+        if (waveName.Contains("Grass"))
+            return new Color(0.2f, 1f, 0.3f);
+
+        return Color.white;
     }
 
     private void RegisterActiveEnemies(GameObject wave)
@@ -186,15 +217,22 @@ public class TimedTrialManager : MonoBehaviour
             enemies.Add(child.gameObject);
     }
 
-    private void ShowWaveName(string name)
+    private void ShowWaveName(string name, Color color)
     {
         if (waveNameText != null)
         {
-            waveNameText.text = $"{name}";
+            waveNameText.color = color;
+            Debug.Log($"Setting wave text color to {color} for wave: {name}");
+            waveNameText.text = name;
             waveNameText.gameObject.SetActive(true);
             CancelInvoke(nameof(HideWaveName));
             Invoke(nameof(HideWaveName), waveNameDisplayTime);
         }
+    }
+
+    private void ShowWaveName(string name)
+    {
+        ShowWaveName(name, Color.white);
     }
 
     private void HideWaveName()
@@ -208,7 +246,7 @@ public class TimedTrialManager : MonoBehaviour
 
     private void OnTrialComplete()
     {
-        //trialMusic.Stop();
+        trialMusic.Stop();
 
         Debug.Log("Boss defeated!");
         timerText?.SetActive(false);
@@ -246,6 +284,7 @@ public class TimedTrialManager : MonoBehaviour
         GameObject superXPOrbPrefab = Resources.Load<GameObject>("Collectibles/SuperXPOrb");
         if (superXPOrbPrefab != null)
         {
+            Instantiate(superXPOrbPrefab, rewardSpawnPosition, Quaternion.identity);
             Instantiate(superXPOrbPrefab, rewardSpawnPosition, Quaternion.identity);
         }
 

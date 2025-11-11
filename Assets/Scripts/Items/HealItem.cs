@@ -16,6 +16,7 @@ public class HealItem : CollectibleItem
 
         PlayerInventory.Instance.HealParty();
         Debug.Log("Collected Heal Item - Party fully healed!");
+        CollectibleNotificationManager.Instance?.ShowHealNotification();
 
         // Visual/Audio feedback
         if (collectParticles != null)

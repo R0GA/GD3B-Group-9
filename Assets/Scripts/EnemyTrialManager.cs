@@ -1,6 +1,7 @@
 using UnityEngine;
 using System.Collections.Generic;
 using UnityEngine.UI;
+using System.Collections;
 
 public class EnemyTrialManager : MonoBehaviour
 {
@@ -21,7 +22,7 @@ public class EnemyTrialManager : MonoBehaviour
     public float waveDelay = 2f;
 
     [Header("Audio")]
-    //public AudioSource trialMusic;
+    public AudioSource trialMusic;
 
     private List<GameObject> enemies = new List<GameObject>();
     private int currentWave = 0;
@@ -74,8 +75,8 @@ public class EnemyTrialManager : MonoBehaviour
             if (currentWave < enemyWaves.Length)
             {
                 waveTransitioning = true;
-                Debug.Log($"Waiting {waveDelay} seconds before next wave");
-                Invoke(nameof(StartNextWave), waveDelay);
+
+                StartCoroutine(HandleNextWaveTransition(currentWave));
             }
             else
             {
@@ -86,11 +87,23 @@ public class EnemyTrialManager : MonoBehaviour
         }
     }
 
+    private IEnumerator HandleNextWaveTransition(int nextWaveIndex)
+    {
+        ShowWaveName("Wave Defeated!", Color.white);
+        yield return new WaitForSeconds(1.5f);
+
+        ShowWaveName("Enemies Incoming!", Color.yellow);
+        yield return new WaitForSeconds(4f);
+
+        waveTransitioning = false;
+        ActivateWave(nextWaveIndex);
+    }
+
     public void StartTrial()
     {
 
         
-        //trialMusic.Play();
+        trialMusic.Play();
 
 
         if (trialActive) return;
@@ -132,11 +145,28 @@ public class EnemyTrialManager : MonoBehaviour
             string waveName = wave.name;
             Debug.Log($" Wave {index + 1} - \"{wave.name}\" activated with {enemies.Count} enemies.");
 
-            ShowWaveName(waveName);
+            Color waveColor = GetWaveColor(waveName);
+            ShowWaveName(waveName, waveColor);
         }
 
 
     
+    }
+
+    private Color GetWaveColor(string waveName)
+    {
+        waveName = waveName.ToLower();
+
+        if (waveName.Contains("fire"))
+            return new Color(1f, 0.25f, 0.1f);   
+
+        if (waveName.Contains("water"))
+            return new Color(0.2f, 0.7f, 1f);    
+
+        if (waveName.Contains("grass"))
+            return new Color(0.2f, 1f, 0.3f);    
+
+        return Color.white;
     }
 
     private void RegisterActiveEnemies(GameObject wave)
@@ -148,11 +178,13 @@ public class EnemyTrialManager : MonoBehaviour
         }
     }
 
-    private void ShowWaveName(string name)
+    private void ShowWaveName(string name,Color color)
     {
         if (waveNameText != null)
         {
-            waveNameText.text = $"{name}";
+            waveNameText.color = color;
+            Debug.Log($"Setting wave text color to {color} for wave: {name}");
+            waveNameText.text = name;
             waveNameText.gameObject.SetActive(true);
             CancelInvoke(nameof(HideWaveName));
             Invoke(nameof(HideWaveName), waveNameDisplayTime);
@@ -174,7 +206,7 @@ public class EnemyTrialManager : MonoBehaviour
     {
         Debug.Log("Trial complete! All waves cleared.");
 
-        //trialMusic.Stop();
+        trialMusic.Stop();
         
 
         // HEAL AND REWARD THE PLAYER AND PARTY
@@ -216,6 +248,7 @@ public class EnemyTrialManager : MonoBehaviour
         GameObject superXPOrbPrefab = Resources.Load<GameObject>("Collectibles/SuperXPOrb");
         if (superXPOrbPrefab != null)
         {
+            Instantiate(superXPOrbPrefab, rewardSpawnPosition, Quaternion.identity);
             Instantiate(superXPOrbPrefab, rewardSpawnPosition, Quaternion.identity);
         }
 

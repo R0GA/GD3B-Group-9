@@ -29,7 +29,7 @@ public class InventoryInput : MonoBehaviour
     private void OnInventoryPressed(InputAction.CallbackContext context)
     {
         // Only allow opening inventory in the hub
-        if (!PlayerController.IsInHub())
+        if (!PlayerController.IsInHub() || GachaUIManager.Instance.gameObject.activeInHierarchy)
         {
             // Do not hide hotbar if inventory can't be opened
             return;
@@ -48,9 +48,10 @@ public class InventoryInput : MonoBehaviour
     private void OnGachaPressed(InputAction.CallbackContext context)
     {
         // Only allow opening gacha in the hub
-        if (!PlayerController.IsInHub())
+        if (!PlayerController.IsInHub() || InventoryUIManager.Instance.gameObject.activeInHierarchy)
         {
             // Do not hide hotbar if gacha can't be opened
+            Debug.Log(InventoryUIManager.Instance.gameObject.activeInHierarchy);
             return;
         }
 

@@ -11,6 +11,7 @@ public class SuperXPOrb : CollectibleItem
         // Grant XP to all party creatures
         PlayerInventory.Instance.GrantXPToAllPartyCreatures(xpAmount);
         Debug.Log($"Collected SUPER {xpAmount} XP for all party creatures!");
+        CollectibleNotificationManager.Instance?.ShowXPNotification(xpAmount, true);
 
         // Visual/Audio feedback
         if (collectParticles != null)

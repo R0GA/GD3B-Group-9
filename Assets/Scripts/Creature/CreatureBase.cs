@@ -43,6 +43,7 @@ public class CreatureBase : MonoBehaviour
     [SerializeField] private string creatureID;
     [SerializeField] private ParticleSystem hurtParticles;
     [SerializeField] private Image friendlyIndicator;
+    [SerializeField] private Light lightIndicator;
 
     [Header("Damage Numbers")]
     [SerializeField] private GameObject floatingDamageNumberPrefab;
@@ -128,11 +129,15 @@ public class CreatureBase : MonoBehaviour
         {
             if (friendlyIndicator != null)
                 friendlyIndicator.color = Color.green;
+            if (lightIndicator != null)
+                lightIndicator.color = Color.green;
         }
         else
         {
             if (friendlyIndicator != null)
                 friendlyIndicator.color = Color.red;
+            if (lightIndicator != null)
+                lightIndicator.color = Color.red;
         }
 
         // Check if placed creature is already evolved and update accordingly
@@ -219,6 +224,7 @@ public class CreatureBase : MonoBehaviour
         if (hasEvolved) return;
 
         ApplyEvolutionVisuals();
+        CollectibleNotificationManager.Instance?.ShowEvolveNotification(basePrefabName, evolvedCreatureName);
         hasEvolved = true;
         Debug.Log($"{creatureID} has evolved!");
 
@@ -392,6 +398,12 @@ public class CreatureBase : MonoBehaviour
     {
         if (isPlayerCreature)
         {
+            // Show faint notification
+            string creatureName = hasEvolved && !string.IsNullOrEmpty(evolvedCreatureName)
+                ? evolvedCreatureName
+                : basePrefabName;
+            CollectibleNotificationManager.Instance?.ShowFaintNotification(creatureName);
+
             // Player creature dies - send back to party with 0 HP
             health = 0;
 

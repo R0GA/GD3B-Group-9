@@ -14,6 +14,7 @@ public class XPOrb : CollectibleItem
         {
             activeCreature.GainXP(xpAmount);
             Debug.Log($"Collected {xpAmount} XP!");
+            CollectibleNotificationManager.Instance?.ShowXPNotification(xpAmount, false);
         }
 
         // Visual/Audio feedback

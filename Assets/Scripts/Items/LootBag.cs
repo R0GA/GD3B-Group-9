@@ -12,6 +12,8 @@ public class LootBag : CollectibleItem
         GachaUIManager.Instance.AddPacks(gachaPacks);
         Debug.Log($"Collected Loot Bag - {gachaPacks} gacha packs added!");
 
+        CollectibleNotificationManager.Instance?.ShowGachaNotification(gachaPacks);
+
         // Visual/Audio feedback
         if (collectParticles != null)
         {

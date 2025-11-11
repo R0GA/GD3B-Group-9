@@ -51,4 +51,9 @@ public abstract class CollectibleItem : MonoBehaviour
     }
 
     protected abstract void Collect();
+
+    protected void ShowNotification(string message, Sprite icon = null, Color? color = null)
+    {
+        CollectibleNotificationManager.Instance?.ShowNotification(message, icon, color);
+    }
 }

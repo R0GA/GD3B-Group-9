@@ -29,6 +29,7 @@ public class HealthBarManager : MonoBehaviour
         if (healthSlider != null)
         {
             healthSlider.value = GetCurrentHealth();
+            healthSlider.maxValue = GetMaxHealth();
         }
     }
 

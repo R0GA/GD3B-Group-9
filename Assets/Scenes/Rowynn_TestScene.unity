@@ -471,6 +471,34 @@ PrefabInstance:
       propertyPath: m_SizeDelta.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 9098945891448835043, guid: 1e42e0ccb85359f46bb2924bea016faf, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 9098945891448835043, guid: 1e42e0ccb85359f46bb2924bea016faf, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 9098945891448835043, guid: 1e42e0ccb85359f46bb2924bea016faf, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 1297548375}
+    - target: {fileID: 9098945891448835043, guid: 1e42e0ccb85359f46bb2924bea016faf, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 9098945891448835043, guid: 1e42e0ccb85359f46bb2924bea016faf, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: OnResultContinue
+      objectReference: {fileID: 0}
+    - target: {fileID: 9098945891448835043, guid: 1e42e0ccb85359f46bb2924bea016faf, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: GachaUIManager, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 9098945891448835043, guid: 1e42e0ccb85359f46bb2924bea016faf, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -1424,6 +1452,17 @@ PrefabInstance:
       insertIndex: -1
       addedObject: {fileID: 0}
   m_SourcePrefab: {fileID: 100100000, guid: 84ced9244e7252a499dcc051df78a699, type: 3}
+--- !u!114 &1297548375 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 577374356136799605, guid: 1e42e0ccb85359f46bb2924bea016faf, type: 3}
+  m_PrefabInstance: {fileID: 253093757}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 62470483b59792743b94fd8cb4929aa4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::GachaUIManager
 --- !u!1001 &1351136220
 PrefabInstance:
   m_ObjectHideFlags: 0

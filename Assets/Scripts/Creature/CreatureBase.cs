@@ -224,6 +224,7 @@ public class CreatureBase : MonoBehaviour
         if (hasEvolved) return;
 
         ApplyEvolutionVisuals();
+        CollectibleNotificationManager.Instance?.ShowEvolveNotification(basePrefabName, evolvedCreatureName);
         hasEvolved = true;
         Debug.Log($"{creatureID} has evolved!");
 

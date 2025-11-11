@@ -88,6 +88,7 @@ public class InventoryUIManager : MonoBehaviour
 
     public void RefreshAllDisplays()
     {
+        playerInventory.ForceSaveActiveCreature();
         RefreshPartyDisplay();
         RefreshInventoryDisplay();
         RefreshItemsDisplay();

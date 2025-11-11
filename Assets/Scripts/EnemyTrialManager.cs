@@ -90,10 +90,10 @@ public class EnemyTrialManager : MonoBehaviour
     private IEnumerator HandleNextWaveTransition(int nextWaveIndex)
     {
         ShowWaveName("Wave Defeated!", Color.white);
-        yield return new WaitForSeconds(1f);
+        yield return new WaitForSeconds(1.5f);
 
         ShowWaveName("Enemies Incoming", Color.yellow);
-        yield return new WaitForSeconds(3f);
+        yield return new WaitForSeconds(4f);
 
         waveTransitioning = false;
         ActivateWave(nextWaveIndex);
@@ -156,12 +156,16 @@ public class EnemyTrialManager : MonoBehaviour
     private Color GetWaveColor(string waveName)
     {
         waveName = waveName.ToLower();
-        if (waveName.Contains("Fire"))
-            return Color.red;
-        if (waveName.Contains("Water"))
-            return Color.blue;
-        if (waveName.Contains("Grass"))
-            return Color.green;
+
+        if (waveName.Contains("fire"))
+            return new Color(1f, 0.25f, 0.1f);   
+
+        if (waveName.Contains("water"))
+            return new Color(0.2f, 0.7f, 1f);    
+
+        if (waveName.Contains("grass"))
+            return new Color(0.2f, 1f, 0.3f);    
+
         return Color.white;
     }
 
@@ -179,6 +183,7 @@ public class EnemyTrialManager : MonoBehaviour
         if (waveNameText != null)
         {
             waveNameText.color = color;
+            Debug.Log($"Setting wave text color to {color} for wave: {name}");
             waveNameText.text = name;
             waveNameText.gameObject.SetActive(true);
             CancelInvoke(nameof(HideWaveName));

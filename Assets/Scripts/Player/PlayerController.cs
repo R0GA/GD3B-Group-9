@@ -706,7 +706,17 @@ public class PlayerController : MonoBehaviour
     private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
         HotbarUIManager.Instance.RefreshHotbar();
-        
+        if (UnityEngine.SceneManagement.SceneManager.GetActiveScene().name == "LevelThree")
+        {
+            maxHealth = 500f;
+            health = maxHealth;
+        }
+        else if (UnityEngine.SceneManagement.SceneManager.GetActiveScene().name == "LevelTwo")
+        {
+            maxHealth = 500f;
+            health = maxHealth;
+        }
+
         GameObject spawn = GameObject.FindWithTag("LevelSpawn");
         if (spawn != null)
         {
@@ -735,6 +745,6 @@ public class PlayerController : MonoBehaviour
     }
     public static bool IsInHub()
     {
-        return true; // UnityEngine.SceneManagement.SceneManager.GetActiveScene().name == "Hub";
+        return UnityEngine.SceneManagement.SceneManager.GetActiveScene().name == "Hub";
     }
 }

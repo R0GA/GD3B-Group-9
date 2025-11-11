@@ -8139,7 +8139,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &323425982
 Transform:
   m_ObjectHideFlags: 0
@@ -9750,7 +9750,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e744807388d389a45bfde25eea508b12, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::FreezeZone
-  damagePerSecond: 100
+  damagePerSecond: 1
   dimPanel: {fileID: 119351554}
 --- !u!65 &390816680
 BoxCollider:
@@ -26121,7 +26121,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e8f91ad679e827544a6da62c12ad7e72, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::FirePlace
-  healPerSecond: 300
+  healPerSecond: 3
   dimPanel: {fileID: 119351554}
 --- !u!65 &998980991
 BoxCollider:
@@ -33908,7 +33908,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e8f91ad679e827544a6da62c12ad7e72, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::FirePlace
-  healPerSecond: 300
+  healPerSecond: 3
   dimPanel: {fileID: 119351554}
 --- !u!65 &1239103095
 BoxCollider:

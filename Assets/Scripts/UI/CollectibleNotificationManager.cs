@@ -77,4 +77,10 @@ public class CollectibleNotificationManager : MonoBehaviour
     {
         ShowNotification("Party Fully Healed!", null, new Color(0.2f, 0.8f, 0.8f)); // Cyan
     }
+    public void ShowFaintNotification(string creatureName)
+    {
+        string message = $"{creatureName} fainted!";
+        Color color = new Color(0.8f, 0.2f, 0.2f); // Red color for negative events
+        ShowNotification(message, null, color);
+    }
 }

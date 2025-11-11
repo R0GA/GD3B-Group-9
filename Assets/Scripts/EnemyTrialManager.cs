@@ -9,7 +9,7 @@ public class EnemyTrialManager : MonoBehaviour
     public GameObject[] enemyWaves;
     public GameObject successPanel;
     public GameObject trialStartText;
-    public GameObject loot;
+    //public GameObject loot;
     public GameObject trialWall;
     public int xpReward = 200;
     public Transform rewardSpawn;
@@ -43,8 +43,8 @@ public class EnemyTrialManager : MonoBehaviour
         if (successPanel != null)
             successPanel.SetActive(false);
 
-        if (loot != null)
-            loot.SetActive(false);
+        //if (loot != null)
+            //loot.SetActive(false);
 
         if (trialWall != null)
             trialWall.SetActive(true);
@@ -221,11 +221,11 @@ public class EnemyTrialManager : MonoBehaviour
             Debug.Log("Success panel activated.");
         }
 
-        if (loot != null)
+        /*if (loot != null)
         {
             loot.SetActive(true);
             Debug.Log("Loot is ready");
-        }
+        }*/
 
         if (trialWall != null)
         {

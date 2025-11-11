@@ -285,6 +285,7 @@ public class TimedTrialManager : MonoBehaviour
         if (superXPOrbPrefab != null)
         {
             Instantiate(superXPOrbPrefab, rewardSpawnPosition, Quaternion.identity);
+            Instantiate(superXPOrbPrefab, rewardSpawnPosition, Quaternion.identity);
         }
 
         // Spawn Heal Item (offset position)

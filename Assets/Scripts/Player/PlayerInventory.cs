@@ -235,6 +235,21 @@ public class PlayerInventory : MonoBehaviour
         // Get the creature data from party
         CreatureData creatureToMove = partyCreatureInventory[partyIndex];
 
+        // If we're removing the active creature, save its current state first
+        if (activeCreatureInstance != null && partyIndex == activePartyIndex)
+        {
+            // Update the creature data with the current state of the active instance
+            creatureToMove = new CreatureData(activeCreatureInstance);
+
+            // Clear any pending rewards since we're saving the current state
+            creatureToMove.pendingReward.pendingXP = 0;
+            creatureToMove.pendingReward.needsHealing = false;
+
+            // Destroy the active instance
+            Destroy(activeCreatureInstance.gameObject);
+            activeCreatureInstance = null;
+        }
+
         // Remove from party
         partyCreatureInventory.RemoveAt(partyIndex);
 
@@ -244,13 +259,6 @@ public class PlayerInventory : MonoBehaviour
         // Adjust activePartyIndex if needed
         if (activePartyIndex >= partyCreatureInventory.Count)
             activePartyIndex = Mathf.Clamp(partyCreatureInventory.Count - 1, 0, 2);
-
-        // If we removed the active creature, destroy its instance
-        if (activeCreatureInstance != null && partyIndex == activePartyIndex)
-        {
-            Destroy(activeCreatureInstance.gameObject);
-            activeCreatureInstance = null;
-        }
 
         return true;
     }
@@ -773,6 +781,15 @@ public class PlayerInventory : MonoBehaviour
         // Notify about stats change
         OnActiveCreatureStatsChanged?.Invoke(GetActiveCreature());
     }
+    public void ForceSaveActiveCreature()
+    {
+        if (activeCreatureInstance != null && activePartyIndex >= 0 && activePartyIndex < partyCreatureInventory.Count)
+        {
+            partyCreatureInventory[activePartyIndex] = new CreatureData(activeCreatureInstance);
 
-
+            // Clear pending rewards since we're saving current state
+            partyCreatureInventory[activePartyIndex].pendingReward.pendingXP = 0;
+            partyCreatureInventory[activePartyIndex].pendingReward.needsHealing = false;
+        }
+    }
 }

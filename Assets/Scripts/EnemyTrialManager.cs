@@ -92,7 +92,7 @@ public class EnemyTrialManager : MonoBehaviour
         ShowWaveName("Wave Defeated!", Color.white);
         yield return new WaitForSeconds(1.5f);
 
-        ShowWaveName("Enemies Incoming", Color.yellow);
+        ShowWaveName("Enemies Incoming!", Color.yellow);
         yield return new WaitForSeconds(4f);
 
         waveTransitioning = false;

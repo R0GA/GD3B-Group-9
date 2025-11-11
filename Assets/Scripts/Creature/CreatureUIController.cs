@@ -155,7 +155,7 @@ public class CreatureUIController : MonoBehaviour
         healthBar.value = currentDisplayHealth;
 
         // Update level display
-        levelText.text = creatureBase.level.ToString();
+        levelText.text = $"LV: {creatureBase.level.ToString()}";
 
         // Set faction indicators
         UpdateFactionIndicator();
@@ -235,7 +235,7 @@ public class CreatureUIController : MonoBehaviour
 
     private void OnLevelUp(CreatureBase creature, int newLevel)
     {
-        levelText.text = newLevel.ToString();
+        levelText.text = $"LV: {newLevel.ToString()}";
 
         // Level up effect
         StartCoroutine(LevelUpAnimation());

@@ -25,7 +25,7 @@ public class TimedTrialManager : MonoBehaviour
     public float waveDelay = 2f;
 
     [Header("Audio")]
-    //public AudioSource trialMusic;
+    public AudioSource trialMusic;
 
     private List<GameObject> enemies = new List<GameObject>();
     private int currentWave = 0;
@@ -99,7 +99,7 @@ public class TimedTrialManager : MonoBehaviour
 
     public void StartTrial()
     {
-        //trialMusic.Play();
+        trialMusic.Play();
 
         if (trialActive) return;
 
@@ -208,7 +208,7 @@ public class TimedTrialManager : MonoBehaviour
 
     private void OnTrialComplete()
     {
-        //trialMusic.Stop();
+        trialMusic.Stop();
 
         Debug.Log("Boss defeated!");
         timerText?.SetActive(false);

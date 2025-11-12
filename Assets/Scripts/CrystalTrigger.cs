@@ -5,13 +5,10 @@ public class CrystalTrigger : MonoBehaviour
 {
     public GameObject singleCrystal;
     public GameObject multipleCrystals;
+    public Collider myTrigger;
+    public AudioSource crystalAudio;
 
-    private AudioSource crystalAudio;
-
-    private void Start()
-    {
-        crystalAudio.GetComponent<AudioSource>();
-    }
+    
     private void OnTriggerEnter(Collider other)
     {
         StartCoroutine(CrystalFall());
@@ -27,5 +24,6 @@ public class CrystalTrigger : MonoBehaviour
 
         yield return new WaitForSeconds(1f);
         crystalAudio.Stop();
+        myTrigger.enabled = false;
     }
 }

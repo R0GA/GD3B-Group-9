@@ -8,6 +8,7 @@ TagManager:
   - LevelSpawn
   - HubSpawn
   - RewardSpawn
+  - Ground
   layers:
   - Default
   - TransparentFX
@@ -16,7 +17,7 @@ TagManager:
   - Water
   - UI
   - Enemy
-  - 
+  - Ground
   - 
   - 
   - Player

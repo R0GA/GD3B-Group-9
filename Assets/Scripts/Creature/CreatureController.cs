@@ -498,21 +498,14 @@ public class CreatureController : MonoBehaviour
         if (Time.time - lastTeleportCheckTime < teleportCheckInterval)
             return;
 
+        lastTeleportCheckTime = Time.time;
+
+        // Ensure agent is properly connected to NavMesh
         if (!navMeshAgent.isOnNavMesh)
         {
-            SetupNavMeshAgent();
-            NavMeshHit hit;
-            if (NavMesh.SamplePosition(navMeshAgent.transform.position, out hit, 10f, NavMesh.AllAreas))
-            {
-                navMeshAgent.Warp(hit.position);
-            }
-            else
-            {
-                Debug.LogWarning("Agent could not reconnect to NavMesh in new scene.");
-            }
+            ReconnectToNavMesh();
+            return;
         }
-
-        lastTeleportCheckTime = Time.time;
 
         float distanceToPlayer = Vector3.Distance(transform.position, playerTransform.position);
 
@@ -523,8 +516,44 @@ public class CreatureController : MonoBehaviour
             return;
         }
 
-        // Check if creature is stuck (not moving much)
-        CheckIfStuck();
+        // Check if creature is stuck (not moving much) only if we have an active path
+        if (navMeshAgent.hasPath)
+        {
+            CheckIfStuck();
+        }
+    }
+
+    private void ReconnectToNavMesh()
+    {
+        NavMeshHit hit;
+        if (NavMesh.SamplePosition(transform.position, out hit, 10f, NavMesh.AllAreas))
+        {
+            if (navMeshAgent.isOnNavMesh)
+            {
+                navMeshAgent.Warp(hit.position);
+            }
+            else
+            {
+                // Recreate the NavMeshAgent if necessary
+                Debug.LogWarning("Recreating NavMeshAgent for creature");
+                navMeshAgent = gameObject.AddComponent<NavMeshAgent>();
+                SetupNavMeshAgent();
+                navMeshAgent.Warp(hit.position);
+            }
+        }
+        else
+        {
+            // If we can't find a valid position near current location, try near player
+            if (playerTransform != null)
+            {
+                Vector3 playerPosition = FindValidPositionNearPlayer();
+                transform.position = playerPosition;
+                if (navMeshAgent != null && navMeshAgent.isOnNavMesh)
+                {
+                    navMeshAgent.Warp(playerPosition);
+                }
+            }
+        }
     }
 
     private void CheckIfStuck()
@@ -539,9 +568,19 @@ public class CreatureController : MonoBehaviour
         // If creature hasn't moved much and is trying to follow player, it might be stuck
         if (distanceMoved < stuckDistanceThreshold && !isInCombat && navMeshAgent.hasPath)
         {
-            isStuck = true;
-            // Wait a bit more to confirm it's really stuck
-            Invoke(nameof(ConfirmStuckAndTeleport), 1f);
+            // Check if we actually have a valid path to the destination
+            if (navMeshAgent.pathStatus == NavMeshPathStatus.PathPartial ||
+                navMeshAgent.pathStatus == NavMeshPathStatus.PathInvalid)
+            {
+                // Immediate teleport if path is invalid
+                TeleportToPlayer();
+            }
+            else
+            {
+                // Wait to confirm stuck only if path appears valid
+                isStuck = true;
+                Invoke(nameof(ConfirmStuckAndTeleport), 1f);
+            }
         }
         else
         {
@@ -550,6 +589,126 @@ public class CreatureController : MonoBehaviour
 
         lastPosition = transform.position;
     }
+
+    private void TeleportToPlayer()
+    {
+        if (playerTransform == null) return;
+
+        // Cancel any pending stuck confirmation
+        CancelInvoke(nameof(ConfirmStuckAndTeleport));
+        isStuck = false;
+
+        // Stop current movement
+        if (navMeshAgent.isActiveAndEnabled && navMeshAgent.isOnNavMesh)
+        {
+            navMeshAgent.isStopped = true;
+            navMeshAgent.ResetPath();
+        }
+
+        // Find a valid position near the player
+        Vector3 teleportPosition = FindValidPositionNearPlayer();
+
+        // Ensure we're properly connected to NavMesh at new position
+        NavMeshHit hit;
+        if (NavMesh.SamplePosition(teleportPosition, out hit, 3f, NavMesh.AllAreas))
+        {
+            teleportPosition = hit.position;
+        }
+
+        // Teleport the creature
+        transform.position = teleportPosition;
+
+        // Update NavMeshAgent position
+        if (navMeshAgent != null && navMeshAgent.isOnNavMesh)
+        {
+            navMeshAgent.Warp(teleportPosition);
+        }
+
+        // Update return position
+        returnPosition = teleportPosition;
+        hasReturnPosition = true;
+
+        // Reset stuck detection
+        lastPosition = teleportPosition;
+
+        // Don't immediately resume movement - let the normal Update cycle handle it
+        // This prevents immediate re-pathfinding that might fail again
+
+        Debug.Log($"Creature {creatureBase.CreatureID} teleported to player at position: {teleportPosition}");
+    }
+
+    private Vector3 FindValidPositionNearPlayer()
+    {
+        if (playerTransform == null)
+            return transform.position;
+
+        // First, try to find a position with clear path to player
+        for (int i = 0; i < 15; i++) // Increased attempts
+        {
+            float angle = i * Mathf.PI * 2f / 15f;
+            Vector3 direction = new Vector3(Mathf.Cos(angle), 0, Mathf.Sin(angle));
+            Vector3 candidatePosition = playerTransform.position + direction * Random.Range(2f, 4f); // Increased minimum distance
+
+            // Check if this position is valid on NavMesh
+            NavMeshHit hit;
+            if (NavMesh.SamplePosition(candidatePosition, out hit, 3f, NavMesh.AllAreas))
+            {
+                // Check if there's a clear path to player from this position
+                NavMeshPath path = new NavMeshPath();
+                if (NavMesh.CalculatePath(hit.position, playerTransform.position, NavMesh.AllAreas, path))
+                {
+                    if (path.status == NavMeshPathStatus.PathComplete)
+                    {
+                        // Additional check: make sure the path isn't too long (indicating detours)
+                        float pathLength = CalculatePathLength(path);
+                        float directDistance = Vector3.Distance(hit.position, playerTransform.position);
+
+                        // If path length is reasonable (not more than 50% longer than direct distance)
+                        if (pathLength <= directDistance * 1.5f)
+                        {
+                            return hit.position;
+                        }
+                    }
+                }
+            }
+        }
+
+        // Fallback: try positions closer to player without path validation
+        for (int i = 0; i < 10; i++)
+        {
+            Vector3 fallbackPosition = playerTransform.position +
+                new Vector3(Random.Range(-2f, 2f), 0, Random.Range(-2f, 2f));
+
+            NavMeshHit hit;
+            if (NavMesh.SamplePosition(fallbackPosition, out hit, 5f, NavMesh.AllAreas))
+            {
+                return hit.position;
+            }
+        }
+
+        // Last resort: use player position with slight offset
+        Vector3 lastResort = playerTransform.position + new Vector3(1f, 0, 1f);
+        NavMeshHit lastHit;
+        if (NavMesh.SamplePosition(lastResort, out lastHit, 10f, NavMesh.AllAreas))
+        {
+            return lastHit.position;
+        }
+
+        // Ultimate fallback
+        return playerTransform.position;
+    }
+
+    private float CalculatePathLength(NavMeshPath path)
+    {
+        float length = 0f;
+        for (int i = 0; i < path.corners.Length - 1; i++)
+        {
+            length += Vector3.Distance(path.corners[i], path.corners[i + 1]);
+        }
+        return length;
+    }
+
+    
 
     private void ConfirmStuckAndTeleport()
     {
@@ -562,76 +721,6 @@ public class CreatureController : MonoBehaviour
         isStuck = false;
     }
 
-    private void TeleportToPlayer()
-    {
-        if (playerTransform == null) return;
-
-        // Stop current movement
-        if (navMeshAgent.isActiveAndEnabled)
-        {
-            navMeshAgent.isStopped = true;
-            navMeshAgent.ResetPath();
-        }
-
-        // Find a valid position near the player
-        Vector3 teleportPosition = FindValidPositionNearPlayer();
-
-        // Teleport the creature
-        transform.position = teleportPosition;
-
-        // Update return position
-        returnPosition = teleportPosition;
-        hasReturnPosition = true;
-
-        // Resume movement
-        if (navMeshAgent.isActiveAndEnabled)
-        {
-            navMeshAgent.isStopped = false;
-        }
-
-        Debug.Log($"Creature {creatureBase.CreatureID} teleported to player (was too far or stuck)");
-    }
-
-    private Vector3 FindValidPositionNearPlayer()
-    {
-        if (playerTransform == null)
-            return transform.position;
-
-        // Try multiple positions around the player
-        for (int i = 0; i < 10; i++)
-        {
-            // Calculate position around player (closer than maxDistanceFromPlayer)
-            float angle = i * Mathf.PI * 2f / 10f;
-            Vector3 direction = new Vector3(Mathf.Cos(angle), 0, Mathf.Sin(angle));
-            Vector3 candidatePosition = playerTransform.position + direction * Random.Range(1f, 3f);
-
-            // Check if this position is valid on NavMesh
-            NavMeshHit hit;
-            if (NavMesh.SamplePosition(candidatePosition, out hit, 3f, NavMesh.AllAreas))
-            {
-                // Also check if there's a clear path to player (optional, can be removed if too restrictive)
-                NavMeshPath path = new NavMeshPath();
-                if (NavMesh.CalculatePath(hit.position, playerTransform.position, NavMesh.AllAreas, path))
-                {
-                    if (path.status == NavMeshPathStatus.PathComplete)
-                    {
-                        return hit.position;
-                    }
-                }
-            }
-        }
-
-        // If no ideal position found, use a fallback position very close to player
-        Vector3 fallbackPosition = playerTransform.position + new Vector3(Random.Range(-1f, 1f), 0, Random.Range(-1f, 1f));
-        NavMeshHit fallbackHit;
-        if (NavMesh.SamplePosition(fallbackPosition, out fallbackHit, 5f, NavMesh.AllAreas))
-        {
-            return fallbackHit.position;
-        }
-
-        // Last resort: position directly at player (might cause visual clipping)
-        return playerTransform.position;
-    }
     // Public method to force teleport to player (can be called from other systems)
     public void ForceTeleportToPlayer()
     {

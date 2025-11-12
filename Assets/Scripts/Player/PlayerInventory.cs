@@ -792,4 +792,29 @@ public class PlayerInventory : MonoBehaviour
             partyCreatureInventory[activePartyIndex].pendingReward.needsHealing = false;
         }
     }
+    public void ForceReinstantiateActiveCreature()
+    {
+        if (activeCreatureInstance != null)
+        {
+            // Save the current state before destroying
+            ForceSaveActiveCreature();
+
+            // Destroy the current instance
+            Destroy(activeCreatureInstance.gameObject);
+            activeCreatureInstance = null;
+
+            // Create a fresh instance
+            GetActiveCreature();
+
+            Debug.Log($"Reinstantiated active creature for scene: {UnityEngine.SceneManagement.SceneManager.GetActiveScene().name}");
+        }
+        else if (partyCreatureInventory.Count > 0)
+        {
+            // If no active instance but we have party creatures, create one
+            GetActiveCreature();
+
+            Debug.Log($"Created new active creature instance for scene: {UnityEngine.SceneManagement.SceneManager.GetActiveScene().name}");
+        }
+    }
+
 }

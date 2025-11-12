@@ -708,12 +708,12 @@ public class PlayerController : MonoBehaviour
         HotbarUIManager.Instance.RefreshHotbar();
         if (UnityEngine.SceneManagement.SceneManager.GetActiveScene().name == "LevelThree")
         {
-            maxHealth = 500f;
+            maxHealth = 750f;
             health = maxHealth;
         }
         else if (UnityEngine.SceneManagement.SceneManager.GetActiveScene().name == "LevelTwo")
         {
-            maxHealth = 500f;
+            maxHealth = 1000f;
             health = maxHealth;
         }
 

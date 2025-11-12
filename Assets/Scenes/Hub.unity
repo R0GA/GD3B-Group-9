@@ -2021,16 +2021,16 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 355352339}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 36.665268, y: 10.855794, z: 10.855794}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 2033489260}
+  m_Father: {fileID: 1929087941}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -34, y: -226}
+  m_AnchoredPosition: {x: -33.99994, y: -226}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &355352341
@@ -2096,7 +2096,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 128
   groundCheckPoint: {fileID: 444379728}
-  respawnOffsetDistance: 1
+  respawnOffsetDistance: 0
   respawnMessageUI: {fileID: 355352339}
   flashCount: 3
   flashInterval: 0.5
@@ -4467,7 +4467,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 406412949793089375, guid: 1e42e0ccb85359f46bb2924bea016faf, type: 3}
       propertyPath: m_DefaultActionMap
-      value: df70fa95-8a34-4494-b137-73ab6b9c7d37
+      value: Player
       objectReference: {fileID: 0}
     - target: {fileID: 481770966925030801, guid: 1e42e0ccb85359f46bb2924bea016faf, type: 3}
       propertyPath: m_AnchorMax.x
@@ -4946,6 +4946,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 4755949715346527585, guid: 1e42e0ccb85359f46bb2924bea016faf, type: 3}
       insertIndex: -1
       addedObject: {fileID: 444379728}
+    - targetCorrespondingSourceObject: {fileID: 6703122002583758635, guid: 1e42e0ccb85359f46bb2924bea016faf, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 355352340}
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 8612744404124047838, guid: 1e42e0ccb85359f46bb2924bea016faf, type: 3}
       insertIndex: -1
@@ -5522,7 +5525,7 @@ MonoBehaviour:
     m_ActionName: 'UI/Pause[/Keyboard/escape]'
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: 
-  m_DefaultActionMap: 272f6d14-89ba-496f-b7ff-215263d3219f
+  m_DefaultActionMap: UI
   m_SplitScreenIndex: -1
   m_Camera: {fileID: 0}
 --- !u!114 &1214868422
@@ -6729,6 +6732,11 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1908080477}
   m_CullTransparentMesh: 1
+--- !u!224 &1929087941 stripped
+RectTransform:
+  m_CorrespondingSourceObject: {fileID: 6703122002583758635, guid: 1e42e0ccb85359f46bb2924bea016faf, type: 3}
+  m_PrefabInstance: {fileID: 1156680085}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1966888572
 GameObject:
   m_ObjectHideFlags: 0
@@ -6997,7 +7005,6 @@ RectTransform:
   - {fileID: 480145118}
   - {fileID: 1107017005}
   - {fileID: 658808916}
-  - {fileID: 355352340}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}

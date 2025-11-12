@@ -4465,6 +4465,10 @@ PrefabInstance:
       propertyPath: m_TagString
       value: Untagged
       objectReference: {fileID: 0}
+    - target: {fileID: 406412949793089375, guid: 1e42e0ccb85359f46bb2924bea016faf, type: 3}
+      propertyPath: m_DefaultActionMap
+      value: df70fa95-8a34-4494-b137-73ab6b9c7d37
+      objectReference: {fileID: 0}
     - target: {fileID: 481770966925030801, guid: 1e42e0ccb85359f46bb2924bea016faf, type: 3}
       propertyPath: m_AnchorMax.x
       value: 0
@@ -6265,8 +6269,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 25228862df49c604a94013b00dc374ca, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::hubPlayerRespawn
-  playerPrefab: {fileID: 401276873}
-  spawnPoint: {fileID: 232188418}
 --- !u!4 &1699722297
 Transform:
   m_ObjectHideFlags: 0

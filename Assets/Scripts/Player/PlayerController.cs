@@ -233,6 +233,11 @@ public class PlayerController : MonoBehaviour
                     isJumping = false;
                     OnJumpLand();
                 }
+                if(currentAnimState != 9 && isInLandingState)
+                {
+                    isInLandingState = false;
+                    Debug.Log("BEEP BEEP BEEP!!!");
+                }
             }
         }
         else
@@ -617,7 +622,8 @@ public class PlayerController : MonoBehaviour
             SetAnimationState(9); // Land
 
             // Return to idle after landing animation
-            Invoke(nameof(ReturnToIdle), 0.5f);
+            Invoke(nameof(ReturnToIdle), 0.2f);
+            
         }
     }
 
@@ -625,8 +631,8 @@ public class PlayerController : MonoBehaviour
     {
         if (isGrounded && currentAnimState == 9)
         {
-            SetAnimationState(0); // Idle
             isInLandingState = false;
+            SetAnimationState(0); // Idle
         }
     }
 

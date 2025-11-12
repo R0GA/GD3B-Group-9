@@ -109,7 +109,7 @@ MonoBehaviour:
   attackSpeed: 1
   attackDamage: 1
   elementType: 3
-  icon: {fileID: 21300000, guid: 755fe84f80e8f6745a6f1160b6159d9a, type: 3}
+  icon: {fileID: 21300000, guid: 95451c888775c5b4588fa824568345d0, type: 3}
   level: 1
   currentXP: 0
   xpToNextLevel: 100
@@ -175,7 +175,7 @@ MonoBehaviour:
   damageNumberOffset: {x: 0, y: 1.5, z: 0}
   baseModel: {fileID: 5098439960138781720}
   evolvedModel: {fileID: 2265371829306946581}
-  evolvedIcon: {fileID: 21300000, guid: 1beabcd4ff91f4b43bb4c6ba202fb65e, type: 3}
+  evolvedIcon: {fileID: 21300000, guid: 30452e84da1f3c049993ae192e6f0b53, type: 3}
   evolvedCreatureName: Trevenant
   hasEvolved: 0
   basePrefabName: 

@@ -320,7 +320,7 @@ MonoBehaviour:
   attackSpeed: 1
   attackDamage: 1
   elementType: 3
-  icon: {fileID: 21300000, guid: 0651b8ab85b2f164692e016d81bf4a1c, type: 3}
+  icon: {fileID: 21300000, guid: 620d578ecb616b24a919e9f25ce0d109, type: 3}
   level: 1
   currentXP: 0
   xpToNextLevel: 100
@@ -386,7 +386,7 @@ MonoBehaviour:
   damageNumberOffset: {x: 0, y: 1.5, z: 0}
   baseModel: {fileID: 7491326637505421549}
   evolvedModel: {fileID: 2561195158773298535}
-  evolvedIcon: {fileID: 21300000, guid: 09b99cb8c2d21914bb39b9c90f918ff8, type: 3}
+  evolvedIcon: {fileID: 21300000, guid: f745290471d87df49baf1ac30b1aac63, type: 3}
   evolvedCreatureName: Whmsicott
   hasEvolved: 0
   basePrefabName: 

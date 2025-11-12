@@ -273,7 +273,7 @@ MonoBehaviour:
   attackSpeed: 1
   attackDamage: 1
   elementType: 3
-  icon: {fileID: 21300000, guid: 6903629bc136a9c44833e38d4381135e, type: 3}
+  icon: {fileID: 21300000, guid: 516bb8745cd8a2c4aaaca72bab7a8120, type: 3}
   level: 1
   currentXP: 0
   xpToNextLevel: 100
@@ -339,7 +339,7 @@ MonoBehaviour:
   damageNumberOffset: {x: 0, y: 1.5, z: 0}
   baseModel: {fileID: 1467164180941624997}
   evolvedModel: {fileID: 7406805253098802768}
-  evolvedIcon: {fileID: 21300000, guid: bf8f843da525ad34ebe75137fccb625c, type: 3}
+  evolvedIcon: {fileID: 21300000, guid: d53dcfef4772ab742b09f03efffb7be8, type: 3}
   evolvedCreatureName: Roselia
   hasEvolved: 0
   basePrefabName: 

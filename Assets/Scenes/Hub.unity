@@ -5610,8 +5610,9 @@ MonoBehaviour:
     m_LineSpacing: 1
   m_Text: 'After you''ve got some creature friends and some items, press I to open
     your inventory and choose which creatures to take with you and give them items.
-    Note: You can only equip items to the active creature. Once you go into a level
-    you can''t access it anymore, so make wise choices before leaving the village.'
+    Note: A creature must be active to equip/dequip items from them. Once you go
+    into a level you can''t access it anymore, so make wise choices before leaving
+    the village.'
 --- !u!222 &1898065175
 CanvasRenderer:
   m_ObjectHideFlags: 0

@@ -109,7 +109,7 @@ MonoBehaviour:
   attackSpeed: 1
   attackDamage: 1
   elementType: 2
-  icon: {fileID: 21300000, guid: d2c017c1d3307a34f8bd8edf2042d4b9, type: 3}
+  icon: {fileID: 21300000, guid: 472b3c6af054baf4da98b3395efba63a, type: 3}
   level: 1
   currentXP: 0
   xpToNextLevel: 100
@@ -175,7 +175,7 @@ MonoBehaviour:
   damageNumberOffset: {x: 0, y: 1.5, z: 0}
   baseModel: {fileID: 1050704168873015210}
   evolvedModel: {fileID: 8313451513811723722}
-  evolvedIcon: {fileID: 21300000, guid: 19edb3f2699e209408123b0509a73d39, type: 3}
+  evolvedIcon: {fileID: 21300000, guid: a3bc8dea9c9105041be151c2c9c9e6c8, type: 3}
   evolvedCreatureName: Palpitoad
   hasEvolved: 0
   basePrefabName: 

@@ -184,7 +184,7 @@ MonoBehaviour:
   attackSpeed: 1
   attackDamage: 1
   elementType: 2
-  icon: {fileID: 21300000, guid: 309ae85b4dff4914abd13e20a278bda9, type: 3}
+  icon: {fileID: 21300000, guid: e5d62d296abcad845bf3ebd0893ac8da, type: 3}
   level: 1
   currentXP: 0
   xpToNextLevel: 100
@@ -250,7 +250,7 @@ MonoBehaviour:
   damageNumberOffset: {x: 0, y: 1.5, z: 0}
   baseModel: {fileID: 4777309842222622724}
   evolvedModel: {fileID: 1226176996842615389}
-  evolvedIcon: {fileID: 21300000, guid: 5959e3b67a999bf4ca53cce4b0742ce6, type: 3}
+  evolvedIcon: {fileID: 21300000, guid: 5afa5854388e0024eb8db9d7b79dd5ef, type: 3}
   evolvedCreatureName: Barbacle
   hasEvolved: 0
   basePrefabName: 
@@ -6278,7 +6278,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0.375}
   m_SizeDelta: {x: 3, y: 3}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &6049914959293752368

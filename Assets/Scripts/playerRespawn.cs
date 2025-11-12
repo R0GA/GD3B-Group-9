@@ -1,4 +1,6 @@
 using UnityEngine;
+using UnityEngine.UI;
+using System.Collections;
 
 public class playerRespawn : MonoBehaviour
 {
@@ -6,7 +8,11 @@ public class playerRespawn : MonoBehaviour
     public float groundCheckRadius = 0.3f;
     public LayerMask groundLayer;
     public Transform groundCheckPoint;
-    public float respawnOffsetDistance = 0.5f; // Distance to offset backward
+    public float respawnOffsetDistance = 0.5f;
+
+    public GameObject respawnMessageUI; // Drag your Canva image here
+    public int flashCount = 4;
+    public float flashInterval = 0.5f;
 
     void Update()
     {
@@ -29,6 +35,22 @@ public class playerRespawn : MonoBehaviour
         if (rb != null) rb.linearVelocity = Vector3.zero;
 
         if (cc != null) cc.enabled = true;
+
+        StartCoroutine(FlashRespawnMessage());
+    }
+
+    private IEnumerator FlashRespawnMessage()
+    {
+        if (respawnMessageUI != null)
+        {
+            for (int i = 0; i < flashCount; i++)
+            {
+                respawnMessageUI.SetActive(true);
+                yield return new WaitForSeconds(flashInterval);
+                respawnMessageUI.SetActive(false);
+                yield return new WaitForSeconds(flashInterval);
+            }
+        }
     }
 
     void OnDrawGizmosSelected()

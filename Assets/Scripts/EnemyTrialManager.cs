@@ -130,7 +130,7 @@ public class EnemyTrialManager : MonoBehaviour
             var creature = enemy.GetComponent<CreatureBase>();
             if (creature != null)
             {
-                creature.ResetCreature(); // Reset health & reactivate logic
+                creature.ResetCreature(); //Reset health and reactivate logic
             }
         }
 
@@ -299,7 +299,7 @@ public class EnemyTrialManager : MonoBehaviour
             return rewardSpawnPoint.transform.position;
         }
 
-        // Fallback to trial manager position
+        //Fallback to trial manager position
         return transform.position;
     }
 
@@ -320,7 +320,7 @@ public class EnemyTrialManager : MonoBehaviour
         currentWave = 0;
         enemies.Clear();
 
-        // Reset first wave enemies (visible)
+        //Reset first wave enemies
         foreach (Transform enemy in enemyWaves[0].transform)
         {
             var creature = enemy.GetComponent<CreatureBase>();
@@ -328,7 +328,7 @@ public class EnemyTrialManager : MonoBehaviour
                 creature.ResetCreature();
         }
 
-        // Reset all other waves (keep inactive)
+        //Reset all other waves
         for (int i = 1; i < enemyWaves.Length; i++)
         {
             if (enemyWaves[i] != null)

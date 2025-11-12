@@ -28555,6 +28555,37 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 3076240194808032836, guid: 183263b82965e2d42941164ae56c4aa6, type: 3}
   m_PrefabInstance: {fileID: 1863400865}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &1865789311
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1865789312}
+  m_Layer: 0
+  m_Name: LevelSpawn
+  m_TagString: LevelSpawn
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1865789312
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1865789311}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 110.93381, y: 5.19835, z: 164.16}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1884963186 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 3042645edc713f244989398a27344dab, type: 3}
@@ -31129,3 +31160,4 @@ SceneRoots:
   - {fileID: 354093304}
   - {fileID: 1466268789}
   - {fileID: 1439872605}
+  - {fileID: 1865789312}

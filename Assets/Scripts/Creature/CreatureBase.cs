@@ -44,6 +44,7 @@ public class CreatureBase : MonoBehaviour
     [SerializeField] private ParticleSystem hurtParticles;
     [SerializeField] private Image friendlyIndicator;
     [SerializeField] private Light lightIndicator;
+    [SerializeField] private bool dropHP;
 
     [Header("Damage Numbers")]
     [SerializeField] private GameObject floatingDamageNumberPrefab;
@@ -488,6 +489,18 @@ public class CreatureBase : MonoBehaviour
         {
             Debug.LogWarning("XPOrb prefab not found in Resources/Collectibles/");
         }
+
+        GameObject hpPickup = Resources.Load<GameObject>("Collectibles/HealItem");
+        if(dropHP && hpPickup != null)
+        {
+            Vector3 spawnPosition = transform.position + new Vector3(0, 0.5f, 0);
+            Instantiate(hpPickup, spawnPosition, Quaternion.identity);
+        }
+        else
+        {
+            Debug.LogWarning("HealItem prefab not found in Resources/Collectibles/");
+        }
+        
     }
 }
 

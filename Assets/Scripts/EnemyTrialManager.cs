@@ -117,7 +117,7 @@ public class EnemyTrialManager : MonoBehaviour
         if (trialStartText != null)
         {
             trialStartText.SetActive(true);
-            Invoke(nameof(HideTrialStartText), 2f);
+            Invoke(nameof(HideTrialStartText), 3.5f);
         }
 
         RegisterActiveEnemies(enemyWaves[0]);

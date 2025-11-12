@@ -119,7 +119,7 @@ public class TimedTrialManager : MonoBehaviour
         if (trialStartText != null)
         {
             trialStartText.SetActive(true);
-            Invoke(nameof(HideTrialStartText), 2f);
+            Invoke(nameof(HideTrialStartText), 3.5f);
         }
 
         if (trialTimer != null)

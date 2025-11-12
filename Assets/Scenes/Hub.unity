@@ -496,6 +496,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SceneManangementScript
   portalPanel: {fileID: 2113007933}
+  controlsPanel: {fileID: 0}
+  creditsPanel: {fileID: 0}
 --- !u!1 &93078727
 GameObject:
   m_ObjectHideFlags: 0
@@ -1817,6 +1819,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SceneManangementScript
   portalPanel: {fileID: 1908080477}
+  controlsPanel: {fileID: 0}
+  creditsPanel: {fileID: 0}
 --- !u!1 &621290800
 GameObject:
   m_ObjectHideFlags: 0

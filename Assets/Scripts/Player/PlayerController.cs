@@ -747,12 +747,11 @@ public class PlayerController : MonoBehaviour
             }
         }
         OnAttackComplete();
-        CreatureBase active = PlayerInventory.Instance.GetActiveCreature();
-        if(active != null)
-        {
-            active.gameObject.GetComponent<CreatureController>().SetupNavMeshAgent();
-        }
+
+        // Force reinstantiate the active creature to fix NavMeshAgent issues
+        PlayerInventory.Instance.ForceReinstantiateActiveCreature();
     }
+
     public static bool IsInHub()
     {
         return UnityEngine.SceneManagement.SceneManager.GetActiveScene().name == "Hub";

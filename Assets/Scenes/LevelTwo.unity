@@ -8191,6 +8191,7 @@ GameObject:
   m_Component:
   - component: {fileID: 470870198}
   - component: {fileID: 470870197}
+  - component: {fileID: 470870199}
   m_Layer: 0
   m_Name: PauseManager
   m_TagString: Untagged
@@ -8227,6 +8228,36 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &470870199
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 470870196}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 62899f850307741f2a39c98a8b639597, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.InputSystem::UnityEngine.InputSystem.PlayerInput
+  m_Actions: {fileID: -944628639613478452, guid: 052faaac586de48259a63d0c4782560b, type: 3}
+  m_NotificationBehavior: 2
+  m_UIInputModule: {fileID: 0}
+  m_DeviceLostEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  m_DeviceRegainedEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  m_ControlsChangedEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  m_ActionEvents: []
+  m_NeverAutoSwitchControlSchemes: 0
+  m_DefaultControlScheme: 
+  m_DefaultActionMap: UI
+  m_SplitScreenIndex: -1
+  m_Camera: {fileID: 0}
 --- !u!4 &478428245 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 8556c8073e71ed8499a2cfde8b529cb1, type: 3}
@@ -11558,6 +11589,7 @@ MonoBehaviour:
   trialWall: {fileID: 0}
   xpReward: 200
   rewardSpawn: {fileID: 0}
+  trialTrigger: {fileID: 0}
   waveNameText: {fileID: 0}
   waveNameDisplayTime: 3
   waveDelay: 2
@@ -19745,6 +19777,7 @@ MonoBehaviour:
   trialWall: {fileID: 2041569067}
   xpReward: 200
   rewardSpawn: {fileID: 301377586}
+  trialTrigger: {fileID: 0}
   waveNameText: {fileID: 1956021036}
   waveNameDisplayTime: 3
   waveDelay: 2
@@ -22072,6 +22105,7 @@ MonoBehaviour:
   trialWall: {fileID: 1810930806}
   xpReward: 200
   rewardSpawn: {fileID: 1712328634}
+  trialTrigger: {fileID: 0}
   waveNameText: {fileID: 1956021036}
   waveNameDisplayTime: 3
   waveDelay: 2
@@ -27659,6 +27693,7 @@ MonoBehaviour:
   trialWall: {fileID: 1447896184}
   xpReward: 200
   rewardSpawn: {fileID: 1030518839}
+  trialTrigger: {fileID: 0}
   waveNameText: {fileID: 1956021036}
   waveNameDisplayTime: 3
   waveDelay: 2
@@ -30582,6 +30617,7 @@ MonoBehaviour:
   trialWall: {fileID: 1401436053}
   xpReward: 200
   rewardSpawn: {fileID: 107093237}
+  trialTrigger: {fileID: 0}
   waveNameText: {fileID: 1956021036}
   waveNameDisplayTime: 3
   waveDelay: 2

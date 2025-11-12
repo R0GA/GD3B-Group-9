@@ -100,7 +100,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: -4781553398002090870, guid: b4b5752dd7784f14eb534293a2118398, type: 3}
       propertyPath: damage
-      value: 100
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: -4781553398002090870, guid: b4b5752dd7784f14eb534293a2118398, type: 3}
       propertyPath: lifeTime
@@ -108,7 +108,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3558163960435529881, guid: b4b5752dd7784f14eb534293a2118398, type: 3}
       propertyPath: m_IsTrigger
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8241527216875985327, guid: b4b5752dd7784f14eb534293a2118398, type: 3}
       propertyPath: m_LocalPosition.x

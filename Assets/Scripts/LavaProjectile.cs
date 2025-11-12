@@ -10,14 +10,14 @@ public class LavaProjectile : MonoBehaviour
         Destroy(gameObject, lifeTime);
     }
 
-    private void OnCollisionEnter(Collision collision)
+    private void OnTriggerEnter(Collider other)
     {
-        if (collision.gameObject.CompareTag("Player"))
+        if (other.CompareTag("Player"))
         {
-            PlayerController playercontroller = collision.gameObject.GetComponent<PlayerController>();
-            if (playercontroller != null)
+            PlayerController playerController = other.GetComponent<PlayerController>();
+            if (playerController != null)
             {
-                playercontroller.TakeDamage(damage);
+                playerController.TakeDamage(damage);
                 Debug.Log("Hit by lava!");
             }
         }

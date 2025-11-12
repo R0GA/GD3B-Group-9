@@ -13,7 +13,7 @@ public class PauseMenuManager : MonoBehaviour
 
     void Update()
     {
-        if (Keyboard.current.escapeKey.wasPressedThisFrame)
+        /*if (Keyboard.current.escapeKey.wasPressedThisFrame)
             Debug.Log("Escape detected!");
 
         if (Input.GetKeyDown(KeyCode.Escape))
@@ -21,6 +21,7 @@ public class PauseMenuManager : MonoBehaviour
             Debug.Log("Escape pressed manually");
             TogglePause();
         }
+        */
     }
 
     private void Awake()

@@ -651,31 +651,35 @@ public class PlayerController : MonoBehaviour
 
     private void Die()
     {
-        /*
+        if (isDead) return;
         isDead = true;
+
+        Debug.Log("Player died!");
 
         // Disable movement and input
         characterController.enabled = false;
         playerInput.enabled = false;
-        gameObject.SetActive(false);
 
-        // Trigger death animation if available
-        if (animator != null)
+      
+         
+
+        // Notify Respawn Manager
+        if (PlayerRespawnManager.Instance != null)
         {
-            animator.SetTrigger("Die");
+            PlayerRespawnManager.Instance.HandlePlayerDeath(this);
+        }
+        else
+        {
+            // Fallback if no manager exists
+            SceneManager.LoadScene("Hub");
         }
 
-        Debug.Log("Player died!");
-
-        // Trigger death event
-        OnPlayerDeath?.Invoke();
-
-        // Optional: Restart level or show game over screen after delay
-        // Invoke(nameof(GameOver), 3f);
-        */
-
-        SceneManager.LoadScene("Hub");
-        health = maxHealth;
+        EnemyTrialManager[] trials = FindObjectsOfType<EnemyTrialManager>();
+        foreach (EnemyTrialManager trial in trials)
+        {
+            trial.StopTrialMusic();
+            trial.ResetTrial();
+        }
     }
 
     private void GameOver()

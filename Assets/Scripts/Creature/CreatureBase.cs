@@ -147,6 +147,22 @@ public class CreatureBase : MonoBehaviour
         }
     }
 
+    public void ResetCreature()
+    {
+        // Restore full health
+        health = maxHealth;
+
+        // Reactivate if it was destroyed or disabled
+        if (!gameObject.activeInHierarchy)
+            gameObject.SetActive(true);
+
+        // Reset particles or effects
+        if (hurtParticles != null)
+            hurtParticles.Stop();
+
+        Debug.Log($"{gameObject.name} has been reset to full health.");
+    }
+
     private void ApplyEvolutionVisuals()
     {
         // Switch models

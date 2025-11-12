@@ -29,6 +29,7 @@ public class SceneManangementScript : MonoBehaviour
     public void Levels(string sceneName)
     {
         SceneManager.LoadScene(sceneName);
+        Time.timeScale = 1f;
     }
 
     public void PortalHidden()

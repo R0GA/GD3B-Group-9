@@ -3,9 +3,13 @@ using UnityEngine.SceneManagement;
 
 public class SceneManangementScript : MonoBehaviour
 {
+    [Header("Hub settings")]
     public GameObject portalPanel;
-    
 
+    [Header("Start settings")]
+    public GameObject controlsPanel;
+    public GameObject creditsPanel;
+   
     public void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("Player"))
@@ -27,9 +31,34 @@ public class SceneManangementScript : MonoBehaviour
         SceneManager.LoadScene(sceneName);
     }
 
-    public void BackToHub()
+    public void PortalHidden()
     {
         portalPanel.SetActive(false);
+    }
+
+    public void ShowControls()
+    {
+        controlsPanel.SetActive(true);
+    }
+
+    public void HideControls()
+    {
+        controlsPanel.SetActive(false);
+    }
+
+    public void ShowCredits()
+    {
+        creditsPanel.SetActive(true);
+    }
+
+    public void HideCredits()
+    {
+        creditsPanel.SetActive(false);
+    }
+
+    public void QuitGame()
+    {
+        Application.Quit();
     }
 
 }

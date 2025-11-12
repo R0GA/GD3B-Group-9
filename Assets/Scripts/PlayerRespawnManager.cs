@@ -31,6 +31,7 @@ public class PlayerRespawnManager : MonoBehaviour
         {
             Destroy(gameObject);
         }
+        player = FindAnyObjectByType<PlayerController>();
     }
 
     private void Start()
@@ -40,11 +41,13 @@ public class PlayerRespawnManager : MonoBehaviour
         if (respawnPanel != null)
             respawnPanel.SetActive(false);
 
-        if (respawnButton != null)
+        /*if (respawnButton != null)
             respawnButton.onClick.AddListener(RespawnPlayer);
 
         if (returnToHubButton != null)
             returnToHubButton.onClick.AddListener(ReturnToHub);
+        */
+        
     }
 
     private void OnDestroy()
@@ -151,12 +154,12 @@ public class PlayerRespawnManager : MonoBehaviour
 
         if (player != null)
         {
-            player.GetComponent<PlayerController>().enabled = false;
+            //player.GetComponent<PlayerController>().enabled = false;
             Debug.Log("PlayerController disabled due to death.");
         }
     }
 
-    private void RespawnPlayer()
+    public void RespawnPlayer()
     {
         if (player == null) return;
 
@@ -189,10 +192,11 @@ public class PlayerRespawnManager : MonoBehaviour
             player.health = player.maxHealth;
             player.FullHeal();
             player.isDead = false;
-            player.gameObject.SetActive(true);
+            //player.gameObject.SetActive(true);
             player.GetComponent<CharacterController>().enabled = true;
-            player.GetComponent<PlayerInput>().enabled = true;
-            player.GetComponent<PlayerController>().enabled = true;
+            //player.GetComponent<PlayerInput>().enabled = true;
+            //player.GetComponent<PlayerController>().enabled = true;
+            player.OnAttackComplete(); // Reset attack state
 
             Debug.Log("Player respawned at checkpoint.");
         }
@@ -203,6 +207,14 @@ public class PlayerRespawnManager : MonoBehaviour
         Debug.Log("Returning to Hub. Resetting trial state and clearing checkpoint.");
         ClearCheckpoint();
         SceneManager.LoadScene("Hub");
+        player.health = player.maxHealth;
+        player.FullHeal();
+        player.isDead = false;
+        //player.gameObject.SetActive(true);
+        player.GetComponent<CharacterController>().enabled = true;
+        //player.GetComponent<PlayerInput>().enabled = true;
+        //player.GetComponent<PlayerController>().enabled = true;
+        player.OnAttackComplete(); // Reset attack state
     }
 
     public void ResetPlayer()

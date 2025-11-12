@@ -3,7 +3,13 @@
 --- !u!78 &1
 TagManager:
   serializedVersion: 3
-  tags: []
+  tags:
+  - Spawn
+  - LevelSpawn
+  - HubSpawn
+  - RewardSpawn
+  - Ground
+  - deathPanel
   layers:
   - Default
   - TransparentFX
@@ -12,13 +18,13 @@ TagManager:
   - Water
   - UI
   - Enemy
+  - Ground
   - 
   - 
-  - 
-  - 
-  - 
-  - 
-  - 
+  - Player
+  - PlayerCreature
+  - EnemyCreature
+  - Projectiles
   - 
   - 
   - 

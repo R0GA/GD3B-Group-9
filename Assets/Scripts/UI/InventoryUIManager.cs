@@ -49,8 +49,46 @@ public class InventoryUIManager : MonoBehaviour
             gameObject.SetActive(false);
     }
 
+    private void RefreshActiveCreatureDisplay()
+    {
+        // Try to get live creature data first
+        CreatureBase liveCreature = playerInventory.GetActiveCreature();
+        if (liveCreature != null)
+        {
+            // Use live data for active creature display
+            activeCreatureName.text = liveCreature.gameObject.name.Replace("(Clone)", "").Trim();
+            activeCreatureIcon.sprite = liveCreature.icon;
+            activeCreatureHealth.maxValue = liveCreature.maxHealth;
+            activeCreatureHealth.value = liveCreature.health;
+        }
+        else
+        {
+            // Fall back to saved data
+            var activeData = playerInventory.ActivePartyCreatureData;
+            if (activeData != null)
+            {
+                activeCreatureName.text = activeData.DisplayName; // Use DisplayName here
+                activeCreatureIcon.sprite = activeData.icon;
+                activeCreatureHealth.maxValue = activeData.maxHealth;
+                activeCreatureHealth.value = activeData.health;
+            }
+            else
+            {
+                activeCreatureName.text = "No Active Creature";
+                activeCreatureIcon.sprite = null;
+                activeCreatureHealth.value = 0;
+            }
+        }
+    }
+
+    public void RefreshActiveCreatureDisplayOnly()
+    {
+        RefreshActiveCreatureDisplay();
+    }
+
     public void RefreshAllDisplays()
     {
+        playerInventory.ForceSaveActiveCreature();
         RefreshPartyDisplay();
         RefreshInventoryDisplay();
         RefreshItemsDisplay();
@@ -126,24 +164,6 @@ public class InventoryUIManager : MonoBehaviour
         }
     }
 
-    private void RefreshActiveCreatureDisplay()
-    {
-        var activeData = playerInventory.ActivePartyCreatureData;
-        if (activeData != null)
-        {
-            activeCreatureName.text = activeData.prefabName.Replace("Creatures/", "");
-            activeCreatureIcon.sprite = activeData.icon;
-            activeCreatureHealth.maxValue = activeData.maxHealth;
-            activeCreatureHealth.value = activeData.health;
-        }
-        else
-        {
-            activeCreatureName.text = "No Active Creature";
-            activeCreatureIcon.sprite = null;
-            activeCreatureHealth.value = 0;
-        }
-    }
-
     private void UpdatePartyCount()
     {
         if (partyCountText != null)
@@ -152,18 +172,34 @@ public class InventoryUIManager : MonoBehaviour
         }
     }
 
-    // Public methods called by UI buttons
+    public void ToggleInventory()
+    {
+        if (!PlayerController.IsInHub())
+        {
+            Debug.Log("Inventory can only be opened in the hub.");
+            return;
+        }
+
+        gameObject.SetActive(!gameObject.activeInHierarchy);
+        if (gameObject.activeInHierarchy)
+        {
+            RefreshAllDisplays();
+        }
+
+        // Notify hotbar about inventory state
+        if (HotbarUIManager.Instance != null)
+        {
+            HotbarUIManager.Instance.OnInventoryStateChanged(gameObject.activeInHierarchy);
+        }
+    }
+
     public void AddCreatureToParty(int inventoryIndex)
     {
         if (playerInventory.AddCreatureToParty(inventoryIndex))
         {
             RefreshAllDisplays();
-        }
-        else
-        {
-            // Show error message (party full)
-            Debug.LogWarning("Party is full! Remove a creature first.");
-            // You could add a UI notification here
+            // Refresh hotbar when party changes
+            HotbarUIManager.Instance?.RefreshHotbar();
         }
     }
 
@@ -172,6 +208,8 @@ public class InventoryUIManager : MonoBehaviour
         if (playerInventory.RemoveCreatureFromParty(partyIndex))
         {
             RefreshAllDisplays();
+            // Refresh hotbar when party changes
+            HotbarUIManager.Instance?.RefreshHotbar();
         }
     }
 
@@ -179,14 +217,7 @@ public class InventoryUIManager : MonoBehaviour
     {
         playerInventory.SwitchActiveCreature(partyIndex);
         RefreshActiveCreatureDisplay();
-    }
-
-    public void ToggleInventory()
-    {
-        gameObject.SetActive(!gameObject.activeInHierarchy);
-        if (gameObject.activeInHierarchy)
-        {
-            RefreshAllDisplays();
-        }
+        // Refresh hotbar when active creature changes
+        HotbarUIManager.Instance?.RefreshHotbar();
     }
 }

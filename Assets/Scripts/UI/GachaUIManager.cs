@@ -50,7 +50,7 @@ public class GachaUIManager : MonoBehaviour
     private List<object> allPossibleResults = new List<object>();
     private Coroutine rollingCoroutine;
     private object finalResult;
-    private int availablePacks = 100; // You can modify this based on your game economy
+    public int availablePacks = 10; 
 
     private void Awake()
     {
@@ -84,6 +84,11 @@ public class GachaUIManager : MonoBehaviour
 
     public void ShowGachaUI()
     {
+        if (!PlayerController.IsInHub())
+        {
+            Debug.Log("Gacha can only be opened in the hub.");
+               return;
+       }
         if (!gameObject.active)
         {
             gameObject.SetActive(true);
@@ -103,11 +108,12 @@ public class GachaUIManager : MonoBehaviour
     {
         gachaMainPanel.SetActive(false);
         gameObject.SetActive(false);    
+        HotbarUIManager.Instance.OnInventoryStateChanged(false);
     }
 
     private void UpdatePackDisplay()
     {
-        packCountText.text = $"Packs Available: {availablePacks}";
+        packCountText.text = $"Creature Searches Available: {availablePacks}";
         openPackButton.interactable = availablePacks > 0;
     }
 
@@ -262,10 +268,10 @@ public class GachaUIManager : MonoBehaviour
             resultName.color = Color.white;
 
             string stats = "";
-            if (item.HealthModifier != 0)
-                stats += $"HP: {item.HealthModifier:+#;-#}\n";
-            if (item.DamageModifier != 0)
-                stats += $"Damage: {item.DamageModifier:+#;-#}\n";
+            if (item.HealthModifierPercent != 0)
+                stats += $"HP % Mod: {(item.HealthModifierPercent >= 0 ? "+" : "")}{item.HealthModifierPercent:P0}\n";
+            if (item.DamageModifierPercent != 0)
+                stats += $"DMG Mod: {(item.DamageModifierPercent >= 0 ? "+" : "")}{item.HealthModifierPercent:P0}\n";
             stats += $"Element: {item.ElementType}";
 
             itemStatsText.text = stats;

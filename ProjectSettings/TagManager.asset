@@ -9,6 +9,7 @@ TagManager:
   - HubSpawn
   - RewardSpawn
   - Ground
+  - deathPanel
   layers:
   - Default
   - TransparentFX

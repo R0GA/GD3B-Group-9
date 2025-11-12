@@ -2,6 +2,7 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class PlayerRespawnManager : MonoBehaviour
 {
@@ -10,12 +11,13 @@ public class PlayerRespawnManager : MonoBehaviour
     [Header("Respawn UI")]
     public GameObject respawnPanel;
     public Button respawnButton;
-    //public Button quitButton;
+    public Button returnToHubButton;
 
     [Header("References")]
     public PlayerController player;
 
     private Vector3 lastCheckpointPosition;
+    private string checkpointSceneName;
     private bool hasCheckpoint = false;
 
     private void Awake()
@@ -23,7 +25,7 @@ public class PlayerRespawnManager : MonoBehaviour
         if (Instance == null)
         {
             Instance = this;
-            DontDestroyOnLoad(gameObject); // Persist across scenes
+            DontDestroyOnLoad(gameObject); 
         }
         else
         {
@@ -33,30 +35,125 @@ public class PlayerRespawnManager : MonoBehaviour
 
     private void Start()
     {
+        SceneManager.sceneLoaded += OnSceneLoaded;
+
         if (respawnPanel != null)
             respawnPanel.SetActive(false);
 
         if (respawnButton != null)
             respawnButton.onClick.AddListener(RespawnPlayer);
 
-        /*if (quitButton != null)
-            quitButton.onClick.AddListener(QuitToHub);*/
+        if (returnToHubButton != null)
+            returnToHubButton.onClick.AddListener(ReturnToHub);
+    }
+
+    private void OnDestroy()
+    {
+        SceneManager.sceneLoaded -= OnSceneLoaded;
+    }
+
+    private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+    {
+        StartCoroutine(ReconnectUI());
+        StartCoroutine(ReenablePlayerComponents());
+        Time.timeScale = 1f;
+    }
+
+    private IEnumerator ReconnectUI()
+    {
+        yield return null; // wait one frame
+
+        GameObject panelObj = GameObject.FindWithTag("deathPanel");
+        if (panelObj != null)
+        {
+            respawnPanel = panelObj;
+            respawnPanel.SetActive(false);
+            Debug.Log("Respawn panel re-linked after scene load.");
+        }
+        else
+        {
+            Debug.LogWarning("Respawn panel not found after scene load.");
+        }
+
+        if (respawnPanel != null)
+        {
+            Button[] buttons = respawnPanel.GetComponentsInChildren<Button>();
+            foreach (Button btn in buttons)
+            {
+                if (btn.name.Contains("Respawn"))
+                {
+                    respawnButton = btn;
+                    respawnButton.onClick.RemoveAllListeners();
+                    respawnButton.onClick.AddListener(RespawnPlayer);
+                }
+                else if (btn.name.Contains("ReturnToHub"))
+                {
+                    returnToHubButton = btn;
+                    returnToHubButton.onClick.RemoveAllListeners();
+                    returnToHubButton.onClick.AddListener(ReturnToHub);
+                }
+            }
+        }
+    }
+
+    private IEnumerator ReenablePlayerComponents()
+    {
+        yield return null; // wait one frame
+
+        if (player != null)
+        {
+            var controller = player.GetComponent<PlayerController>();
+            var input = player.GetComponent<PlayerInput>();
+            var charController = player.GetComponent<CharacterController>();
+
+            if (charController != null) charController.enabled = true;
+            if (input != null)
+            {
+                input.enabled = true;
+                input.ActivateInput(); // critical for jump to work
+            }
+            if (controller != null) controller.enabled = true;
+
+            player.isDead = false;
+            Debug.Log("Player components re-enabled after scene load.");
+        }
     }
 
     public void SetCheckpoint(Vector3 checkpointPos)
     {
         lastCheckpointPosition = checkpointPos;
+        checkpointSceneName = SceneManager.GetActiveScene().name;
         hasCheckpoint = true;
+
+        Debug.Log($"Checkpoint set at {checkpointPos} in scene: {checkpointSceneName}");
     }
 
     public void HandlePlayerDeath(PlayerController playerRef)
     {
         player = playerRef;
 
+        if (respawnPanel == null)
+        {
+            GameObject panelObj = GameObject.FindWithTag("deathPanel");
+            if (panelObj != null)
+            {
+                respawnPanel = panelObj;
+                Debug.Log("Respawn panel re-linked during death.");
+            }
+        }
+
         if (respawnPanel != null)
             respawnPanel.SetActive(true);
+        else
+            Debug.LogWarning("Respawn panel not found!");
 
-        Time.timeScale = 0f; // Pause the game
+        Time.timeScale = 0f;
+
+        if (player != null)
+        {
+            player.GetComponent<PlayerController>().enabled = false;
+            Debug.Log("PlayerController disabled due to death.");
+        }
     }
 
     private void RespawnPlayer()
@@ -64,7 +161,8 @@ public class PlayerRespawnManager : MonoBehaviour
         if (player == null) return;
 
         Time.timeScale = 1f;
-        respawnPanel.SetActive(false);
+        if (respawnPanel != null)
+            respawnPanel.SetActive(false);
 
         StartCoroutine(RespawnRoutine());
     }
@@ -73,24 +171,56 @@ public class PlayerRespawnManager : MonoBehaviour
     {
         yield return new WaitForSecondsRealtime(0.5f);
 
-        if (hasCheckpoint)
-            player.transform.position = lastCheckpointPosition;
-        else
-            player.transform.position = Vector3.zero; // fallback
+        string currentScene = SceneManager.GetActiveScene().name;
 
-        player.health = player.maxHealth;
-        player.FullHeal();
-        player.isDead = false;
-        player.gameObject.SetActive(true);
-        player.GetComponent<CharacterController>().enabled = true;
-        player.GetComponent<PlayerInput>().enabled = true;
+        if (hasCheckpoint && currentScene != checkpointSceneName)
+        {
+            Debug.Log($"Loading checkpoint scene: {checkpointSceneName}");
+            AsyncOperation asyncLoad = SceneManager.LoadSceneAsync(checkpointSceneName);
+            while (!asyncLoad.isDone)
+                yield return null;
 
-        Debug.Log("Player respawned at checkpoint!");
+            yield return new WaitForSecondsRealtime(0.1f);
+        }
+
+        if (player != null)
+        {
+            player.transform.position = hasCheckpoint ? lastCheckpointPosition : Vector3.zero;
+            player.health = player.maxHealth;
+            player.FullHeal();
+            player.isDead = false;
+            player.gameObject.SetActive(true);
+            player.GetComponent<CharacterController>().enabled = true;
+            player.GetComponent<PlayerInput>().enabled = true;
+            player.GetComponent<PlayerController>().enabled = true;
+
+            Debug.Log("Player respawned at checkpoint.");
+        }
     }
 
-    /*private void QuitToHub()
+    public void ReturnToHub()
     {
-        Time.timeScale = 1f;
-        UnityEngine.SceneManagement.SceneManager.LoadScene("Hub");
-    }*/
+        Debug.Log("Returning to Hub. Resetting trial state and clearing checkpoint.");
+        ClearCheckpoint();
+        SceneManager.LoadScene("Hub");
+    }
+
+    public void ResetPlayer()
+    {
+        if (player != null)
+        {
+            Destroy(player.gameObject);
+            player = null;
+            Debug.Log("Trial player destroyed.");
+        }
+    }
+
+    public void ClearCheckpoint()
+    {
+        hasCheckpoint = false;
+        lastCheckpointPosition = Vector3.zero;
+        checkpointSceneName = "";
+
+        Debug.Log("Checkpoint data cleared.");
+    }
 }

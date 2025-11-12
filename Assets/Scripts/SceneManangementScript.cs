@@ -9,7 +9,7 @@ public class SceneManangementScript : MonoBehaviour
     [Header("Start settings")]
     public GameObject controlsPanel;
     public GameObject creditsPanel;
-   
+
     public void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("Player"))
@@ -27,10 +27,18 @@ public class SceneManangementScript : MonoBehaviour
     }
 
     public void Levels(string sceneName)
+{
+    Debug.Log($"Loading scene: {sceneName}");
+
+    if (sceneName == "Hub" && PlayerRespawnManager.Instance != null)
     {
-        SceneManager.LoadScene(sceneName);
-        Time.timeScale = 1f;
+        PlayerRespawnManager.Instance.ClearCheckpoint(); // Only clear checkpoint
+        Debug.Log("Clearing checkpoint for Hub transition.");
     }
+
+    Time.timeScale = 1f;
+    SceneManager.LoadScene(sceneName);
+}
 
     public void PortalHidden()
     {
@@ -61,5 +69,4 @@ public class SceneManangementScript : MonoBehaviour
     {
         Application.Quit();
     }
-
 }

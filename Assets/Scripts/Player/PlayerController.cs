@@ -159,6 +159,7 @@ public class PlayerController : MonoBehaviour
         HandleAttackComboTimeout();
         HandleAttackInputCooldown();
         UpdateAnimations();
+        Debug.Log($"Current Animation State: {currentAnimState} {IsGrounded} {isJumping} {isInLandingState} {isAttacking}");
     }
 
     private void HandleInput()
@@ -258,6 +259,8 @@ public class PlayerController : MonoBehaviour
 
     private void OnJumpPerformed(InputAction.CallbackContext context)
     {
+        Debug.Log("Jump performed");
+
         // Can't jump while attacking
         if (isAttacking) return;
 
@@ -664,20 +667,19 @@ public class PlayerController : MonoBehaviour
 
         // Disable movement and input
         characterController.enabled = false;
-        playerInput.enabled = false;
-
-      
-         
-
+        //playerInput.enabled = false;
+       
         // Notify Respawn Manager
         if (PlayerRespawnManager.Instance != null)
         {
             PlayerRespawnManager.Instance.HandlePlayerDeath(this);
+            health = maxHealth;
         }
         else
         {
             // Fallback if no manager exists
             SceneManager.LoadScene("Hub");
+            health = maxHealth;
         }
 
         EnemyTrialManager[] trials = FindObjectsOfType<EnemyTrialManager>();

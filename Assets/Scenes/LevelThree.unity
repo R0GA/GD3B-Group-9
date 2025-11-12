@@ -7215,7 +7215,6 @@ MonoBehaviour:
   - {fileID: 942989442}
   successPanel: {fileID: 2094510003}
   trialStartText: {fileID: 185458445}
-  loot: {fileID: 0}
   trialWall: {fileID: 1295128093}
   xpReward: 200
   rewardSpawn: {fileID: 0}
@@ -10470,7 +10469,6 @@ MonoBehaviour:
   - {fileID: 1240284362}
   successPanel: {fileID: 2094510003}
   trialStartText: {fileID: 185458445}
-  loot: {fileID: 1147191492}
   trialWall: {fileID: 1942844696}
   xpReward: 200
   rewardSpawn: {fileID: 0}
@@ -12444,7 +12442,6 @@ MonoBehaviour:
   - {fileID: 1694525926}
   successPanel: {fileID: 2094510003}
   trialStartText: {fileID: 413570386}
-  loot: {fileID: 1059385130}
   trialWall: {fileID: 19034221}
   xpReward: 200
   rewardSpawn: {fileID: 0}
@@ -14207,6 +14204,22 @@ PrefabInstance:
       propertyPath: m_RenderPostProcessing
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 4291114282819428660, guid: 1e42e0ccb85359f46bb2924bea016faf, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4291114282819428660, guid: 1e42e0ccb85359f46bb2924bea016faf, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4291114282819428660, guid: 1e42e0ccb85359f46bb2924bea016faf, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4291114282819428660, guid: 1e42e0ccb85359f46bb2924bea016faf, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4610059766392171376, guid: 1e42e0ccb85359f46bb2924bea016faf, type: 3}
       propertyPath: m_Size
       value: 1
@@ -14282,6 +14295,22 @@ PrefabInstance:
     - target: {fileID: 4755949715346527585, guid: 1e42e0ccb85359f46bb2924bea016faf, type: 3}
       propertyPath: m_LocalPosition.z
       value: 255.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 4981904032045847942, guid: 1e42e0ccb85359f46bb2924bea016faf, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4981904032045847942, guid: 1e42e0ccb85359f46bb2924bea016faf, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4981904032045847942, guid: 1e42e0ccb85359f46bb2924bea016faf, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4981904032045847942, guid: 1e42e0ccb85359f46bb2924bea016faf, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5274647586797592252, guid: 1e42e0ccb85359f46bb2924bea016faf, type: 3}
       propertyPath: m_AnchorMax.y
@@ -14959,6 +14988,55 @@ MeshCollider:
   m_Convex: 0
   m_CookingOptions: 30
   m_Mesh: {fileID: 2755138486400708787, guid: f31d13abfeffd514f83bf6cab6ae73a6, type: 3}
+--- !u!1 &559402139
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 559402141}
+  - component: {fileID: 559402140}
+  m_Layer: 0
+  m_Name: Global Volume (Glow)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &559402140
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 559402139}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 172515602e62fb746b5d573b38a5fe58, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.RenderPipelines.Core.Runtime::UnityEngine.Rendering.Volume
+  m_IsGlobal: 1
+  priority: 0
+  blendDistance: 0
+  weight: 1
+  sharedProfile: {fileID: 11400000, guid: 144009a3e031608468bd18ca88af3ed0, type: 2}
+--- !u!4 &559402141
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 559402139}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 128.96568, y: -46.624405, z: -38.476013}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &559912251 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 7485393977251099006, guid: f31d13abfeffd514f83bf6cab6ae73a6, type: 3}
@@ -17741,7 +17819,6 @@ MonoBehaviour:
   - {fileID: 1518729888}
   successPanel: {fileID: 2094510003}
   trialStartText: {fileID: 185458445}
-  loot: {fileID: 1232185278}
   trialWall: {fileID: 88002327}
   xpReward: 200
   rewardSpawn: {fileID: 0}
@@ -28058,7 +28135,6 @@ MonoBehaviour:
   - {fileID: 975439436}
   successPanel: {fileID: 2094510003}
   trialStartText: {fileID: 1605295540}
-  loot: {fileID: 699070057}
   trialWall: {fileID: 128742042}
   xpReward: 200
   rewardSpawn: {fileID: 0}
@@ -29874,7 +29950,6 @@ MonoBehaviour:
   - {fileID: 2049947345}
   successPanel: {fileID: 2094510003}
   trialStartText: {fileID: 500980815}
-  loot: {fileID: 1486925459}
   trialWall: {fileID: 1821437266}
   xpReward: 200
   rewardSpawn: {fileID: 0}
@@ -36350,55 +36425,6 @@ MeshCollider:
   m_Convex: 0
   m_CookingOptions: 30
   m_Mesh: {fileID: -2367533942735330857, guid: f31d13abfeffd514f83bf6cab6ae73a6, type: 3}
---- !u!1 &1350498660
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1350498662}
-  - component: {fileID: 1350498661}
-  m_Layer: 0
-  m_Name: Global Volume (Glow)
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &1350498661
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1350498660}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 172515602e62fb746b5d573b38a5fe58, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Unity.RenderPipelines.Core.Runtime::UnityEngine.Rendering.Volume
-  m_IsGlobal: 1
-  priority: 0
-  blendDistance: 0
-  weight: 1
-  sharedProfile: {fileID: 11400000, guid: 27863542799cf52448eb29ecc004d24c, type: 2}
---- !u!4 &1350498662
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1350498660}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -157.11014, y: 23.767567, z: 250.6652}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1350735854 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: -5573652781226880207, guid: f31d13abfeffd514f83bf6cab6ae73a6, type: 3}
@@ -60234,7 +60260,6 @@ SceneRoots:
   - {fileID: 1047856339}
   - {fileID: 580477148}
   - {fileID: 122148259}
-  - {fileID: 1350498662}
   - {fileID: 323425982}
   - {fileID: 163655961}
   - {fileID: 1786746464}
@@ -60246,3 +60271,4 @@ SceneRoots:
   - {fileID: 917892017772515053}
   - {fileID: 1782311564}
   - {fileID: 520628807}
+  - {fileID: 559402141}

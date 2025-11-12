@@ -13,6 +13,8 @@ public class EnemyTrialManager : MonoBehaviour
     public GameObject trialWall;
     public int xpReward = 200;
     public Transform rewardSpawn;
+    public TrialZoneTrigger trialTrigger;
+    //public Collider trialTriggers;
 
     [Header("UI")]
     public Text waveNameText;
@@ -35,16 +37,21 @@ public class EnemyTrialManager : MonoBehaviour
         {
             if (enemyWaves[i] != null)
             {
-                if (i == 0) continue;
-                enemyWaves[i].SetActive(false);
+                if (i == 0)
+                {
+                    // First wave should be visible
+                    enemyWaves[i].SetActive(true);
+                }
+                else
+                {
+                    // Other waves start inactive
+                    enemyWaves[i].SetActive(false);
+                }
             }
         }
 
         if (successPanel != null)
             successPanel.SetActive(false);
-
-        //if (loot != null)
-            //loot.SetActive(false);
 
         if (trialWall != null)
             trialWall.SetActive(true);
@@ -55,6 +62,7 @@ public class EnemyTrialManager : MonoBehaviour
         if (waveNameText != null)
             waveNameText.gameObject.SetActive(false);
     }
+
 
     void Update()
     {
@@ -101,13 +109,9 @@ public class EnemyTrialManager : MonoBehaviour
 
     public void StartTrial()
     {
-
-        
-        trialMusic.Play();
-
-
         if (trialActive) return;
 
+        trialMusic.Play();
         trialActive = true;
         trialComplete = false;
         currentWave = 0;
@@ -120,9 +124,21 @@ public class EnemyTrialManager : MonoBehaviour
             Invoke(nameof(HideTrialStartText), 3.5f);
         }
 
+        // Reset enemies in the first wave (wave 0)
+        foreach (Transform enemy in enemyWaves[0].transform)
+        {
+            var creature = enemy.GetComponent<CreatureBase>();
+            if (creature != null)
+            {
+                creature.ResetCreature(); // Reset health & reactivate logic
+            }
+        }
+
+        // Register the enemies in wave 0 for the system
         RegisterActiveEnemies(enemyWaves[0]);
-        
     }
+
+
 
     private void StartNextWave()
     {
@@ -286,4 +302,56 @@ public class EnemyTrialManager : MonoBehaviour
         // Fallback to trial manager position
         return transform.position;
     }
+
+    public void StopTrialMusic()
+    {
+        if (trialMusic != null && trialMusic.isPlaying)
+        {
+            trialMusic.Stop();
+            Debug.Log("Trial music stopped manually (e.g. on player respawn).");
+        }
+    }
+
+    public void ResetTrial()
+    {
+        trialActive = false;
+        trialComplete = false;
+        waveTransitioning = false;
+        currentWave = 0;
+        enemies.Clear();
+
+        // Reset first wave enemies (visible)
+        foreach (Transform enemy in enemyWaves[0].transform)
+        {
+            var creature = enemy.GetComponent<CreatureBase>();
+            if (creature != null)
+                creature.ResetCreature();
+        }
+
+        // Reset all other waves (keep inactive)
+        for (int i = 1; i < enemyWaves.Length; i++)
+        {
+            if (enemyWaves[i] != null)
+                enemyWaves[i].SetActive(false);
+        }
+
+        // Reset trigger
+        trialTrigger?.ResetTrigger();
+
+        if (trialWall != null)
+            trialWall.SetActive(true);
+
+        if (successPanel != null)
+            successPanel.SetActive(false);
+
+        if (trialStartText != null)
+            trialStartText.SetActive(false);
+
+        Debug.Log("Trial reset and ready again.");
+    }
+
+
+
+
+
 }

@@ -27,4 +27,14 @@ public class TrialZoneTrigger : MonoBehaviour
         }
             
     }
+
+    public void ResetTrigger()
+    {
+        triggered = false;
+
+        if (myTrigger != null)
+            myTrigger.enabled = true;
+
+        Debug.Log("Trial trigger reset and ready again.");
+    }
 }

@@ -10,6 +10,19 @@ public class PauseMenuManager : MonoBehaviour
 
     private PlayerInput playerInput;
 
+
+    void Update()
+    {
+        if (Keyboard.current.escapeKey.wasPressedThisFrame)
+            Debug.Log("Escape detected!");
+
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            Debug.Log("Escape pressed manually");
+            TogglePause();
+        }
+    }
+
     private void Awake()
     {
         playerInput = GetComponent<PlayerInput>();
